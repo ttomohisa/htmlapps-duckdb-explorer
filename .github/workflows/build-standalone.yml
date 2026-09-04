@@ -1,0 +1,59 @@
+name: Validate release standalone HTML
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "src/**"
+      - "README.md"
+      - "README.ja.md"
+      - "README-FIRST.txt"
+      - "CHANGELOG.md"
+      - "RELEASE_CHECKLIST.md"
+      - "VERIFY_OFFLINE.md"
+      - "docs/GITHUB_PAGES*.md"
+      - "assets/favicon.svg"
+      - "assets/screenshot*.png"
+      - "scripts/**"
+      - "app.config.json"
+      - "dependencies.json"
+      - "dependencies.lock.json"
+      - "duckdb-wasm-runtime.lock.json"
+      - "schemas/dependencies*.json"
+      - ".github/workflows/dependency-updates.yml"
+      - "build-standalone.ps1"
+      - "build-standalone.bat"
+      - ".github/workflows/build-standalone.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: windows-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Build and verify pinned release runtime
+        shell: pwsh
+        run: ./scripts/prepare-release.ps1
+
+      - name: Upload standalone artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: standalone-html-${{ github.event.pull_request.head.sha || github.sha }}
+          path: |
+            dist/index.html
+            dist/index.self-extract.html
+            dist/dependency-manifest.json
+            dist/build-size-report.json
+            dist/self-extract-manifest.json
+            dist/duckdb-wasm-build-manifest.json
+            dist/duckdb-wasm-verification.json
+            dist/.nojekyll
+          if-no-files-found: error
+          retention-days: 14

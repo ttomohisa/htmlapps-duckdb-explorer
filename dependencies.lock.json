@@ -1,0 +1,20 @@
+{
+    "$schema":  "./schemas/dependencies-lock.schema.json",
+    "schemaVersion":  1,
+    "dependencies":  [
+                         {
+                             "id":  "duckdb-wasm",
+                             "package":  "@duckdb/duckdb-wasm",
+                             "version":  "1.32.0",
+                             "tarballSha256":  "13c29d80888b795cb493b281685d3d3e1738db2fad50d419e2884c6585789722",
+                             "integrity":  "sha512-IewXTNYEjsZCPE9weUWgtjGxUlMRo7qhX0GF6tq/KjK8bnY+RAl4cyUdYUfcdzbyb4b9ZxPC+FOsCcxgaKFWMg=="
+                         },
+                         {
+                             "id":  "apache-arrow",
+                             "package":  "apache-arrow",
+                             "version":  "17.0.0",
+                             "tarballSha256":  "3517f9ef256e9e5bf819f92652028545131660784c68818604e9025ec643b317",
+                             "integrity":  "sha512-X0p7auzdnGuhYMVKYINdQssS4EcKec9TCXyez/qtJt32DrIMGbzqiaMiQ0X6fQlQpw8Fl0Qygcv4dfRAr5Gu9Q=="
+                         }
+                     ]
+}

@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "builderRepository": "ttomohisa/htmlapps-duckdb-wasm-builder",
+  "builderVersion": "0.1.2",
+  "tag": "v0.1.2",
+  "profile": "explorer-minimal",
+  "assetName": "duckdb-wasm-explorer-minimal-v0.1.2.zip",
+  "downloadUrl": "https://github.com/ttomohisa/htmlapps-duckdb-wasm-builder/releases/download/v0.1.2/duckdb-wasm-explorer-minimal-v0.1.2.zip",
+  "archiveSha256": "d6a04fb3acca409de2343e0139a221b6b4d76734f4cfc5afe1b6dfa507b4e480",
+  "manifestSha256": "57503be4095621002817143180dcc314dc90537600b8b82ea40138fd6783d3e9",
+  "runtimeAssetSha256": {
+    "api": "a0685dfb4c55abaa0d49f2dba827d7c714bf2b007159373b4a50349b097209d2",
+    "worker": "c2ef3ddd2d8037e166ca69ade3767dea4bff171a9ab692ae18b961977d56e0a3",
+    "wasm": "a84a1b6a94a9369975ceaecdabfc0a701dcf5dba733ad249d249a30d4b99c29e"
+  }
+}

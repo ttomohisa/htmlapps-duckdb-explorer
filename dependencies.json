@@ -1,0 +1,58 @@
+{
+  "$schema": "./schemas/dependencies.schema.json",
+  "dependencies": [
+    {
+      "id": "duckdb-wasm",
+      "package": "@duckdb/duckdb-wasm",
+      "version": "1.32.0",
+      "license": "MIT",
+      "homepage": "https://github.com/duckdb/duckdb-wasm",
+      "assets": [
+        {
+          "key": "api",
+          "path": "dist/duckdb-browser.cjs",
+          "mime": "text/javascript",
+          "stripSourceMapComment": true,
+          "compression": "gzip"
+        },
+        {
+          "key": "worker",
+          "path": "dist/duckdb-browser-eh.worker.js",
+          "mime": "text/javascript",
+          "stripSourceMapComment": true,
+          "compression": "gzip"
+        },
+        {
+          "key": "wasm",
+          "path": "dist/duckdb-eh.wasm",
+          "mime": "application/wasm",
+          "compression": "gzip"
+        }
+      ],
+      "updates": {
+        "enabled": true,
+        "policy": "manual"
+      }
+    },
+    {
+      "id": "apache-arrow",
+      "package": "apache-arrow",
+      "version": "17.0.0",
+      "license": "Apache-2.0",
+      "homepage": "https://arrow.apache.org/",
+      "assets": [
+        {
+          "key": "umd",
+          "path": "Arrow.es2015.min.js",
+          "mime": "text/javascript",
+          "stripSourceMapComment": true,
+          "compression": "gzip"
+        }
+      ],
+      "updates": {
+        "enabled": true,
+        "policy": "manual"
+      }
+    }
+  ]
+}

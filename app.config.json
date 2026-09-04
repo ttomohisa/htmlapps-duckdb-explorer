@@ -1,0 +1,26 @@
+{
+  "$schema": "./schemas/app-config.schema.json",
+  "name": "DuckDB Explorer",
+  "nameJa": "DuckDB Explorer",
+  "slug": "duckdb-explorer",
+  "version": "1.0.0",
+  "description": "Open DuckDB database files locally, inspect structure and column statistics, run guarded read-only SQL, export a data dictionary, and compare database structure in a single-HTML app.",
+  "descriptionJa": "DuckDBデータベースファイルを端末内で開き、概要確認、閲覧、列分析、読み取り専用SQL、データ辞書HTML、構造比較を単一HTMLで行います。",
+  "defaultLanguage": "auto",
+  "repository": {
+    "owner": "ttomohisa",
+    "name": "htmlapps-duckdb-explorer"
+  },
+  "build": {
+    "output": "dist/index.html",
+    "blockRuntimeNetwork": true,
+    "selfExtract": {
+      "enabled": true,
+      "output": "dist/index.self-extract.html"
+    },
+    "sizeBudget": {
+      "readableWarningMb": 60,
+      "selfExtractWarningMb": 30
+    }
+  }
+}
