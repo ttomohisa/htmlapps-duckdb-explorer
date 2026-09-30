@@ -44,9 +44,9 @@ jobs:
             Write-Host "PowerShell syntax preflight is not present in this repository; continuing with the repository check."
           }
 
-      - name: Build and verify standalone HTML
+      - name: Build and verify release standalone HTML
         shell: pwsh
-        run: ./scripts/check-repository.ps1
+        run: ./scripts/prepare-release.ps1
 
       - name: Check Cloudflare preview credentials
         id: cloudflare
