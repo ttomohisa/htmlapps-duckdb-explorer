@@ -8,6 +8,7 @@ on:
     paths:
       - "src/**"
       - "tests/**"
+      - "duckdb-explorer.html"
       - "README.md"
       - "README.ja.md"
       - "README-FIRST.txt"

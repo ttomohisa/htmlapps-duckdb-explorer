@@ -11,7 +11,7 @@
 ### Tests
 
 - Add dependency-free production-function regressions for page/search/filter/sort transitions, language changes, failures/retry, stale requests, source disposal, empty rows, export filenames and CSV serialization.
-- Run the suite in repository checks and against both generated release variants.
+- Run the suite in repository checks, the tracked root HTML, and both generated release variants. Verify root/source parity and refresh the root alias from the verified Windows release artifact.
 
 ## [1.0.0] - 2026-09-04
 

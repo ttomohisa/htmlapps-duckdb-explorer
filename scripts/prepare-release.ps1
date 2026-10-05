@@ -19,7 +19,7 @@ try {
   & (Join-Path $PSScriptRoot "generate-test-data.ps1")
 
   Write-Host "[4/7] Checking repository and release contract..." -ForegroundColor Cyan
-  & (Join-Path $PSScriptRoot "check-repository.ps1")
+  & (Join-Path $PSScriptRoot "check-repository.ps1") -SkipRootReleaseChecks
 
   Write-Host "[5/7] Resolving verified DuckDB-Wasm runtime..." -ForegroundColor Cyan
   $artifactDir = ""
@@ -40,6 +40,10 @@ try {
 
   Write-Host "[7/7] Verifying release outputs..." -ForegroundColor Cyan
   & (Join-Path $PSScriptRoot "check-release.ps1") -RequireBuiltOutput
+
+  # Refresh the tracked alias only after the generated release has passed verification.
+  Copy-Item -Force (Join-Path $Root "dist/index.html") (Join-Path $Root "duckdb-explorer.html")
+  & (Join-Path $PSScriptRoot "check-repository.ps1")
 
   Write-Host "[OK] DuckDB Explorer v1.0.0 release build is ready." -ForegroundColor Green
 } finally {
