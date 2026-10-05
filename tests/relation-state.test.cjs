@@ -158,3 +158,37 @@ test('relation reselection recovers a failed page through metadata and row reloa
   h.state.conn.query = async sql => sql.includes('information_schema') ? table([{ column_name: 'id', data_type: 'INTEGER' }]) : sql.includes('count(*)') ? table([{ row_count: 2n }], ['row_count']) : table([{ id: 2n }]);
   await h.call('selectObject', h.state.selected); h.language('en'); assert.doesNotMatch(h.el.dataPanel.innerHTML, /error-card/); h.call('exportVisible', 'json'); assert.deepEqual(JSON.parse(await h.downloads[0].blob.text()), [{ id: '2' }]);
 });
+
+// Current-use help copy is checked on every generated variant by the same CI path.
+const help = source.match(/<dialog id="helpDialog">([\s\S]*?)<\/dialog>/)[1];
+const translations = vm.runInNewContext('(' + source.match(/const I18N=(\{[\s\S]*?\n  \});/)[1] + ')');
+
+test('help describes current use without version-scoped release notes', () => {
+  assert.doesNotMatch(help, /v\d+\.(?:\d+|x)|helpVersion/);
+  for (const language of ['ja', 'en']) {
+    const text = Object.entries(translations[language]).filter(([key]) => key.startsWith('help')).map(([, value]) => value).join('\n');
+    assert.doesNotMatch(text, /v\d+\.(?:\d+|x)|このバージョン|This version|stable release|正式版/);
+    assert.match(translations[language].helpNote1, language === 'ja' ? /読み取り専用.*元のDuckDBファイルは変更しません/ : /read-only.*never modifies the original DuckDB file/);
+  }
+});
+
+test('help keeps bilingual instructions and factual limitations', () => {
+  for (const language of ['ja', 'en']) {
+    for (const key of ['helpCanBody', 'helpPageExport', 'helpStep1', 'helpStep2', 'helpStep3', 'helpStep4', 'helpStep5', 'helpStep6', 'helpPrivacyBody', 'helpNote1', 'helpNote2', 'helpNote3']) {
+      assert.ok(translations[language][key], `${language}.${key} remains available`);
+    }
+    for (const [, key] of help.matchAll(/data-i18n="([^"]+)"/g)) assert.ok(translations[language][key], `${language}.${key} has a translation`);
+  }
+  assert.match(translations.ja.helpStep3, /100行/);
+  assert.match(translations.en.helpStep3, /100 rows/);
+  assert.match(translations.ja.helpStep4, /読み取り専用SQLを1文ずつ/);
+  assert.match(translations.en.helpStep4, /one read-only/);
+  assert.match(translations.ja.helpPageExport, /現在のページだけ/);
+  assert.match(translations.en.helpPageExport, /only the current successfully loaded page/);
+  assert.match(translations.ja.helpNote3, /開けない場合/);
+  assert.match(translations.en.helpNote3, /may not open/);
+});
+
+test('application version remains visible outside the help dialog', () => {
+  assert.match(source, /class="version-badge">v1\.0\.0<\/span>/);
+});
