@@ -40,6 +40,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v6
 
+      - name: Check committed source and root release
+        shell: pwsh
+        run: ./scripts/check-repository.ps1
+
       - name: Build and verify pinned release runtime
         shell: pwsh
         run: ./scripts/prepare-release.ps1
