@@ -7,6 +7,8 @@ on:
       - main
     paths:
       - "src/**"
+      - "tests/**"
+      - "duckdb-explorer.html"
       - "README.md"
       - "README.ja.md"
       - "README-FIRST.txt"
@@ -37,6 +39,10 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
+
+      - name: Check committed source and root release
+        shell: pwsh
+        run: ./scripts/check-repository.ps1
 
       - name: Build and verify pinned release runtime
         shell: pwsh

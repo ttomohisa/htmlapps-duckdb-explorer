@@ -1,5 +1,6 @@
 param(
-  [switch]$ForceDownload
+  [switch]$ForceDownload,
+  [switch]$SkipRootReleaseChecks
 )
 
 $ErrorActionPreference = "Stop"
@@ -241,6 +242,24 @@ if ([string]::IsNullOrWhiteSpace([string]$app.slug)) { throw "app.config.json: s
 if ([string]::IsNullOrWhiteSpace([string]$app.version)) { throw "app.config.json: version is required" }
 
 & (Join-Path $Root "scripts\check-release.ps1")
+
+# Dependency-free relation ownership regressions use the actual application functions.
+if (-not (Get-Command node -ErrorAction SilentlyContinue)) { throw "Node.js 18 or later is required for relation-state tests." }
+$previousAppHtml = $env:APP_HTML
+try {
+  $env:APP_HTML = Join-Path $Root "src/index.template.html"
+  & node --test (Join-Path $Root "tests/relation-state.test.cjs")
+  if ($LASTEXITCODE -ne 0) { throw "Source relation-state or root release parity tests failed." }
+  if (-not $SkipRootReleaseChecks) {
+    $env:APP_HTML = Join-Path $Root "duckdb-explorer.html"
+    & node --test (Join-Path $Root "tests/relation-state.test.cjs") (Join-Path $Root "tests/release-parity.test.cjs")
+    if ($LASTEXITCODE -ne 0) { throw "Root release relation-state or source parity tests failed." }
+  }
+} finally {
+  $env:APP_HTML = $previousAppHtml
+}
+
+& (Join-Path $Root "scripts/test-release-flow.ps1")
 
 # WebRTC readiness DataChannel regression
 $webrtcReadyText = Get-Content -Raw -Encoding UTF8 (Join-Path $Root "components\webrtc-qr-pairing.html")
