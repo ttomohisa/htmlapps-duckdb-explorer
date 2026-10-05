@@ -239,6 +239,17 @@ if ($RequireBuiltOutput) {
   $verification = Get-Content -Raw -Encoding UTF8 (Join-Path $distRoot "duckdb-wasm-verification.json") | ConvertFrom-Json
   if ([string]$verification.status -ne "passed" -or [string]$verification.browserSmokeTest.status -ne "passed") { throw "dist DuckDB-Wasm verification must report passed browser smoke tests." }
 
+  $previousAppHtml = $env:APP_HTML
+  try {
+    foreach ($variant in @("index.html", "index.self-extract.html")) {
+      $env:APP_HTML = Join-Path $distRoot $variant
+      & node --test (Join-Path $Root "tests/relation-state.test.cjs")
+      if ($LASTEXITCODE -ne 0) { throw "Relation-state regression tests failed for $variant." }
+    }
+  } finally {
+    $env:APP_HTML = $previousAppHtml
+  }
+
   $builtHtml = Get-Content -Raw -Encoding UTF8 (Join-Path $distRoot "index.html")
   if (-not $builtHtml.Contains('"version":"1.0.0"')) { throw "dist/index.html does not contain app version 1.0.0." }
   if (-not $builtHtml.Contains("v1.0.0")) { throw "dist/index.html does not show v1.0.0." }

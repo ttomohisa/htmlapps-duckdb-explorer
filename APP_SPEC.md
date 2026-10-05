@@ -130,6 +130,16 @@ v1.0.0 is the first stable release baseline. It does not add a new product area 
 - Sorting is applied after filtering and before pagination.
 - Filtered count and page rows use the same WHERE clause.
 
+### Relation result ownership
+
+- Relation data has explicit `idle`, `loading`, `ready`, and `error` phases.
+- Starting a page, search/filter count, sort, or relation request clears cached rows and export readiness.
+- A result belongs to its database connection/file, relation, page/page size, search, filters, sort, and request generation. Results and errors from older requests cannot replace the current state.
+- Editing a debounced search immediately blocks stale exports and paging; switching relations or files cancels the pending search timer.
+- Japanese/English changes re-render the current phase. They must not restore a previous page or hide the current error.
+- CSV/JSON export and cell/record details require a successful current result. Empty successful results show no rows and disable exports.
+- A new request can recover from an error; selecting the relation again reloads its metadata and first page.
+
 ## SQL safety rules
 
 - SQL is checked client-side before being passed to DuckDB.

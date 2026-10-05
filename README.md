@@ -67,7 +67,7 @@ After building, `dist/index.html` can be opened directly with `file://` and used
 
 ### Viewer export
 
-CSV / JSON export from the data viewer saves only the currently displayed page. Nested values are serialized safely; CSV includes a UTF-8 BOM.
+CSV / JSON export from the data viewer saves only the current successfully loaded page. Export is unavailable while a page, search, filter, or sort request is pending, after a failure, or when no rows match. Switching Japanese/English preserves loading and error states. Select the relation again to reload after a failure. Nested values are serialized safely; CSV includes a UTF-8 BOM.
 
 ### Read-only SQL
 
@@ -183,3 +183,7 @@ Bug reports and feature proposals are welcome through GitHub Issues. See [CONTRI
 Copyright © 2026 ttomohisa
 
 Licensed under the [MIT License](LICENSE).
+
+### Relation-state regression tests
+
+Node.js 18 or later is required for the dependency-free regression tests. Run `node --test` from the repository root. `scripts/check-repository.ps1` also runs the source tests; release verification repeats them against the readable HTML and decompressed self-extract payload. The tests use small fictitious rows and DOM/query doubles, not a real database or browser.

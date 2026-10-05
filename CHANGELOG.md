@@ -1,5 +1,18 @@
 # Changelog
 
+## [Unreleased]
+
+### Fixed
+
+- Keep relation loading and query errors visible when changing Japanese/English, instead of restoring cached rows under another page or filter.
+- Tie displayed rows and CSV/JSON exports to the current database, relation, query conditions, page, and request generation; discard stale results and errors.
+- Invalidate exports immediately while search is debouncing and cancel pending search timers on relation/file changes. Empty results disable exports.
+
+### Tests
+
+- Add dependency-free production-function regressions for page/search/filter/sort transitions, language changes, failures/retry, stale requests, source disposal, empty rows, export filenames and CSV serialization.
+- Run the suite in repository checks and against both generated release variants.
+
 ## [1.0.0] - 2026-09-04
 
 ### Changed

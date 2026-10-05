@@ -7,6 +7,7 @@ on:
       - main
     paths:
       - "src/**"
+      - "tests/**"
       - "README.md"
       - "README.ja.md"
       - "README-FIRST.txt"

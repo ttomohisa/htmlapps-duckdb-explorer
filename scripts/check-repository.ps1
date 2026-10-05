@@ -242,6 +242,11 @@ if ([string]::IsNullOrWhiteSpace([string]$app.version)) { throw "app.config.json
 
 & (Join-Path $Root "scripts\check-release.ps1")
 
+# Dependency-free relation ownership regressions use the actual application functions.
+if (-not (Get-Command node -ErrorAction SilentlyContinue)) { throw "Node.js 18 or later is required for relation-state tests." }
+& node --test (Join-Path $Root "tests/relation-state.test.cjs")
+if ($LASTEXITCODE -ne 0) { throw "Relation-state regression tests failed." }
+
 # WebRTC readiness DataChannel regression
 $webrtcReadyText = Get-Content -Raw -Encoding UTF8 (Join-Path $Root "components\webrtc-qr-pairing.html")
 if (-not $webrtcReadyText.Contains("readyChannelLabel: null")) {
