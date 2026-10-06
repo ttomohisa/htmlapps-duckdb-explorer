@@ -1,6 +1,6 @@
 # DuckDB Explorer release checklist
 
-Use this checklist for the v1.0.0 release and later release candidates.
+Use this checklist for the v1.0.1 release and later release candidates.
 
 ## Build and repository
 
@@ -17,7 +17,7 @@ Use this checklist for the v1.0.0 release and later release candidates.
 ## PC
 
 - [ ] Initial page matches the Browser Kitty / SQLite Explorer header and landing-page pattern.
-- [ ] Header shows `v1.0.0`.
+- [ ] Header shows `v1.0.1`.
 - [ ] Header filename remains readable with a long database filename.
 - [ ] No horizontal page scroll appears at common desktop widths.
 - [ ] Overview is the first content view after opening a database.
@@ -121,4 +121,4 @@ Compare the primary fixture with `test-data/browser-kitty-sample-after.duckdb`.
 - [ ] GitHub Actions build uses `scripts/prepare-release.ps1`, not an upstream/npm-only DuckDB-Wasm release build.
 - [ ] GitHub Pages workflow builds successfully from a clean checkout and uses the pinned Builder Release runtime.
 - [ ] Published page loads and does not introduce runtime CDN/network dependencies.
-- [ ] Final tag/version/changelog all agree on `v1.0.0`.
+- [ ] Final tag/version/changelog all agree on `v1.0.1`.

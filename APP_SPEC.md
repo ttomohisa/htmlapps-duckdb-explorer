@@ -2,7 +2,7 @@
 
 ## Version
 
-v1.0.0
+v1.0.1
 
 ## Goal
 
@@ -72,6 +72,7 @@ v1.0.0 is the first stable release baseline. It does not add a new product area 
 - file size/name display
 - Japanese / English UI
 - desktop table layout
+- search, export, and paging controls wrap within the data panel at desktop and smartphone widths in both Japanese and English; exports never overlap the pager, including long page counts
 - mobile record-card layout
 - user-facing loading and failure states
 

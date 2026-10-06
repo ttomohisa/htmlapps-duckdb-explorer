@@ -67,6 +67,8 @@ After building, `dist/index.html` can be opened directly with `file://` and used
 
 ### Viewer export
 
+Search, export, and paging controls wrap to fit the data panel on desktop and smartphones in both languages.
+
 CSV / JSON export from the data viewer saves only the current successfully loaded page. Export is unavailable while a page, search, filter, or sort request is pending, after a failure, or when no rows match. Switching Japanese/English preserves loading and error states. Select the relation again to reload after a failure. Nested values are serialized safely, including own keys such as `__proto__` in JSON exports and full record details; CSV includes a UTF-8 BOM. First / Previous / Next / Last page controls are unavailable while search or loading is pending.
 
 ### Read-only SQL
