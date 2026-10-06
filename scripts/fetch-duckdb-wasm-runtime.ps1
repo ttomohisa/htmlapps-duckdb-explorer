@@ -65,7 +65,7 @@ if ($needsDownload) {
   $partialPath = "$archivePath.part"
   Remove-Item -Force -ErrorAction SilentlyContinue $partialPath
   Write-Host "[DuckDB-Wasm] Downloading pinned Builder Release v0.1.2..." -ForegroundColor Cyan
-  Invoke-WebRequest -Uri ([string]$lock.downloadUrl) -OutFile $partialPath -UseBasicParsing -Headers @{ "User-Agent" = "htmlapps-duckdb-explorer/1.0.0" }
+  Invoke-WebRequest -Uri ([string]$lock.downloadUrl) -OutFile $partialPath -UseBasicParsing -Headers @{ "User-Agent" = "htmlapps-duckdb-explorer/1.0.1" }
   $downloadedSha = Get-Sha256FileHex $partialPath
   if ($downloadedSha -ne ([string]$lock.archiveSha256).ToLowerInvariant()) {
     Remove-Item -Force -ErrorAction SilentlyContinue $partialPath

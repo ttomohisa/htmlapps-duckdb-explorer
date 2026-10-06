@@ -1,6 +1,6 @@
 # Changelog
 
-## [Unreleased]
+## [1.0.1] - 2026-10-06
 
 ### Added
 
@@ -8,6 +8,7 @@
 
 ### Fixed
 
+- Wrap the data toolbar, export buttons, and paging controls to prevent overlap at intermediate desktop and narrow mobile widths in Japanese and English.
 - Preserve own `__proto__` data keys, including nested Arrow STRUCT/MAP values, in normalization, relation/SQL JSON exports, and full record details without changing object prototypes.
 - Rewrite Japanese/English help as current-use guidance and remove the duplicate release-history section, while retaining the app version and existing limitations.
 - Keep relation loading and query errors visible when changing Japanese/English, instead of restoring cached rows under another page or filter.
@@ -16,6 +17,7 @@
 
 ### Tests
 
+- Add CSS-contract regressions for toolbar wrapping, narrow export groups, pager hit-target sizing, and patch-version parity in all release variants.
 - Add dependency-free production-function regressions for page/search/filter/sort transitions, language changes, failures/retry, stale requests, source disposal, empty rows, export filenames and CSV serialization.
 - Run the suite in repository checks, the tracked root HTML, and both generated release variants. Verify root/source parity and refresh the root alias from the verified Windows release artifact.
 

@@ -31,10 +31,10 @@ $compareFixture = Get-Content -Raw -Encoding UTF8 $CompareFixturePath
 $config = Get-Content -Raw -Encoding UTF8 $ConfigPath | ConvertFrom-Json
 $runtimeLock = Get-Content -Raw -Encoding UTF8 $RuntimeLockPath | ConvertFrom-Json
 
-if ([string]$config.version -ne "1.0.0") { throw "app.config.json version must be 1.0.0." }
+if ([string]$config.version -ne "1.0.1") { throw "app.config.json version must be 1.0.1." }
 
 $requiredSourceTokens = @(
-  "v1.0.0",
+  "v1.0.1",
   "DuckDBAccessMode.READ_ONLY",
   "SET autoinstall_known_extensions=false",
   "SET autoload_known_extensions=false",
@@ -138,7 +138,7 @@ foreach ($token in @(
   if (-not $customVerifier.Contains($token)) { throw "Custom DuckDB-Wasm verifier is missing gate marker: $token" }
 }
 
-if (-not $fixture.StartsWith("-- DuckDB Explorer v1.0.0") -or -not $compareFixture.StartsWith("-- DuckDB Explorer v1.0.0")) { throw "Regression fixture source comments must identify DuckDB Explorer v1.0.0." }
+if (-not $fixture.StartsWith("-- DuckDB Explorer v1.0.0") -or -not $compareFixture.StartsWith("-- DuckDB Explorer v1.0.0")) { throw "Regression fixture source comments must identify the DuckDB Explorer v1.0.0 baseline." }
 $requiredFixtureTokens = @("100%_complete", "binary_samples", "profile_cases", "CREATE VIEW", "STRUCT", "MAP")
 foreach ($token in $requiredFixtureTokens) {
   if (-not $fixture.Contains($token)) { throw "Base fixture is missing regression marker: $token" }
@@ -181,7 +181,7 @@ $staleRootScripts = @(Get-ChildItem -Path $Root -File -Filter "prepare-v*.bat" -
 $stalePrepareScripts = @(Get-ChildItem -Path (Join-Path $Root "scripts") -File -Filter "prepare-v*.ps1" -ErrorAction SilentlyContinue)
 $staleCheckScripts = @(Get-ChildItem -Path (Join-Path $Root "scripts") -File -Filter "check-v*.ps1" -ErrorAction SilentlyContinue)
 if ($staleRootScripts.Count -gt 0 -or $stalePrepareScripts.Count -gt 0 -or $staleCheckScripts.Count -gt 0) {
-  throw "Historical version-specific prepare/check scripts must not remain in the v1.0.0 repository."
+  throw "Historical version-specific prepare/check scripts must not remain in the v1.0.1 repository."
 }
 $verificationPackDirs = @(Get-ChildItem -Path $Root -Directory -Filter "DuckDB-Explorer-v*-VERIFY" -ErrorAction SilentlyContinue)
 if ($verificationPackDirs.Count -gt 0) { throw "Generated verification-pack directories must not be included in the release repository." }
@@ -224,7 +224,7 @@ if ($RequireBuiltOutput) {
   }
 
   $dependencyManifest = Get-Content -Raw -Encoding UTF8 (Join-Path $distRoot "dependency-manifest.json") | ConvertFrom-Json
-  if ([string]$dependencyManifest.app.version -ne "1.0.0") { throw "dist/dependency-manifest.json app.version must be 1.0.0." }
+  if ([string]$dependencyManifest.app.version -ne "1.0.1") { throw "dist/dependency-manifest.json app.version must be 1.0.1." }
   if ($null -eq $dependencyManifest.duckdbWasmOverride) { throw "Release build must contain duckdbWasmOverride metadata." }
   if ([string]$dependencyManifest.duckdbWasmOverride.builderVersion -ne [string]$runtimeLock.builderVersion) { throw "Release build uses the wrong Builder version." }
   if ([string]$dependencyManifest.duckdbWasmOverride.profile -ne [string]$runtimeLock.profile) { throw "Release build uses the wrong Builder profile." }
@@ -243,7 +243,7 @@ if ($RequireBuiltOutput) {
   try {
     foreach ($variant in @("index.html", "index.self-extract.html")) {
       $env:APP_HTML = Join-Path $distRoot $variant
-      & node --test (Join-Path $Root "tests/relation-state.test.cjs")
+      & node --test (Join-Path $Root "tests/relation-state.test.cjs") (Join-Path $Root "tests/toolbar-layout.test.cjs")
       if ($LASTEXITCODE -ne 0) { throw "Relation-state regression tests failed for $variant." }
     }
   } finally {
@@ -251,8 +251,8 @@ if ($RequireBuiltOutput) {
   }
 
   $builtHtml = Get-Content -Raw -Encoding UTF8 (Join-Path $distRoot "index.html")
-  if (-not $builtHtml.Contains('"version":"1.0.0"')) { throw "dist/index.html does not contain app version 1.0.0." }
-  if (-not $builtHtml.Contains("v1.0.0")) { throw "dist/index.html does not show v1.0.0." }
+  if (-not $builtHtml.Contains('"version":"1.0.1"')) { throw "dist/index.html does not contain app version 1.0.1." }
+  if (-not $builtHtml.Contains("v1.0.1")) { throw "dist/index.html does not show v1.0.1." }
   if ($builtHtml -notmatch $cspNonePattern) { throw "dist/index.html must keep connect-src none." }
   if ($builtHtml -match 'connect-src[^;]*(?:https?:|wss?:|\*)') { throw "dist/index.html CSP must not allow external network schemes." }
 
@@ -260,4 +260,4 @@ if ($RequireBuiltOutput) {
   & (Join-Path $Root "scripts\verify-self-extract.ps1") -Path (Join-Path $distRoot "index.self-extract.html") -ExpectedSourcePath (Join-Path $distRoot "index.html")
 }
 
-Write-Host "[OK] DuckDB Explorer v1.0.0 release checks passed." -ForegroundColor Green
+Write-Host "[OK] DuckDB Explorer v1.0.1 release checks passed." -ForegroundColor Green

@@ -248,11 +248,11 @@ if (-not (Get-Command node -ErrorAction SilentlyContinue)) { throw "Node.js 18 o
 $previousAppHtml = $env:APP_HTML
 try {
   $env:APP_HTML = Join-Path $Root "src/index.template.html"
-  & node --test (Join-Path $Root "tests/relation-state.test.cjs")
+  & node --test (Join-Path $Root "tests/relation-state.test.cjs") (Join-Path $Root "tests/toolbar-layout.test.cjs")
   if ($LASTEXITCODE -ne 0) { throw "Source relation-state or root release parity tests failed." }
   if (-not $SkipRootReleaseChecks) {
     $env:APP_HTML = Join-Path $Root "duckdb-explorer.html"
-    & node --test (Join-Path $Root "tests/relation-state.test.cjs") (Join-Path $Root "tests/release-parity.test.cjs")
+    & node --test (Join-Path $Root "tests/relation-state.test.cjs") (Join-Path $Root "tests/toolbar-layout.test.cjs") (Join-Path $Root "tests/release-parity.test.cjs")
     if ($LASTEXITCODE -ne 0) { throw "Root release relation-state or source parity tests failed." }
   }
 } finally {
