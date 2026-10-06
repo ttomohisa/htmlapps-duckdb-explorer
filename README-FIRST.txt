@@ -1,4 +1,4 @@
-DuckDB Explorer v1.0.1
+DuckDB Explorer v1.0.2
 ======================
 
 Release build on Windows:
@@ -14,7 +14,7 @@ Release build on Windows:
    - confirms the generated release uses the pinned Builder runtime
 3. Open dist/index.html directly with file:// and complete RELEASE_CHECKLIST.md.
 
-Important v1.0.1 boundary:
+Important v1.0.2 boundary:
 - the application is read-only
 - Overview, browsing, search, filters, sorting, column profiling, SQL, data dictionary HTML, and structural DB comparison are included
 - viewer export is visible-page only; SELECT-style SQL results are capped at 1,000 rows

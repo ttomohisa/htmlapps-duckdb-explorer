@@ -71,6 +71,8 @@ Search, export, and paging controls wrap to fit the data panel on desktop and sm
 
 CSV / JSON export from the data viewer saves only the current successfully loaded page. Export is unavailable while a page, search, filter, or sort request is pending, after a failure, or when no rows match. Switching Japanese/English preserves loading and error states. Select the relation again to reload after a failure. Nested values are serialized safely, including own keys such as `__proto__` in JSON exports and full record details; CSV includes a UTF-8 BOM. First / Previous / Next / Last page controls are unavailable while search or loading is pending.
 
+DECIMAL values retain their exact precision and scale in displayed values, details, and CSV. JSON exports them as strings, including nested LIST / ARRAY / STRUCT / MAP values. BLOB values retain their binary representation.
+
 ### Read-only SQL
 
 The SQL workspace accepts one statement at a time and allows `SELECT`, `WITH`, `VALUES`, `SHOW`, `DESCRIBE` / `DESC`, and `EXPLAIN`. Write, DDL, attachment, extension-loading, environment-changing, and multi-statement SQL is rejected before execution. The database itself is also opened with DuckDB read-only access.

@@ -1,6 +1,6 @@
 # DuckDB Explorer release checklist
 
-Use this checklist for the v1.0.1 release and later release candidates.
+Use this checklist for the v1.0.2 release and later release candidates.
 
 ## Build and repository
 
@@ -14,10 +14,17 @@ Use this checklist for the v1.0.1 release and later release candidates.
 - [ ] Historical `prepare-v*.bat`, `scripts/prepare-v*.ps1`, `scripts/check-v*.ps1`, generated verification packs, `.cache`, `__pycache__`, and `*.pyc` are not included in the release repository/ZIP.
 - [ ] `assets/screenshot.png` and `assets/screenshot-en.png` are current; duplicate `screenshot-ja.png` is not kept.
 
+## DECIMAL values
+
+- [ ] In `main.orders`, row 1 displays subtotal `24.35`, tax `2.44`, and total `26.79`; cell details and copy preserve these values.
+- [ ] Relation and SQL CSV contain the same decimals; JSON uses exact strings.
+- [ ] Zero, negative, NULL, trailing-zero, large-precision, and nested decimal results remain exact.
+- [ ] Genuine BLOBs remain binary, and timestamps retain the existing representation.
+
 ## PC
 
 - [ ] Initial page matches the Browser Kitty / SQLite Explorer header and landing-page pattern.
-- [ ] Header shows `v1.0.1`.
+- [ ] Header shows `v1.0.2`.
 - [ ] Header filename remains readable with a long database filename.
 - [ ] No horizontal page scroll appears at common desktop widths.
 - [ ] Overview is the first content view after opening a database.
@@ -121,4 +128,4 @@ Compare the primary fixture with `test-data/browser-kitty-sample-after.duckdb`.
 - [ ] GitHub Actions build uses `scripts/prepare-release.ps1`, not an upstream/npm-only DuckDB-Wasm release build.
 - [ ] GitHub Pages workflow builds successfully from a clean checkout and uses the pinned Builder Release runtime.
 - [ ] Published page loads and does not introduce runtime CDN/network dependencies.
-- [ ] Final tag/version/changelog all agree on `v1.0.1`.
+- [ ] Final tag/version/changelog all agree on `v1.0.2`.

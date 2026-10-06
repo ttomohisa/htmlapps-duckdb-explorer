@@ -18,7 +18,7 @@ function actual(name, optional = false) {
   return source.slice(start, next < 0 ? source.length : start + 1 + next).trim();
 }
 const functions = ['t', 'applyLanguage', 'renderColumns', 'renderRelationHead', 'escapeHtml', 'formatCount', 'sqlIdent', 'arrowRows', 'normalizeValue', 'safeValue', 'disposeDatabase', 'selectObject', 'buildWhereClause', 'buildOrderClause', 'refreshQuery', 'loadPage', 'renderCell', 'dataToolbarHtml', 'renderFilterSummary', 'renderData', 'renderDataFromCache', 'bindDataControls', 'csvCell', 'safeFilenamePart', 'downloadText', 'exportVisible', 'renderRelationError', 'exportSqlResult', 'downloadSqlText', 'openRowDetail', 'openSqlRowDetail'];
-const stateHelpers = ['isArrowRecord', 'relationRequestKey', 'isRelationRequestCurrent', 'hasCurrentRelationResult', 'beginRelationLoad', 'renderRelationState', 'setRelationError'];
+const stateHelpers = ['isArrowRecord', 'arrowDecimalText', 'materializeArrowValue', 'relationRequestKey', 'isRelationRequestCurrent', 'hasCurrentRelationResult', 'beginRelationLoad', 'renderRelationState', 'setRelationError', 'openCellDetail', 'openSqlCellDetail', 'renderSqlCell'];
 function element() {
   const listeners = new Map();
   return { innerHTML: '', textContent: '', value: '', disabled: false, style: {}, dataset: {}, classList: { add() {}, remove() {}, toggle() {} }, setAttribute() {}, querySelectorAll() { return []; }, append() {}, remove() {}, click() { return this.fire('click'); }, close() {}, showModal() {}, focus() {}, addEventListener(type, fn) { listeners.set(type, fn); }, fire(type, event = {}) { return listeners.get(type)?.(event); } };
@@ -191,7 +191,7 @@ test('help keeps bilingual instructions and factual limitations', () => {
 });
 
 test('application version remains visible outside the help dialog', () => {
-  assert.match(source, /class="version-badge">v1\.0\.1<\/span>/);
+  assert.match(source, /class="version-badge">v1\.0\.2<\/span>/);
 });
 
 const pagerIds = ['firstPage', 'prevPage', 'nextPage', 'lastPage'];
@@ -363,4 +363,94 @@ test('pinned Arrow StructRow and MapRow nested normalization preserves own speci
   const actual = h.call('normalizeValue', { row, map, array: [row, map], plain: specialRecord() });
   assert.deepEqual(JSON.parse(JSON.stringify(actual)), { row: input, map: expectedMap, array: [input, expectedMap], plain: specialExpected });
   assert.deepEqual(Object.getOwnPropertyDescriptors(prototype), before);
+});
+
+// Real Arrow DECIMAL values are signed unscaled Uint32Array subclasses, not
+// BLOBs. Removing schema-aware ingestion must fail these end-to-end assertions.
+function decimalVector(integers, scale = 2, precision = 38) {
+  const data = new Uint32Array(integers.length * 4), nullBitmap = new Uint8Array(Math.ceil(integers.length / 8));
+  let nullCount = 0;
+  integers.forEach((integer, row) => {
+    if (integer === null) { nullCount++; return; }
+    nullBitmap[row >> 3] |= 1 << (row % 8);
+    let bits = BigInt.asUintN(128, integer);
+    for (let word = 0; word < 4; word++) { data[row * 4 + word] = Number(bits & 0xffffffffn); bits >>= 32n; }
+  });
+  return Arrow.makeVector(Arrow.makeData({ type: new Arrow.Decimal(scale, precision, 128), length: integers.length, data, nullBitmap, nullCount }));
+}
+function typedTable(columns) {
+  const fields = columns.map(([name, vector]) => new Arrow.Field(name, vector.type, true));
+  return new Arrow.Table(new Arrow.RecordBatch(new Arrow.Schema(fields), Arrow.makeData({
+    type: new Arrow.Struct(fields), length: columns[0][1].length, children: columns.map(([, vector]) => vector.data[0])
+  })));
+}
+test('real Arrow decimals retain sign, exact precision, scale, nulls and sliced offsets', () => {
+  const h = setup(Arrow);
+  const source = decimalVector([999n, 2435n, 0n, 1n, 120n, -1n, -12345n, null, 99999999999999999999999999999999999999n, -99999999999999999999999999999999999999n]);
+  const result = typedTable([['value', source.slice(1)]]);
+  const expected = ['24.35', '0.00', '0.01', '1.20', '-0.01', '-123.45', null, '999999999999999999999999999999999999.99', '-999999999999999999999999999999999999.99'];
+  assert.deepEqual(Array.from(h.call('arrowRows', result), row => row.value), expected);
+  assert.equal(h.call('arrowRows', typedTable([['value', decimalVector([9007199254740993123456n], 4)]]))[0].value, '900719925474099312.3456');
+  assert.equal(h.call('arrowRows', typedTable([['value', decimalVector([-42n], 0)]]))[0].value, '-42');
+  assert.equal(h.call('arrowRows', typedTable([['value', decimalVector([1n], 38)]]))[0].value, '0.' + '0'.repeat(37) + '1');
+});
+
+for (const sql of [false, true]) test(`${sql ? 'SQL' : 'relation'} fixture decimals display and export exact strings while BLOB and timestamp keep their behavior`, async () => {
+  const h = setup(Arrow), timestamp = new Arrow.TimestampMicrosecond();
+  const result = typedTable([
+    ['subtotal', decimalVector([2435n], 2, 12)], ['tax', decimalVector([244n], 2, 12)], ['total', decimalVector([2679n], 2, 12)],
+    ['blob', Arrow.vectorFromArray([new Uint8Array([131, 9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])], new Arrow.Binary())],
+    ['ordered_at', Arrow.makeVector(Arrow.makeData({ type: timestamp, length: 1, data: new BigInt64Array([1735729200000000n]) }))],
+    ['id', Arrow.vectorFromArray([9007199254740993n], new Arrow.Int64())]
+  ]);
+  h.state.conn = { query: async () => result }; await h.call('loadPage');
+  Object.assign(h.state, { sqlHasResult: true, sqlLastFields: result.schema.fields.map(f => f.name), sqlLastRows: h.call('arrowRows', result) });
+  const expected = { subtotal: '24.35', tax: '2.44', total: '26.79', blob: { bytes: [131, 9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] }, ordered_at: 1735729200000, id: '9007199254740993' };
+  for (const language of ['ja', 'en']) {
+    h.language(language);
+    const rows = sql ? h.state.sqlLastRows : h.state.lastRows;
+    const cell = h.call(sql ? 'renderSqlCell' : 'renderCell', rows[0].subtotal, 0, 'subtotal');
+    assert.match(cell, />24\.35<\/button>/); assert.doesNotMatch(cell, /nested-badge|bytes/);
+    h.call(sql ? 'openSqlCellDetail' : 'openCellDetail', 0, 'subtotal'); assert.equal(h.el.detailValue.textContent, '24.35'); assert.equal(h.state.detailCopyText, '24.35');
+    h.call(sql ? 'openSqlRowDetail' : 'openRowDetail', 0); assert.deepEqual(JSON.parse(h.el.detailValue.textContent), expected);
+  }
+  h.call(sql ? 'exportSqlResult' : 'exportVisible', 'json');
+  assert.deepEqual(JSON.parse(await h.downloads[0].blob.text()), [expected]);
+  h.call(sql ? 'exportSqlResult' : 'exportVisible', 'csv');
+  const csv = Buffer.from(await h.downloads[1].blob.arrayBuffer()).toString('utf8');
+  assert.equal(csv, '\uFEFFsubtotal,tax,total,blob,ordered_at,id\r\n24.35,2.44,26.79,"' + JSON.stringify(expected.blob).replaceAll('"', '""') + '",1735729200000,9007199254740993');
+});
+
+test('typed nested decimals preserve scale and own special keys in LIST, ARRAY, STRUCT and MAP', () => {
+  const h = setup(Arrow), decimals = decimalVector([120n, null, -1n]);
+  const listType = new Arrow.List(new Arrow.Field('item', decimals.type, true));
+  const list = Arrow.makeVector(Arrow.makeData({ type: listType, length: 1, valueOffsets: new Int32Array([0, 3]), child: decimals.data[0] }));
+  const arrayType = new Arrow.FixedSizeList(3, new Arrow.Field('item', decimals.type, true));
+  const array = Arrow.makeVector(Arrow.makeData({ type: arrayType, length: 1, child: decimals.data[0] }));
+  const structFields = [new Arrow.Field('__proto__', decimals.type, true), new Arrow.Field('constructor', listType, true)];
+  const struct = Arrow.makeVector(Arrow.makeData({ type: new Arrow.Struct(structFields), length: 1, children: [decimalVector([2435n]).data[0], list.data[0]] }));
+  const entryType = new Arrow.Struct([new Arrow.Field('key', new Arrow.Utf8(), false), new Arrow.Field('value', decimals.type, true)]);
+  const entries = Arrow.makeData({ type: entryType, length: 3, children: [Arrow.vectorFromArray(['__proto__', 'constructor', 'toJSON'], new Arrow.Utf8()).data[0], decimals.data[0]] });
+  const mapType = new Arrow.Map_(new Arrow.Field('entries', entryType, false));
+  const map = Arrow.makeVector(Arrow.makeData({ type: mapType, length: 1, valueOffsets: new Int32Array([0, 3]), child: entries }));
+  const before = Object.getOwnPropertyDescriptors(Object.prototype);
+  const result = h.call('arrowRows', typedTable([['__proto__', decimalVector([244n])], ['list', list], ['array', array], ['struct', struct], ['map', map]]));
+  assert.deepEqual(JSON.parse(JSON.stringify(h.call('normalizeValue', result[0]))), JSON.parse('{"__proto__":"2.44","list":["1.20",null,"-0.01"],"array":["1.20",null,"-0.01"],"struct":{"__proto__":"24.35","constructor":["1.20",null,"-0.01"]},"map":{"__proto__":"1.20","constructor":null,"toJSON":"-0.01"}}'));
+  assert.deepEqual(Object.getOwnPropertyDescriptors(Object.prototype), before);
+});
+
+test('DECIMAL MAP keys retain scale without changing nondecimal complex key serialization', () => {
+  const h = setup(Arrow);
+  function mapWithKeys(keys, values) {
+    const entriesType = new Arrow.Struct([new Arrow.Field('key', keys.type, false), new Arrow.Field('value', new Arrow.Utf8(), true)]);
+    const entries = Arrow.makeData({ type: entriesType, length: keys.length, children: [keys.data[0], Arrow.vectorFromArray(values, new Arrow.Utf8()).data[0]] });
+    const type = new Arrow.Map_(new Arrow.Field('entries', entriesType, false));
+    return Arrow.makeVector(Arrow.makeData({ type, length: 1, valueOffsets: new Int32Array([0, keys.length]), child: entries }));
+  }
+  const decimalMap = mapWithKeys(decimalVector([120n, -1n, 9007199254740993123456n]), ['one', 'two', 'large']);
+  const complexType = new Arrow.Struct([new Arrow.Field('toString', new Arrow.Utf8(), false)]);
+  const complexKeys = Arrow.makeVector(Arrow.makeData({ type: complexType, length: 1, children: [Arrow.vectorFromArray(['not callable'], new Arrow.Utf8()).data[0]] }));
+  const complexMap = mapWithKeys(complexKeys, ['kept']);
+  const actual = h.call('normalizeValue', h.call('arrowRows', typedTable([['decimal', decimalMap], ['complex', complexMap]]))[0]);
+  assert.deepEqual(JSON.parse(JSON.stringify(actual)), { decimal: { '1.20': 'one', '-0.01': 'two', '90071992547409931234.56': 'large' }, complex: { [String(complexKeys.get(0))]: 'kept' } });
 });
