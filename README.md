@@ -19,7 +19,7 @@ GitHub Pages delivers the initial HTML. After it loads, the selected DuckDB file
 ## Features
 
 - **Database overview** — Inspect schemas, tables, views, columns, estimated row counts, file size, and DuckDB version before opening a relation.
-- **Read-only data browser** — Page through 100 rows at a time, search, filter, sort, and inspect nested LIST / STRUCT / MAP values without modifying the source database.
+- **Read-only data browser** — Page through 100 rows at a time with First / Previous / Next / Last, search, filter, sort, and inspect nested LIST / STRUCT / MAP values without modifying the source database.
 - **On-demand column analysis** — Run NULL counts, estimated distinct counts, numeric summaries, date ranges, text-length summaries, and common-value checks only when requested.
 - **Guarded read-only SQL** — Run one `SELECT` / `WITH` / `VALUES` / `SHOW` / `DESCRIBE` / `DESC` / `EXPLAIN` statement at a time. SELECT-style results are capped at 1,000 rows.
 - **Data dictionary HTML** — Export database structure, view definitions, and column profiles already computed during the current session. Table rows are not included.
@@ -67,7 +67,7 @@ After building, `dist/index.html` can be opened directly with `file://` and used
 
 ### Viewer export
 
-CSV / JSON export from the data viewer saves only the current successfully loaded page. Export is unavailable while a page, search, filter, or sort request is pending, after a failure, or when no rows match. Switching Japanese/English preserves loading and error states. Select the relation again to reload after a failure. Nested values are serialized safely; CSV includes a UTF-8 BOM.
+CSV / JSON export from the data viewer saves only the current successfully loaded page. Export is unavailable while a page, search, filter, or sort request is pending, after a failure, or when no rows match. Switching Japanese/English preserves loading and error states. Select the relation again to reload after a failure. Nested values are serialized safely, including own keys such as `__proto__` in JSON exports and full record details; CSV includes a UTF-8 BOM. First / Previous / Next / Last page controls are unavailable while search or loading is pending.
 
 ### Read-only SQL
 

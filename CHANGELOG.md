@@ -2,8 +2,13 @@
 
 ## [Unreleased]
 
+### Added
+
+- First / Last page controls with localized accessible names, exact BigInt boundary offsets, and the existing pending-search/result-ownership guards.
+
 ### Fixed
 
+- Preserve own `__proto__` data keys, including nested Arrow STRUCT/MAP values, in normalization, relation/SQL JSON exports, and full record details without changing object prototypes.
 - Rewrite Japanese/English help as current-use guidance and remove the duplicate release-history section, while retaining the app version and existing limitations.
 - Keep relation loading and query errors visible when changing Japanese/English, instead of restoring cached rows under another page or filter.
 - Tie displayed rows and CSV/JSON exports to the current database, relation, query conditions, page, and request generation; discard stale results and errors.
