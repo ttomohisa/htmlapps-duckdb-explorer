@@ -24,7 +24,7 @@ v1.0.0 is the first stable release baseline. It does not add a new product area 
 - schema grouping
 - tables and views
 - exact row count for the selected relation
-- row viewer with 100-row pagination
+- row viewer with 100-row pagination and First / Previous / Next / Last controls
 - free-text search across the selected relation
 - column filters:
   - contains
@@ -135,6 +135,7 @@ v1.0.0 is the first stable release baseline. It does not add a new product area 
 - Relation data has explicit `idle`, `loading`, `ready`, and `error` phases.
 - Starting a page, search/filter count, sort, or relation request clears cached rows and export readiness.
 - A result belongs to its database connection/file, relation, page/page size, search, filters, sort, and request generation. Results and errors from older requests cannot replace the current state.
+- First / Previous and Next / Last are disabled at their corresponding boundaries; all four controls are blocked during pending search/loading. Boundary navigation uses exact BigInt offsets, including a partial last page.
 - Editing a debounced search immediately blocks stale exports and paging; switching relations or files cancels the pending search timer.
 - Japanese/English changes re-render the current phase. They must not restore a previous page or hide the current error.
 - CSV/JSON export and cell/record details require a successful current result. Empty successful results show no rows and disable exports.
@@ -167,6 +168,7 @@ JSON:
 - BigInt values are converted to decimal strings
 - Date values are converted to ISO strings
 - nested values are recursively normalized
+- column names and nested object/Map keys such as `__proto__`, `constructor`, and `toString` remain own data properties in relation/SQL JSON exports and full record details; Arrow STRUCT/MAP entries are read before lossy `toJSON()` conversion and object prototypes are unchanged
 
 Viewer exports include the source database name, schema, relation, and page number. SQL exports use the source database name plus `sql-result` and contain only the displayed SQL result (maximum 1,000 rows).
 
