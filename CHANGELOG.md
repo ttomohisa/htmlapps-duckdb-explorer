@@ -1,5 +1,16 @@
 # Changelog
 
+## [1.0.2] - 2026-10-06
+
+### Fixed
+
+- Materialize Arrow DECIMAL values with their schema scale before display, details, copying, and relation/SQL CSV or JSON export. Preserve exact digits, negative values, trailing zeros, NULLs, and nested LIST/ARRAY/STRUCT/MAP values instead of treating decimals as binary data. JSON stores decimals as strings.
+- Keep true BLOBs, BigInts, timestamp representation, special object keys, and existing toolbar/result-ownership behavior unchanged.
+
+### Tests
+
+- Add real pinned-Arrow regressions for fixture prices, 38-digit precision, high scales, negatives, zero/NULL, sliced buffers, nested special keys, BLOB separation, and Japanese/English relation/SQL display, details, and exports.
+
 ## [1.0.1] - 2026-10-06
 
 ### Added

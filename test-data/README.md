@@ -162,3 +162,9 @@ SELECT 1; SELECT 2;
 - different table sizes for estimated-row regression checks
 
 The fixture is designed for structural comparison only; exact record-level diffing is outside v1.0.0.
+
+## DECIMAL display/export regression
+
+In `main.orders`, row 1 has `DECIMAL(12,2)` values `subtotal = 24.35`, `tax = 2.44`, and `total = 26.79`. Verify the values in the table, cell/record details, visible-page CSV/JSON, and an equivalent read-only SQL result. JSON must use exact strings, not byte objects or rounded numbers. `ordered_at` retains the existing epoch-millisecond representation (`1735729200000`).
+
+The automated pinned-Arrow tests also cover 38-digit precision, high scales, negative/zero/NULL values, sliced buffers, nested LIST/ARRAY/STRUCT/MAP decimals, and real BLOB values.

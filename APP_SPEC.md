@@ -2,7 +2,7 @@
 
 ## Version
 
-v1.0.1
+v1.0.2
 
 ## Goal
 
@@ -166,6 +166,8 @@ CSV:
 JSON:
 
 - exports an array of objects
+- DECIMAL values are materialized using Arrow field metadata before display/export, preserving sign, all digits, and declared scale without conversion to Number/DOUBLE; JSON uses strings, including nested LIST/ARRAY/STRUCT/MAP values
+- Genuine BLOB values retain binary display and `{bytes:[...]}` JSON serialization; timestamp representation is unchanged
 - BigInt values are converted to decimal strings
 - Date values are converted to ISO strings
 - nested values are recursively normalized
