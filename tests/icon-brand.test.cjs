@@ -17,7 +17,7 @@ function background(svg, label) {
 test('brand asset, embedded favicon and header keep canonical color and exact 25% corners', () => {
   const asset = read('assets/favicon.svg');
   background(asset, 'asset');
-  for (const file of ['src/index.template.html', 'dist/index.html', 'duckdb-explorer.html']) {
+  for (const file of ['src/index.template.html', 'duckdb-explorer.html', ...process.argv.slice(2)]) {
     const html = read(file);
     const link = [...html.matchAll(/<link\b[^>]*>/g)].map(m => attrs(m[0])).find(a => a.rel === 'icon');
     assert.ok(link && link.href.startsWith('data:image/svg+xml'), file + ': embedded favicon');
@@ -28,4 +28,11 @@ test('brand asset, embedded favicon and header keep canonical color and exact 25
     background(header.match(/<svg\b[\s\S]*?<\/svg>/)[0], file + ': header');
     for (const m of html.matchAll(/\.app-header \.brand-mark\s*\{([^}]+)\}/g)) if (/border-radius/.test(m[1])) assert.match(m[1], /border-radius:\s*25%/);
   }
+});
+
+test('release preparation requires the generated icon regression after building', () => {
+  const script = read('scripts/prepare-release.ps1');
+  const gate = script.indexOf('& node (Join-Path $Root "tests/icon-brand.test.cjs") "dist/index.html"');
+  assert.ok(gate > script.indexOf('& (Join-Path $Root "build-standalone.ps1")'));
+  assert.match(script.slice(gate), /if \(\$LASTEXITCODE -ne 0\) \{ throw "Built brand icon regression failed\." \}/);
 });
