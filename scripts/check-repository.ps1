@@ -277,3 +277,8 @@ if (-not $webrtcReadyText.Contains("options.requireReadyChannelOpen!==false&&(!r
 }
 
 Write-Host "[OK] Repository check passed." -ForegroundColor Green
+
+if (-not $SkipRootReleaseChecks) {
+  & node --test (Join-Path $Root "tests/icon-brand.test.cjs")
+  if ($LASTEXITCODE -ne 0) { throw "Brand icon regression failed." }
+}

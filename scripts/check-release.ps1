@@ -31,10 +31,10 @@ $compareFixture = Get-Content -Raw -Encoding UTF8 $CompareFixturePath
 $config = Get-Content -Raw -Encoding UTF8 $ConfigPath | ConvertFrom-Json
 $runtimeLock = Get-Content -Raw -Encoding UTF8 $RuntimeLockPath | ConvertFrom-Json
 
-if ([string]$config.version -ne "1.0.2") { throw "app.config.json version must be 1.0.2." }
+if ([string]$config.version -ne "1.0.3") { throw "app.config.json version must be 1.0.3." }
 
 $requiredSourceTokens = @(
-  "v1.0.2",
+  "v1.0.3",
   "DuckDBAccessMode.READ_ONLY",
   "SET autoinstall_known_extensions=false",
   "SET autoload_known_extensions=false",
@@ -181,7 +181,7 @@ $staleRootScripts = @(Get-ChildItem -Path $Root -File -Filter "prepare-v*.bat" -
 $stalePrepareScripts = @(Get-ChildItem -Path (Join-Path $Root "scripts") -File -Filter "prepare-v*.ps1" -ErrorAction SilentlyContinue)
 $staleCheckScripts = @(Get-ChildItem -Path (Join-Path $Root "scripts") -File -Filter "check-v*.ps1" -ErrorAction SilentlyContinue)
 if ($staleRootScripts.Count -gt 0 -or $stalePrepareScripts.Count -gt 0 -or $staleCheckScripts.Count -gt 0) {
-  throw "Historical version-specific prepare/check scripts must not remain in the v1.0.2 repository."
+  throw "Historical version-specific prepare/check scripts must not remain in the v1.0.3 repository."
 }
 $verificationPackDirs = @(Get-ChildItem -Path $Root -Directory -Filter "DuckDB-Explorer-v*-VERIFY" -ErrorAction SilentlyContinue)
 if ($verificationPackDirs.Count -gt 0) { throw "Generated verification-pack directories must not be included in the release repository." }
@@ -224,7 +224,7 @@ if ($RequireBuiltOutput) {
   }
 
   $dependencyManifest = Get-Content -Raw -Encoding UTF8 (Join-Path $distRoot "dependency-manifest.json") | ConvertFrom-Json
-  if ([string]$dependencyManifest.app.version -ne "1.0.2") { throw "dist/dependency-manifest.json app.version must be 1.0.2." }
+  if ([string]$dependencyManifest.app.version -ne "1.0.3") { throw "dist/dependency-manifest.json app.version must be 1.0.3." }
   if ($null -eq $dependencyManifest.duckdbWasmOverride) { throw "Release build must contain duckdbWasmOverride metadata." }
   if ([string]$dependencyManifest.duckdbWasmOverride.builderVersion -ne [string]$runtimeLock.builderVersion) { throw "Release build uses the wrong Builder version." }
   if ([string]$dependencyManifest.duckdbWasmOverride.profile -ne [string]$runtimeLock.profile) { throw "Release build uses the wrong Builder profile." }
@@ -251,8 +251,8 @@ if ($RequireBuiltOutput) {
   }
 
   $builtHtml = Get-Content -Raw -Encoding UTF8 (Join-Path $distRoot "index.html")
-  if (-not $builtHtml.Contains('"version":"1.0.2"')) { throw "dist/index.html does not contain app version 1.0.2." }
-  if (-not $builtHtml.Contains("v1.0.2")) { throw "dist/index.html does not show v1.0.2." }
+  if (-not $builtHtml.Contains('"version":"1.0.3"')) { throw "dist/index.html does not contain app version 1.0.3." }
+  if (-not $builtHtml.Contains("v1.0.3")) { throw "dist/index.html does not show v1.0.3." }
   if ($builtHtml -notmatch $cspNonePattern) { throw "dist/index.html must keep connect-src none." }
   if ($builtHtml -match 'connect-src[^;]*(?:https?:|wss?:|\*)') { throw "dist/index.html CSP must not allow external network schemes." }
 
@@ -260,4 +260,4 @@ if ($RequireBuiltOutput) {
   & (Join-Path $Root "scripts\verify-self-extract.ps1") -Path (Join-Path $distRoot "index.self-extract.html") -ExpectedSourcePath (Join-Path $distRoot "index.html")
 }
 
-Write-Host "[OK] DuckDB Explorer v1.0.2 release checks passed." -ForegroundColor Green
+Write-Host "[OK] DuckDB Explorer v1.0.3 release checks passed." -ForegroundColor Green

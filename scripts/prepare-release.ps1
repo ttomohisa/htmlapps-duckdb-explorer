@@ -45,7 +45,7 @@ try {
   Copy-Item -Force (Join-Path $Root "dist/index.html") (Join-Path $Root "duckdb-explorer.html")
   & (Join-Path $PSScriptRoot "check-repository.ps1")
 
-  Write-Host "[OK] DuckDB Explorer v1.0.2 release build is ready." -ForegroundColor Green
+  Write-Host "[OK] DuckDB Explorer v1.0.3 release build is ready." -ForegroundColor Green
 } finally {
   Pop-Location
 }
