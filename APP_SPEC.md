@@ -2,7 +2,7 @@
 
 ## Version
 
-v1.0.2
+v1.0.3
 
 ## Goal
 
@@ -295,3 +295,7 @@ Excluded from v1.0.0:
 - automatic writes or migrations
 
 The secondary database is opened in a separate DuckDB-Wasm runtime using `DuckDBAccessMode.READ_ONLY`, local-only settings are applied, metadata is read, and the temporary runtime is terminated. Comparison state is memory-only.
+
+## Brand icon consistency
+
+- Brand backgrounds use #16624f with corner radii equal to exactly 25% of each background axis. Preserve foreground artwork, placement, and existing canvas padding across SVG assets, app headers, and embedded favicons.

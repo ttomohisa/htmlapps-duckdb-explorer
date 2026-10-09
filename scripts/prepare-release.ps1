@@ -44,8 +44,10 @@ try {
   # Refresh the tracked alias only after the generated release has passed verification.
   Copy-Item -Force (Join-Path $Root "dist/index.html") (Join-Path $Root "duckdb-explorer.html")
   & (Join-Path $PSScriptRoot "check-repository.ps1")
+  & node (Join-Path $Root "tests/icon-brand.test.cjs") "dist/index.html"
+  if ($LASTEXITCODE -ne 0) { throw "Built brand icon regression failed." }
 
-  Write-Host "[OK] DuckDB Explorer v1.0.2 release build is ready." -ForegroundColor Green
+  Write-Host "[OK] DuckDB Explorer v1.0.3 release build is ready." -ForegroundColor Green
 } finally {
   Pop-Location
 }
