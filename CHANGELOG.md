@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.4 - 2026-10-10
+
+- Keep long cell/profile titles inside dialog bounds without displacing the Close button or hiding the body.
+- Use the dynamic viewport height and contain modal scrolling so short windows remain usable and the background stays still.
+
 ## 1.0.3 - 2026-10-09
 
 - Normalize brand icon backgrounds to #16624f with exact 25% corner radii across SVG assets, header icons, and embedded favicons, preserving existing artwork.

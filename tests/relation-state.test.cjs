@@ -191,7 +191,7 @@ test('help keeps bilingual instructions and factual limitations', () => {
 });
 
 test('application version remains visible outside the help dialog', () => {
-  assert.match(source, /class="version-badge">v1\.0\.3<\/span>/);
+  assert.match(source, /class="version-badge">v1\.0\.4<\/span>/);
 });
 
 const pagerIds = ['firstPage', 'prevPage', 'nextPage', 'lastPage'];
