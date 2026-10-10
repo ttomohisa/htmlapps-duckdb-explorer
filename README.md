@@ -16,6 +16,8 @@ GitHub Pages delivers the initial HTML. After it loads, the selected DuckDB file
 
 [![DuckDB Explorer screenshot](assets/screenshot-en.png)](https://ttomohisa.github.io/htmlapps-duckdb-explorer/)
 
+Dialog content remains scrollable in short or zoomed windows, and the background page stays still while a dialog is open.
+
 ## Features
 
 - **Database overview** — Inspect schemas, tables, views, columns, estimated row counts, file size, and DuckDB version before opening a relation.

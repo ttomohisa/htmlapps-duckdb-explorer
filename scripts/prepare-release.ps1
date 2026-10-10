@@ -47,7 +47,7 @@ try {
   & node (Join-Path $Root "tests/icon-brand.test.cjs") "dist/index.html"
   if ($LASTEXITCODE -ne 0) { throw "Built brand icon regression failed." }
 
-  Write-Host "[OK] DuckDB Explorer v1.0.3 release build is ready." -ForegroundColor Green
+  Write-Host "[OK] DuckDB Explorer v1.0.4 release build is ready." -ForegroundColor Green
 } finally {
   Pop-Location
 }

@@ -16,6 +16,8 @@ GitHub Pagesから最初のHTMLを取得した後、選択したDuckDBファイ�
 
 [![DuckDB Explorer スクリーンショット](assets/screenshot.png)](https://ttomohisa.github.io/htmlapps-duckdb-explorer/)
 
+短い画面や拡大表示でもダイアログの内容をスクロールでき、開いている間は背景のページが動きません。
+
 ## 主な機能
 
 - **データベース概要** — テーブルを開く前にschema、table、view、列数、推定行数、ファイルサイズ、DuckDBバージョンを確認

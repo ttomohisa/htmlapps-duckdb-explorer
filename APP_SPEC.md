@@ -2,7 +2,7 @@
 
 ## Version
 
-v1.0.3
+v1.0.4
 
 ## Goal
 
@@ -299,3 +299,9 @@ The secondary database is opened in a separate DuckDB-Wasm runtime using `DuckDB
 ## Brand icon consistency
 
 - Brand backgrounds use #16624f with corner radii equal to exactly 25% of each background axis. Preserve foreground artwork, placement, and existing canvas padding across SVG assets, app headers, and embedded favicons.
+
+## Dialog layout acceptance
+
+- Help, filters, details and profiles fit the dynamic viewport. Dialog bodies scroll independently while the background document is locked.
+- Long column titles wrap within a bounded, scrollable heading; the close control keeps its size and remains visible.
+- Native Escape, backdrop dismissal and focus restoration remain unchanged.
