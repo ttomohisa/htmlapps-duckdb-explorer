@@ -282,3 +282,14 @@ if (-not $SkipRootReleaseChecks) {
   & node --test (Join-Path $Root "tests/icon-brand.test.cjs")
   if ($LASTEXITCODE -ne 0) { throw "Brand icon regression failed." }
 }
+
+
+# Keep user help focused on usage rather than implementation audit notes.
+# Pre-release checks run before dist exists and may use a stale root alias.
+# Full checks include the tracked download and generated outputs when present.
+foreach ($HelpArtifact in @("src/index.template.html", "duckdb-explorer.html", "dist/index.html", "dist/index.self-extract.html")) {
+  if ($SkipRootReleaseChecks -and $HelpArtifact -ne "src/index.template.html") { continue }
+  if ($HelpArtifact.StartsWith("dist/") -and -not (Test-Path (Join-Path $Root $HelpArtifact))) { continue }
+  & node (Join-Path $Root "scripts/test-help-copy.cjs") --html (Join-Path $Root $HelpArtifact)
+  if ($LASTEXITCODE -ne 0) { throw "Help copy regression failed: $HelpArtifact" }
+}
