@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+
+- Standardize the equivalent English local-processing header without changing database handling or exported reports.
+
+
 ## 1.0.4 - 2026-10-10
 
 - Keep long cell/profile titles inside dialog bounds without displacing the Close button or hiding the body.
