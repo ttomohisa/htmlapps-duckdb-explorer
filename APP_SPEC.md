@@ -305,3 +305,5 @@ The secondary database is opened in a separate DuckDB-Wasm runtime using `DuckDB
 - Help, filters, details and profiles fit the dynamic viewport. Dialog bodies scroll independently while the background document is locked.
 - Long column titles wrap within a bounded, scrollable heading; the close control keeps its size and remains visible.
 - Native Escape, backdrop dismissal and focus restoration remain unchanged.
+
+- The equivalent English local-processing header uses “Fully local processing”. Exported schema-report footers are not application page footers and remain unchanged.

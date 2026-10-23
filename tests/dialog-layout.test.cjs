@@ -42,3 +42,5 @@ for (const target of targets) {
     assert.equal(rule('.dialog-body')['overscroll-behavior'], 'contain');
   });
 }
+
+test('equivalent local-processing header uses canonical English',()=>{const s=fs.readFileSync(path.join(root,'src/index.template.html'),'utf8');assert.match(s,/brandMeta:'単一HTML・完全ローカル処理・読み取り専用'/);assert.match(s,/brandMeta:'Single HTML · Fully local processing · read only'/);});
