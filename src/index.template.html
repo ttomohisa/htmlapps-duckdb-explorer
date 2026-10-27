@@ -63,6 +63,7 @@
   </div>
 </header>
 <main class="app-main">
+  <div class="common-work-state"><p id="retention" data-bk-save-status role="status" aria-live="polite"></p><p id="languageNotice" role="status"></p><p id="uiError" role="alert"></p><label id="outputFilenameLabel" for="outputFilename"></label><input id="outputFilename" type="text" maxlength="120"><p id="outputScope"></p></div>
   <section class="intro" id="intro">
     <div class="hero">
       <div>
@@ -113,6 +114,7 @@
           </div>
           <div class="sql-safety" data-i18n="sqlSafety">読み取り専用の1文だけ実行します。結果は最大1,000行まで表示し、履歴は現在のファイルを開いている間だけ保持します。</div>
         </div>
+        <p id="sqlRevision" role="status"></p><button id="undoSql" type="button" data-bk-button data-bk-variant="secondary" hidden></button>
         <div class="sql-result" id="sqlResult"></div>
       </div>
       <div class="empty-relation" id="emptyRelation"><div><svg viewBox="0 0 24 24"><ellipse cx="12" cy="6" rx="7" ry="3"/><path d="M5 6v12c0 1.7 3.1 3 7 3s7-1.3 7-3V6M5 12c0 1.7 3.1 3 7 3s7-1.3 7-3"/></svg><div data-i18n="selectObject">左からテーブルまたはビューを選択してください。</div></div></div>

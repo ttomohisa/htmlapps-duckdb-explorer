@@ -243,12 +243,15 @@ if ($RequireBuiltOutput) {
   try {
     foreach ($variant in @("index.html", "index.self-extract.html")) {
       $env:APP_HTML = Join-Path $distRoot $variant
-      & node --test (Join-Path $Root "tests/relation-state.test.cjs") (Join-Path $Root "tests/toolbar-layout.test.cjs")
+      & node --test (Join-Path $Root "tests/relation-state.test.cjs") (Join-Path $Root "tests/toolbar-layout.test.cjs") (Join-Path $Root "tests/full-init.test.cjs")
       if ($LASTEXITCODE -ne 0) { throw "Relation-state regression tests failed for $variant." }
     }
   } finally {
     $env:APP_HTML = $previousAppHtml
   }
+
+  & node (Join-Path $Root "scripts/test-common-ui.cjs") --built
+  if($LASTEXITCODE -ne 0){throw "Built shared UI checks failed."}
 
   $builtHtml = Get-Content -Raw -Encoding UTF8 (Join-Path $distRoot "index.html")
   if (-not $builtHtml.Contains('"version":"1.0.4"')) { throw "dist/index.html does not contain app version 1.0.4." }
