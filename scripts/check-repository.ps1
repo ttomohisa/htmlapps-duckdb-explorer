@@ -293,3 +293,8 @@ foreach ($HelpArtifact in @("src/index.template.html", "duckdb-explorer.html", "
   & node (Join-Path $Root "scripts/test-help-copy.cjs") --html (Join-Path $Root $HelpArtifact)
   if ($LASTEXITCODE -ne 0) { throw "Help copy regression failed: $HelpArtifact" }
 }
+
+if (-not $SkipRootReleaseChecks) {
+  & node (Join-Path $Root "scripts/test-common-ui.cjs")
+  if ($LASTEXITCODE -ne 0) { throw "Shared UI pin/native script/gzip checks failed." }
+}

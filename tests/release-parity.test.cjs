@@ -4,6 +4,7 @@ const path = require('node:path');
 const { test } = require('node:test');
 
 function normalizeBuildConstants(html) {
+  html=html.replace('__BK_UI_CSS__',fs.readFileSync(path.join(__dirname,'../components/ui-conventions.css'),'utf8')).replace('__BK_UI_JS__',fs.readFileSync(path.join(__dirname,'../components/ui-conventions.js'),'utf8'));
   return html.replace(/^\uFEFF/, '').replace(/\r\n/g, '\n').replace(/^  const (APP_CONFIG|BUILD_MANIFEST|assetBundle) = .*;$/gm, '  const $1 = <embedded>;');
 }
 test('tracked root release alias contains the current source', () => {

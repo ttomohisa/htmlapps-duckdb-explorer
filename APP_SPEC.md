@@ -307,3 +307,7 @@ The secondary database is opened in a separate DuckDB-Wasm runtime using `DuckDB
 - Native Escape, backdrop dismissal and focus restoration remain unchanged.
 
 - The equivalent English local-processing header uses “Fully local processing”. Exported schema-report footers are not application page footers and remain unchanged.
+
+## Common UI v1
+
+Visible tab-only retention, editable output basename, scoped page/SQL/metadata exports and truthful Download started handoff status. Explicit language choice writes only the shared preference; startup reads URL/common/legacy/browser priority. Replacing an open source requires cancel-first confirmation because the exclusive runtime is released before opening a new database; failed replacement does not restore previous work. SQL clear offers durable Undo until further input or source replacement.
