@@ -142,6 +142,9 @@ v1.0.0 is the first stable release baseline. It does not add a new product area 
 - Japanese/English changes re-render the current phase. They must not restore a previous page or hide the current error.
 - CSV/JSON export and cell/record details require a successful current result. Empty successful results show no rows and disable exports.
 - A new request can recover from an error; selecting the relation again reloads its metadata and first page.
+- Data dictionary creation captures the source connection, file, objects, overview and completed profiles before issuing asynchronous metadata queries. Changing the source invalidates the export; no old report may download or unlock a new report task.
+- Column profiling passes the captured connection and selected relation into both the aggregate query and the follow-up top-values query; it never queries the replacement file mid-analysis.
+- PR Chromium tests open both generated `.duckdb` fixtures in desktop and mobile layouts and cover rows, read-only SQL, data dictionary, schema comparison, database replacement, and no runtime external requests.
 
 ## SQL safety rules
 
