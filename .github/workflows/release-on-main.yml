@@ -85,11 +85,12 @@ jobs:
         shell: bash
         env:
           GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
           TAG: ${{ needs.build.outputs.tag }}
           TARGET_SHA: ${{ github.sha }}
         run: |
           set -euo pipefail
-          if gh release view "$TAG" --json tagName >/dev/null 2>&1; then
+          if gh release view "$TAG" --repo "$GH_REPO" --json tagName >/dev/null 2>&1; then
             echo "GitHub Release $TAG already exists; no duplicate will be created."
             exit 0
           fi
@@ -111,4 +112,5 @@ jobs:
             release/SHA256SUMS.txt \
             --target "$TARGET_SHA" \
             --title "DuckDB Explorer $TAG" \
-            --notes-file release/RELEASE_NOTES.md
+            --notes-file release/RELEASE_NOTES.md \
+            --repo "$GH_REPO"
