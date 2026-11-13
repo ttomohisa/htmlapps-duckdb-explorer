@@ -5,6 +5,20 @@
 - Standardize the equivalent English local-processing header without changing database handling or exported reports.
 
 
+## 1.0.5 - 2026-11-13
+
+### Fixed
+
+- Serialize rapid database-file replacements and reject stale catalog/overview updates, preventing overlapping open operations from mixing worker and connection handles.
+- Drop stale column-analysis results before they can enter the next database's profile cache.
+- Recognize dollar-quoted SQL string literals in the single-statement read-only SQL guard.
+- Compare view SQL without collapsing whitespace inside quoted literals, and report column position changes.
+- Synchronize the root standalone HTML alias, bilingual help, specification, and release version.
+
+### Tests
+
+- Cover file replacement, stale profile completion, dollar-quoted read-only SQL, literal whitespace, and column ordering with source-function regressions.
+
 ## 1.0.4 - 2026-10-10
 
 - Keep long cell/profile titles inside dialog bounds without displacing the Close button or hiding the body.
