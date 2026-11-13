@@ -54,6 +54,7 @@ jobs:
       shell: pwsh
       run: |
         New-Item -ItemType Directory -Force -Path test-results/duckdb-runtime | Out-Null
+        $env:NODE_PATH = Join-Path $env:RUNNER_TEMP 'mobile-label-tests/node_modules'
         node scripts/duckdb-runtime.browser.cjs 2>&1 | Tee-Object -FilePath test-results/duckdb-runtime/results.log
         if ($LASTEXITCODE -ne 0) { throw "DuckDB runtime browser smoke failed." }
     - name: Upload DuckDB runtime browser evidence
