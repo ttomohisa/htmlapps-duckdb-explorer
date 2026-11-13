@@ -2,7 +2,7 @@
 
 ## Version
 
-v1.0.4
+v1.0.5
 
 ## Goal
 
@@ -66,7 +66,7 @@ v1.0.0 is the first stable release baseline. It does not add a new product area 
 - structural comparison against a second local DuckDB file
   - schema/table/view added and removed
   - object type and view-definition changes
-  - column added/removed/type/nullability/default changes
+  - column added/removed/position/type/nullability/default changes
   - estimated table row-count changes from catalog metadata
   - no exhaustive row-data diff
 - file size/name display
@@ -136,18 +136,22 @@ v1.0.0 is the first stable release baseline. It does not add a new product area 
 - Relation data has explicit `idle`, `loading`, `ready`, and `error` phases.
 - Starting a page, search/filter count, sort, or relation request clears cached rows and export readiness.
 - A result belongs to its database connection/file, relation, page/page size, search, filters, sort, and request generation. Results and errors from older requests cannot replace the current state.
+- Rapid source replacements serialize database opening and invalidate earlier operations; late catalog/profile results cannot update the newly opened database.
 - First / Previous and Next / Last are disabled at their corresponding boundaries; all four controls are blocked during pending search/loading. Boundary navigation uses exact BigInt offsets, including a partial last page.
 - Editing a debounced search immediately blocks stale exports and paging; switching relations or files cancels the pending search timer.
 - Japanese/English changes re-render the current phase. They must not restore a previous page or hide the current error.
 - CSV/JSON export and cell/record details require a successful current result. Empty successful results show no rows and disable exports.
 - A new request can recover from an error; selecting the relation again reloads its metadata and first page.
+- Data dictionary creation captures the source connection, file, objects, overview and completed profiles before issuing asynchronous metadata queries. Changing the source invalidates the export; no old report may download or unlock a new report task.
+- Column profiling passes the captured connection and selected relation into both the aggregate query and the follow-up top-values query; it never queries the replacement file mid-analysis.
+- PR Chromium tests open both generated `.duckdb` fixtures in desktop and mobile layouts and cover rows, read-only SQL, data dictionary, schema comparison, database replacement, and no runtime external requests.
 
 ## SQL safety rules
 
 - SQL is checked client-side before being passed to DuckDB.
 - Exactly one statement is allowed. A single trailing semicolon is accepted.
 - Allowed leading statement types: `SELECT`, `WITH`, `VALUES`, `SHOW`, `DESCRIBE`, `DESC`, `EXPLAIN`.
-- Tokens for writes, DDL, attachment/extension loading, environment changes, transactions, and dynamic query execution are rejected outside quoted strings/comments/quoted identifiers.
+- Tokens for writes, DDL, attachment/extension loading, environment changes, transactions, and dynamic query execution are rejected outside quoted strings/comments/quoted identifiers. Dollar-quoted SQL string literals (`$$...$$`, `$tag$...$tag$`) are recognized as literal content.
 - The source database remains opened with `DuckDBAccessMode.READ_ONLY`.
 - DuckDB extension auto-install / auto-load, community extensions, and external access are disabled when the runtime supports those settings.
 - Runtime CSP remains `connect-src 'none'`.
@@ -306,4 +310,6 @@ The secondary database is opened in a separate DuckDB-Wasm runtime using `DuckDB
 - Long column titles wrap within a bounded, scrollable heading; the close control keeps its size and remains visible.
 - Native Escape, backdrop dismissal and focus restoration remain unchanged.
 
-- The equivalent English local-processing header uses “Fully local processing”. Exported schema-report footers are not application page footers and remain unchanged.
+- The header subtitle describes the app's table browsing, SQL queries, and schema comparison in Japanese and English instead of repeating runtime/privacy badges.
+- The introductory local-processing badge is visible on desktop and hidden at viewport widths of 760px or less. The first Help heading has no additional top margin beyond the dialog-body padding.
+- Exported schema-report footers are not application page footers and remain unchanged.

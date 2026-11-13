@@ -25,7 +25,7 @@ Dialog content remains scrollable in short or zoomed windows, and the background
 - **On-demand column analysis** — Run NULL counts, estimated distinct counts, numeric summaries, date ranges, text-length summaries, and common-value checks only when requested.
 - **Guarded read-only SQL** — Run one `SELECT` / `WITH` / `VALUES` / `SHOW` / `DESCRIBE` / `DESC` / `EXPLAIN` statement at a time. SELECT-style results are capped at 1,000 rows.
 - **Data dictionary HTML** — Export database structure, view definitions, and column profiles already computed during the current session. Table rows are not included.
-- **Structural database comparison** — Compare schemas, tables, views, column definitions, view SQL, and estimated row-count changes between two local DuckDB files. Row-by-row data diff is intentionally out of scope.
+- **Structural database comparison** — Compare schemas, tables, views, column definitions (including order), view SQL, and estimated row-count changes between two local DuckDB files. Row-by-row data diff is intentionally out of scope.
 - **Japanese / English UI** — Desktop and smartphone layouts are included.
 - **Fully local runtime** — The distributed HTML contains the required runtime assets and uses a CSP with `connect-src 'none'`.
 
@@ -175,6 +175,10 @@ Build-time downloads from npm and the Builder GitHub Release are development/rel
 | `apache-arrow` | 17.0.0 | Apache-2.0 | Arrow result decoding and browser-side data handling |
 
 See [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
+
+## Automatic GitHub Release after merging
+
+After a PR is merged into `main`, `.github/workflows/release-on-main.yml` verifies and builds the pinned standalone distribution. When `app.config.json` has a version that is not already published, the workflow creates the corresponding `vMAJOR.MINOR.PATCH` tag at that exact `main` commit and publishes a GitHub Release with both standalone HTML variants and `SHA256SUMS.txt`. Release notes come from that version's `CHANGELOG.md` section. Existing releases are skipped; an existing tag pointing to a different commit is never moved. A failed build does not create a tag or release. Pull requests are not merged automatically.
 
 ## Release validation
 

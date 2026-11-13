@@ -2,8 +2,31 @@
 
 ## Unreleased
 
-- Standardize the equivalent English local-processing header without changing database handling or exported reports.
+## 1.0.5 - 2026-11-13
 
+### Changed
+
+- Use concise bilingual descriptions of table browsing, SQL queries, and schema comparison in the header and landing area.
+- Hide the local-processing badge on narrow screens and remove excess top margin from the Help dialog's first heading.
+- Create a version tag and GitHub Release automatically after a successful verified build of a new version on `main`, with both standalone HTML variants and SHA-256 checksums.
+
+### Additional fixes
+
+- Keep data-dictionary metadata and completed profile snapshots on the original database if another file is opened during report creation; discard stale exports.
+- Bind both column-profile queries to the selected connection and relation throughout a database switch.
+- Add source-ownership regressions for report export and column analysis, alongside the Chromium layout checks.
+
+### Fixed
+
+- Serialize rapid database-file replacements and reject stale catalog/overview updates, preventing overlapping open operations from mixing worker and connection handles.
+- Drop stale column-analysis results before they can enter the next database's profile cache.
+- Recognize dollar-quoted SQL string literals in the single-statement read-only SQL guard.
+- Compare view SQL without collapsing whitespace inside quoted literals, and report column position changes.
+- Synchronize the root standalone HTML alias, bilingual help, specification, and release version.
+
+### Tests
+
+- Cover file replacement, stale profile completion, dollar-quoted read-only SQL, literal whitespace, and column ordering with source-function regressions.
 
 ## 1.0.4 - 2026-10-10
 

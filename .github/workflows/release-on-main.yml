@@ -1,0 +1,112 @@
+name: Release DuckDB Explorer on main
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+concurrency:
+  group: duckdb-explorer-release
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: windows-latest
+    timeout-minutes: 25
+    permissions:
+      contents: read
+    outputs:
+      tag: ${{ steps.meta.outputs.tag }}
+    steps:
+      - name: Checkout exact main commit
+        uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - name: Validate semantic version and changelog
+        id: meta
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $version = [string]((Get-Content -Raw -Encoding UTF8 app.config.json | ConvertFrom-Json).version)
+          if ($version -notmatch '^\d+\.\d+\.\d+$') { throw "Release version must be MAJOR.MINOR.PATCH: $version" }
+          $changelog = Get-Content -Raw -Encoding UTF8 CHANGELOG.md
+          $escaped = [regex]::Escape($version)
+          $section = [regex]::Match($changelog, "(?ms)^##\s+\[?$escaped\]?[^\r\n]*\r?\n(?<notes>.*?)(?=^##\s+|\z)")
+          if (-not $section.Success -or [string]::IsNullOrWhiteSpace($section.Groups['notes'].Value)) { throw "Missing CHANGELOG.md section for $version" }
+          "tag=v$version" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8 -Append
+          New-Item -ItemType Directory -Force release | Out-Null
+          $notes = "# DuckDB Explorer v$version`n`n" + $section.Groups['notes'].Value.Trim() + "`n"
+          [System.IO.File]::WriteAllText((Join-Path (Get-Location) 'release/RELEASE_NOTES.md'), $notes, [System.Text.UTF8Encoding]::new($false))
+      - name: Build and verify both standalone variants
+        shell: pwsh
+        run: ./scripts/prepare-release.ps1
+      - name: Stage verified HTML assets and checksums
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $tag = '${{ steps.meta.outputs.tag }}'
+          $files = @(
+            @{ source = 'dist/index.html'; target = "DuckDB-Explorer-$tag.html" },
+            @{ source = 'dist/index.self-extract.html'; target = "DuckDB-Explorer-$tag-self-extract.html" }
+          )
+          $sums = @()
+          foreach ($file in $files) {
+            if (-not (Test-Path -LiteralPath $file.source -PathType Leaf)) { throw "Missing release output: $($file.source)" }
+            $destination = Join-Path 'release' $file.target
+            Copy-Item -LiteralPath $file.source -Destination $destination
+            $hash = (Get-FileHash -LiteralPath $destination -Algorithm SHA256).Hash.ToLowerInvariant()
+            $sums += "$hash  $($file.target)"
+          }
+          [System.IO.File]::WriteAllText((Join-Path (Get-Location) 'release/SHA256SUMS.txt'), ($sums -join "`n") + "`n", [System.Text.UTF8Encoding]::new($false))
+      - name: Transfer verified release files
+        uses: actions/upload-artifact@v7
+        with:
+          name: release-${{ steps.meta.outputs.tag }}-${{ github.sha }}
+          path: release/
+          if-no-files-found: error
+          retention-days: 7
+
+  publish:
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    steps:
+      - name: Download verified release assets
+        uses: actions/download-artifact@v8
+        with:
+          name: release-${{ needs.build.outputs.tag }}-${{ github.sha }}
+          path: release
+      - name: Create version tag and GitHub Release once
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ needs.build.outputs.tag }}
+          TARGET_SHA: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          if gh release view "$TAG" --json tagName >/dev/null 2>&1; then
+            echo "GitHub Release $TAG already exists; no duplicate will be created."
+            exit 0
+          fi
+          existing="$(gh api "repos/$GITHUB_REPOSITORY/git/ref/tags/$TAG" --jq '.object.sha' 2>/dev/null || true)"
+          if [[ -n "$existing" && "$existing" != "$TARGET_SHA" ]]; then
+            echo "Tag $TAG already refers to $existing, not the current main commit $TARGET_SHA." >&2
+            echo 'Refusing to move an existing version tag or publish mismatched release assets.' >&2
+            exit 1
+          fi
+          test -s "release/DuckDB-Explorer-$TAG.html"
+          test -s "release/DuckDB-Explorer-$TAG-self-extract.html"
+          test -s release/SHA256SUMS.txt
+          test -s release/RELEASE_NOTES.md
+          gh release create "$TAG" \
+            "release/DuckDB-Explorer-$TAG.html" \
+            "release/DuckDB-Explorer-$TAG-self-extract.html" \
+            release/SHA256SUMS.txt \
+            --target "$TARGET_SHA" \
+            --title "DuckDB Explorer $TAG" \
+            --notes-file release/RELEASE_NOTES.md

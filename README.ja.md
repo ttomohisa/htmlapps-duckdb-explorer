@@ -25,7 +25,7 @@ GitHub Pagesから最初のHTMLを取得した後、選択したDuckDBファイ�
 - **必要な列だけ分析** — NULL、ユニーク数推定、数値統計、日付範囲、文字列長、よくある値を明示操作で確認
 - **読み取り専用SQL** — `SELECT` / `WITH` / `VALUES` / `SHOW` / `DESCRIBE` / `DESC` / `EXPLAIN`を1文ずつ実行。SELECT系結果は最大1,000行
 - **データ辞書HTML** — DB構造、view定義、実行済み列分析を単一HTMLとして保存。テーブル行データは含めない
-- **DB構造比較** — 2つのDuckDBファイルについてschema / table / view / 列定義 / view SQL / 推定行数の差分を比較。行単位diffは行わない
+- **DB構造比較** — 2つのDuckDBファイルについてschema / table / view / 列定義（列順を含む） / view SQL / 推定行数の差分を比較。行単位diffは行わない
 - **日本語 / 英語** — PC / スマートフォン対応
 - **完全ローカル処理** — 配布HTMLに必要なruntimeを内包し、実行時CSPは`connect-src 'none'`
 
@@ -177,6 +177,10 @@ npmやBuilder GitHub Releaseからの取得はビルド時処理であり、ユ�
 | `apache-arrow` | 17.0.0 | Apache-2.0 | Arrow結果のbrowser-side処理 |
 
 詳細は[THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)を参照してください。
+
+## マージ後の自動リリース
+
+PRを`main`へマージすると、`.github/workflows/release-on-main.yml`が固定済みランタイムを使ってビルドと検査を行います。`app.config.json`のバージョンが未公開であれば、対象の`main`コミットに`vMAJOR.MINOR.PATCH`タグを作成し、通常版・自己展開版の単一HTMLと`SHA256SUMS.txt`を添付してGitHub Releaseを公開します。リリースノートは`CHANGELOG.md`の該当バージョンから取得します。同じバージョンのリリースは重複作成せず、既存タグが別コミットを指している場合は移動せず停止します。ビルドが失敗した場合はタグもReleaseも作成しません。PRのマージ自体は自動化しません。
 
 ## リリース確認
 

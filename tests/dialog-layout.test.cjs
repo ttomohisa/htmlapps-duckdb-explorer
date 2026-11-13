@@ -41,6 +41,9 @@ for (const target of targets) {
     assert.equal(rule('html:has(dialog[open])').overflow, 'hidden');
     assert.equal(rule('.dialog-body')['overscroll-behavior'], 'contain');
   });
+  test(`${target}: first Help heading has no extra top margin`, () => {
+    assert.equal(rule('#helpDialog .dialog-body > h3:first-child')['margin-top'], '0');
+  });
 }
 
-test('equivalent local-processing header uses canonical English',()=>{const s=fs.readFileSync(path.join(root,'src/index.template.html'),'utf8');assert.match(s,/brandMeta:'単一HTML・完全ローカル処理・読み取り専用'/);assert.match(s,/brandMeta:'Single HTML · Fully local processing · read only'/);});
+test('header subtitle describes DuckDB Explorer capabilities in both languages',()=>{const s=fs.readFileSync(path.join(root,'src/index.template.html'),'utf8');assert.match(s,/brandMeta:'テーブル閲覧 · SQL検索 · 構造比較'/);assert.match(s,/brandMeta:'Tables · SQL queries · Schema comparison'/);});

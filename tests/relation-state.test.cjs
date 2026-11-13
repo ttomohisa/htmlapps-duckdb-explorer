@@ -191,7 +191,7 @@ test('help keeps bilingual instructions and factual limitations', () => {
 });
 
 test('application version remains visible outside the help dialog', () => {
-  assert.match(source, /class="version-badge">v1\.0\.4<\/span>/);
+  assert.match(source, /class="version-badge">v1\.0\.5<\/span>/);
 });
 
 const pagerIds = ['firstPage', 'prevPage', 'nextPage', 'lastPage'];
@@ -453,4 +453,102 @@ test('DECIMAL MAP keys retain scale without changing nondecimal complex key seri
   const complexMap = mapWithKeys(complexKeys, ['kept']);
   const actual = h.call('normalizeValue', h.call('arrowRows', typedTable([['decimal', decimalMap], ['complex', complexMap]]))[0]);
   assert.deepEqual(JSON.parse(JSON.stringify(actual)), { decimal: { '1.20': 'one', '-0.01': 'two', '90071992547409931234.56': 'large' }, complex: { [String(complexKeys.get(0))]: 'kept' } });
+});
+
+function loadProductions(context, ...names) {
+  vm.runInContext(names.map(name => actual(name)).join('\n'), context);
+}
+
+test('structure comparison keeps SQL literal whitespace while ignoring formatting whitespace', () => {
+  const ctx = vm.createContext({});
+  loadProductions(ctx, 'normalizeViewSql', 'compareSnapshots');
+  const before = { schemas: ['main'], objects: [{schema:'main', name:'v', type:'view', sql:"CREATE VIEW v AS SELECT 'a  b' AS value"}], columns: [] };
+  const changed = { ...before, objects: [{...before.objects[0], sql:"CREATE VIEW v AS SELECT 'a b' AS value"}] };
+  const formatted = { ...before, objects: [{...before.objects[0], sql:"CREATE   VIEW v AS SELECT 'a  b' AS value"}] };
+  assert.equal(ctx.compareSnapshots(before, changed).summary.changed, 1, 'Two spaces in a string literal are meaningful');
+  assert.equal(ctx.compareSnapshots(before, formatted).summary.changed, 0, 'Formatting-only whitespace may be ignored');
+  const dollar = { ...before, objects: [{...before.objects[0], sql:"CREATE VIEW v AS SELECT $$a  b$$ AS value"}] };
+  const dollarChanged = { ...before, objects: [{...before.objects[0], sql:"CREATE VIEW v AS SELECT $$a b$$ AS value"}] };
+  assert.equal(ctx.compareSnapshots(dollar, dollarChanged).summary.changed, 1, 'Dollar-quoted strings keep their contents');
+});
+
+test('structure comparison reports reordered columns even when names and types match', () => {
+  const ctx = vm.createContext({});
+  loadProductions(ctx, 'normalizeViewSql', 'compareSnapshots');
+  const column = (name, position) => ({schema:'main', relation:'t', name, position, type:'INTEGER', nullable:true, defaultValue:null});
+  const before = { schemas:['main'], objects:[], columns:[column('a',1),column('b',2)] };
+  const after = { ...before, columns:[column('b',1),column('a',2)] };
+  const diff = ctx.compareSnapshots(before, after);
+  assert.equal(diff.summary.changed, 2);
+  assert.deepEqual(Array.from(diff.columnChanges, item=>item.changes[0].field), ['position','position']);
+});
+
+test('SQL guard accepts dollar-quoted values and continues to reject real writes', () => {
+  const ctx = vm.createContext({t: key => key});
+  loadProductions(ctx, 'sqlTokens', 'validateReadOnlySql');
+  for (const sql of [
+    'SELECT $$a; UPDATE b$$ AS payload;',
+    'SELECT $item$CREATE TABLE x; DROP x;$item$ AS payload;',
+    'SELECT $$nested \'literal\'$$ AS payload;',
+    "SELECT 'a; DROP TABLE nope' AS text;"
+  ]) assert.equal(ctx.validateReadOnlySql(sql).first, 'SELECT', sql);
+  for (const sql of ['SELECT 1; DROP TABLE t;', 'UPDATE t SET value=1;', 'SELECT 1; SELECT 2']) {
+    assert.throws(() => ctx.validateReadOnlySql(sql), undefined, sql);
+  }
+});
+
+test('stale column analysis cannot populate a replacement database cache', async () => {
+  const first = deferred(), second = deferred(), work = [first, second], rendered = [];
+  const column = {column_name:'value'};
+  const state = {profileToken:0,profileCache:new Map(),selected:{schema:'main',name:'t'},conn:{id:'A'},activeProfile:null};
+  const el = {profileTitle:{textContent:''},profileBody:{innerHTML:''},profileDialog:{open:false,showModal(){this.open=true}}};
+  const ctx = vm.createContext({
+    state,el,t:key=>key,escapeHtml:s=>String(s),console:{error(){}},
+    profileKey:col=>[state.selected.schema,state.selected.name,col.column_name].join('\\0'),
+    loadColumnProfile:()=>work.shift().promise,
+    renderProfile:profile=>rendered.push(profile.source)
+  });
+  loadProductions(ctx, 'openColumnProfile');
+  const old = ctx.openColumnProfile(column);
+  state.profileToken++;state.conn={id:'B'};state.profileCache=new Map();
+  first.resolve({source:'A',column});await old;
+  assert.equal(state.profileCache.size,0,'A must not be inserted into B cache');
+  const fresh = ctx.openColumnProfile(column);
+  second.resolve({source:'B',column});await fresh;
+  assert.deepEqual(rendered,['B']);assert.equal(state.profileCache.size,1);
+});
+
+test('two rapid file choices only register and open the latest database', async () => {
+  const waiting = deferred(), initializing = deferred(), actions = [];
+  const state = {requestToken:0,profileToken:0,sqlRequestToken:0,compareToken:0,searchTimer:null,profileCache:new Map()};
+  const dialog = () => ({close(){}});
+  const el = {profileDialog:dialog(),detailDialog:dialog(),filterDialog:dialog(),fileName:{},fileMeta:{},headerFile:null};
+  let count = 0;
+  const ctx = vm.createContext({
+    state,el,Promise,Date,Map,clearTimeout(){},t:key=>key,formatBytes:()=>'',showWorkspace(){},
+    renderFullState(){},toast:message=>actions.push(['toast',message]),console:{error(e){throw e}},
+    disposeDatabase:async()=>{actions.push(['dispose']);state.db=null;state.conn=null},
+    loadDuckDBApi:async()=>({DuckDBDataProtocol:{BROWSER_FILEREADER:7},DuckDBAccessMode:{READ_ONLY:1}}),
+    initializeDuckDBRuntime:async()=>{
+      const id=++count;
+      state.db={
+        registerFileHandle:async(_name,file)=>actions.push(['register',id,file.name]),
+        open:async()=>actions.push(['open',id]),
+        connect:async()=>({id})
+      };
+      if(id===1){initializing.resolve();await waiting.promise}
+    },
+    hardenDuckDBSession:async()=>{},loadObjects:async()=>actions.push(['objects',state.conn.id])
+  });
+  assert.match(source,/let openFileGeneration=0,openFileQueue=Promise.resolve\(\)/);
+  vm.runInContext('let openFileGeneration=0,openFileQueue=Promise.resolve();\n'+actual('openFile'),ctx);
+  const a=ctx.openFile({name:'a.duckdb',size:1});
+  await initializing.promise;
+  const b=ctx.openFile({name:'b.duckdb',size:2});
+  waiting.resolve();
+  await Promise.all([a,b]);
+  assert.deepEqual(actions.filter(a=>a[0]==='register').map(a=>a.slice(1)),[[2,'b.duckdb']]);
+  assert.deepEqual(actions.filter(a=>a[0]==='open').map(a=>a[1]),[2]);
+  assert.equal(state.conn.id,2);
+  assert.equal(state.file.name,'b.duckdb');
 });

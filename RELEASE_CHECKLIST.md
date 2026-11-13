@@ -128,4 +128,6 @@ Compare the primary fixture with `test-data/browser-kitty-sample-after.duckdb`.
 - [ ] GitHub Actions build uses `scripts/prepare-release.ps1`, not an upstream/npm-only DuckDB-Wasm release build.
 - [ ] GitHub Pages workflow builds successfully from a clean checkout and uses the pinned Builder Release runtime.
 - [ ] Published page loads and does not introduce runtime CDN/network dependencies.
-- [ ] Final tag/version/changelog all agree on `v1.0.2`.
+- [ ] The merged `main` commit, `app.config.json` version, `CHANGELOG.md` section, tag and GitHub Release agree on the intended `vMAJOR.MINOR.PATCH` (v1.0.5 for this patch).
+- [ ] `release-on-main.yml` passes its release-equivalent build and publishes both standalone HTML variants and `SHA256SUMS.txt` only when the version is not already released.
+- [ ] Re-running the same version does not duplicate a Release, and a failed build does not create a tag.

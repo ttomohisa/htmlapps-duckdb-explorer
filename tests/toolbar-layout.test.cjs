@@ -48,8 +48,8 @@ test('large page counts wrap without shrinking pager hit targets or crossing exp
   assert.equal(declarations('.page-label')['max-width'], '100%');
 });
 
-test('release metadata and visible badge identify patch 1.0.4', () => {
+test('release metadata and visible badge identify patch 1.0.5', () => {
   const config = JSON.parse(fs.readFileSync(path.join(__dirname, '../app.config.json'), 'utf8'));
-  assert.equal(config.version, '1.0.4');
-  assert.match(source, /class="version-badge">v1\.0\.4<\/span>/);
+  assert.equal(config.version, '1.0.5');
+  assert.match(source, /class="version-badge">v1\.0\.5<\/span>/);
 });
