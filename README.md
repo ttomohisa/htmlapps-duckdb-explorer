@@ -25,7 +25,7 @@ Dialog content remains scrollable in short or zoomed windows, and the background
 - **On-demand column analysis** — Run NULL counts, estimated distinct counts, numeric summaries, date ranges, text-length summaries, and common-value checks only when requested.
 - **Guarded read-only SQL** — Run one `SELECT` / `WITH` / `VALUES` / `SHOW` / `DESCRIBE` / `DESC` / `EXPLAIN` statement at a time. SELECT-style results are capped at 1,000 rows.
 - **Data dictionary HTML** — Export database structure, view definitions, and column profiles already computed during the current session. Table rows are not included.
-- **Structural database comparison** — Compare schemas, tables, views, column definitions, view SQL, and estimated row-count changes between two local DuckDB files. Row-by-row data diff is intentionally out of scope.
+- **Structural database comparison** — Compare schemas, tables, views, column definitions (including order), view SQL, and estimated row-count changes between two local DuckDB files. Row-by-row data diff is intentionally out of scope.
 - **Japanese / English UI** — Desktop and smartphone layouts are included.
 - **Fully local runtime** — The distributed HTML contains the required runtime assets and uses a CSP with `connect-src 'none'`.
 
