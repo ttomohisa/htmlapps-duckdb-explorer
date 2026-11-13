@@ -1,4 +1,5 @@
 name: Regenerate DuckDB Explorer root alias (temporary)
+# Trigger regenerated release after synchronizing version guards.
 
 on:
   push:
