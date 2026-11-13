@@ -307,4 +307,6 @@ The secondary database is opened in a separate DuckDB-Wasm runtime using `DuckDB
 - Long column titles wrap within a bounded, scrollable heading; the close control keeps its size and remains visible.
 - Native Escape, backdrop dismissal and focus restoration remain unchanged.
 
-- The equivalent English local-processing header uses “Fully local processing”. Exported schema-report footers are not application page footers and remain unchanged.
+- The header subtitle describes the app's table browsing, SQL queries, and schema comparison in Japanese and English instead of repeating runtime/privacy badges.
+- The introductory local-processing badge is visible on desktop and hidden at viewport widths of 760px or less. The first Help heading has no additional top margin beyond the dialog-body padding.
+- Exported schema-report footers are not application page footers and remain unchanged.
