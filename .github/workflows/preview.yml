@@ -17,7 +17,7 @@ jobs:
   preview:
     if: github.event.pull_request.head.repo.full_name == github.repository
     runs-on: windows-latest
-    timeout-minutes: 20
+    timeout-minutes: 30
     steps:
     - name: Checkout repository
       uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
@@ -50,6 +50,20 @@ jobs:
         New-Item -ItemType Directory -Force -Path test-results/mobile-label | Out-Null
         node scripts/mobile-label.browser.cjs 2>&1 | Tee-Object -FilePath test-results/mobile-label/results.log
         if ($LASTEXITCODE -ne 0) { throw "Mobile label browser regression failed." }
+    - name: Test DuckDB file operations in desktop and mobile Chromium
+      shell: pwsh
+      run: |
+        New-Item -ItemType Directory -Force -Path test-results/duckdb-runtime | Out-Null
+        node scripts/duckdb-runtime.browser.cjs 2>&1 | Tee-Object -FilePath test-results/duckdb-runtime/results.log
+        if ($LASTEXITCODE -ne 0) { throw "DuckDB runtime browser smoke failed." }
+    - name: Upload DuckDB runtime browser evidence
+      if: always()
+      uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+      with:
+        name: duckdb-runtime-browser-evidence
+        path: test-results/duckdb-runtime/
+        if-no-files-found: ignore
+        retention-days: 7
     - name: Upload mobile label browser evidence
       if: always()
       uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
