@@ -176,6 +176,10 @@ Build-time downloads from npm and the Builder GitHub Release are development/rel
 
 See [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
 
+## Automatic GitHub Release after merging
+
+After a PR is merged into `main`, `.github/workflows/release-on-main.yml` verifies and builds the pinned standalone distribution. When `app.config.json` has a version that is not already published, the workflow creates the corresponding `vMAJOR.MINOR.PATCH` tag at that exact `main` commit and publishes a GitHub Release with both standalone HTML variants and `SHA256SUMS.txt`. Release notes come from that version's `CHANGELOG.md` section. Existing releases are skipped; an existing tag pointing to a different commit is never moved. A failed build does not create a tag or release. Pull requests are not merged automatically.
+
 ## Release validation
 
 Before tagging a release, run `build-standalone.bat -ForceDownload` and follow [RELEASE_CHECKLIST.md](RELEASE_CHECKLIST.md). Offline regression details are in [VERIFY_OFFLINE.md](VERIFY_OFFLINE.md).
