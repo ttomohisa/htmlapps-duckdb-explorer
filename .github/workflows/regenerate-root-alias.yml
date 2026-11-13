@@ -1,0 +1,39 @@
+name: Regenerate DuckDB Explorer root alias (temporary)
+
+on:
+  push:
+    branches:
+      - fix/duckdb-explorer-async-sql-compare-20261113
+    paths:
+      - .github/workflows/regenerate-root-alias.yml
+
+permissions:
+  contents: write
+
+jobs:
+  regenerate:
+    runs-on: windows-latest
+    timeout-minutes: 25
+    steps:
+      - name: Check out repair branch
+        uses: actions/checkout@v6
+        with:
+          persist-credentials: true
+
+      - name: Build, verify and refresh the tracked root HTML
+        shell: pwsh
+        run: ./scripts/prepare-release.ps1
+
+      - name: Commit only the verified root HTML alias
+        shell: pwsh
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -- duckdb-explorer.html
+          git diff --cached --quiet
+          if ($LASTEXITCODE -ne 0) {
+            git commit -m "Build verified v1.0.5 root standalone HTML alias"
+            if ($LASTEXITCODE -ne 0) { throw "Could not commit verified root alias" }
+            git push origin HEAD:fix/duckdb-explorer-async-sql-compare-20261113
+            if ($LASTEXITCODE -ne 0) { throw "Could not push verified root alias" }
+          }
