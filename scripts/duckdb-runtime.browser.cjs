@@ -22,8 +22,8 @@ async function checkSession(browser, mobile) {
   try {
     await page.goto(appUrl);
     await page.locator('#fileInput').setInputFiles(baseFile);
-    if (mobile) await page.locator('#tree button[data-schema="main"][data-name="orders"]').waitFor({state:'visible'});
-    else await page.locator('#overviewView .overview-stat').first().waitFor({state:'visible'});
+    await page.locator('#overviewView .overview-stat').first().waitFor({state:'visible'});
+    if (mobile) await page.locator('#mobileNav [data-mobile="objects"]').click();
     assert.equal(await page.locator('#fileName').textContent(),path.basename(baseFile));
     await page.locator('#tree button[data-schema="main"][data-name="orders"]').click();
     if (mobile) await page.locator('#dataPanel .record-card').first().waitFor({state:'visible'});
@@ -55,8 +55,11 @@ async function checkSession(browser, mobile) {
     const diffCounts = await page.locator('#comparisonView .diff-stat-value').allTextContents();
     assert.ok(diffCounts.some(value=>Number(value.replace(/[^0-9]/g,''))>0),'Fixture comparison reports at least one difference');
     await page.locator('#fileInput').setInputFiles(compareFile);
-    if (mobile) await page.locator('#tree button[data-schema="main"][data-name="products"]').waitFor({state:'visible'});
-    else await page.locator('#overviewView .overview-stat').first().waitFor({state:'visible'});
+    await page.locator('#overviewView .overview-stat').first().waitFor({state:'visible'});
+    if (mobile) {
+      await page.locator('#mobileNav [data-mobile="objects"]').click();
+      await page.locator('#tree button[data-schema="main"][data-name="products"]').waitFor({state:'visible'});
+    }
     assert.equal(await page.locator('#fileName').textContent(),path.basename(compareFile));
     assert.equal(await page.locator('#comparisonView').isVisible(),false,'Source switch clears comparison view');
     assert.deepEqual(errors,[],`${label} JavaScript exceptions`);
