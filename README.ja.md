@@ -25,7 +25,7 @@ GitHub Pagesから最初のHTMLを取得した後、選択したDuckDBファイ�
 - **必要な列だけ分析** — NULL、ユニーク数推定、数値統計、日付範囲、文字列長、よくある値を明示操作で確認
 - **読み取り専用SQL** — `SELECT` / `WITH` / `VALUES` / `SHOW` / `DESCRIBE` / `DESC` / `EXPLAIN`を1文ずつ実行。SELECT系結果は最大1,000行
 - **データ辞書HTML** — DB構造、view定義、実行済み列分析を単一HTMLとして保存。テーブル行データは含めない
-- **DB構造比較** — 2つのDuckDBファイルについてschema / table / view / 列定義 / view SQL / 推定行数の差分を比較。行単位diffは行わない
+- **DB構造比較** — 2つのDuckDBファイルについてschema / table / view / 列定義（列順を含む） / view SQL / 推定行数の差分を比較。行単位diffは行わない
 - **日本語 / 英語** — PC / スマートフォン対応
 - **完全ローカル処理** — 配布HTMLに必要なruntimeを内包し、実行時CSPは`connect-src 'none'`
 
