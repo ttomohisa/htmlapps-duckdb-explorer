@@ -1,0 +1,58 @@
+name: Temporary rebuild tracked DuckDB Explorer HTML
+'on':
+  push:
+    branches:
+      - fix/duckdb-explorer-async-sql-compare-20261113
+    paths:
+      - .github/workflows/rebuild-ui-once.yml
+permissions: {}
+jobs:
+  build:
+    runs-on: windows-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+        with:
+          persist-credentials: false
+      - name: Build and verify release from source
+        shell: pwsh
+        run: ./scripts/prepare-release.ps1
+      - name: Transfer verified generated HTML
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+        with:
+          name: regenerated-duckdb-explorer-html
+          path: duckdb-explorer.html
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 1
+  publish:
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+        with:
+          ref: fix/duckdb-explorer-async-sql-compare-20261113
+      - uses: actions/download-artifact@v8
+        with:
+          name: regenerated-duckdb-explorer-html
+          path: regenerated
+      - name: Commit only the validated standalone alias
+        env:
+          EXPECTED_HEAD: ${{ github.sha }}
+        run: |
+          set -eu
+          test "$(git rev-parse HEAD)" = "$EXPECTED_HEAD"
+          test -s regenerated/duckdb-explorer.html
+          cp regenerated/duckdb-explorer.html duckdb-explorer.html
+          git add -- duckdb-explorer.html
+          if git diff --cached --quiet; then
+            echo 'Standalone alias already matches source.'
+            exit 0
+          fi
+          git -c user.name='github-actions[bot]' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' commit -m 'Rebuild DuckDB Explorer standalone HTML for updated UI'
+          git push origin HEAD:refs/heads/fix/duckdb-explorer-async-sql-compare-20261113
