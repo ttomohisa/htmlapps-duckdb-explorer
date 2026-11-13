@@ -2,7 +2,7 @@
 
 ## Version
 
-v1.0.4
+v1.0.5
 
 ## Goal
 
@@ -66,7 +66,7 @@ v1.0.0 is the first stable release baseline. It does not add a new product area 
 - structural comparison against a second local DuckDB file
   - schema/table/view added and removed
   - object type and view-definition changes
-  - column added/removed/type/nullability/default changes
+  - column added/removed/position/type/nullability/default changes
   - estimated table row-count changes from catalog metadata
   - no exhaustive row-data diff
 - file size/name display
@@ -136,6 +136,7 @@ v1.0.0 is the first stable release baseline. It does not add a new product area 
 - Relation data has explicit `idle`, `loading`, `ready`, and `error` phases.
 - Starting a page, search/filter count, sort, or relation request clears cached rows and export readiness.
 - A result belongs to its database connection/file, relation, page/page size, search, filters, sort, and request generation. Results and errors from older requests cannot replace the current state.
+- Rapid source replacements serialize database opening and invalidate earlier operations; late catalog/profile results cannot update the newly opened database.
 - First / Previous and Next / Last are disabled at their corresponding boundaries; all four controls are blocked during pending search/loading. Boundary navigation uses exact BigInt offsets, including a partial last page.
 - Editing a debounced search immediately blocks stale exports and paging; switching relations or files cancels the pending search timer.
 - Japanese/English changes re-render the current phase. They must not restore a previous page or hide the current error.
@@ -147,7 +148,7 @@ v1.0.0 is the first stable release baseline. It does not add a new product area 
 - SQL is checked client-side before being passed to DuckDB.
 - Exactly one statement is allowed. A single trailing semicolon is accepted.
 - Allowed leading statement types: `SELECT`, `WITH`, `VALUES`, `SHOW`, `DESCRIBE`, `DESC`, `EXPLAIN`.
-- Tokens for writes, DDL, attachment/extension loading, environment changes, transactions, and dynamic query execution are rejected outside quoted strings/comments/quoted identifiers.
+- Tokens for writes, DDL, attachment/extension loading, environment changes, transactions, and dynamic query execution are rejected outside quoted strings/comments/quoted identifiers. Dollar-quoted SQL string literals (`$$...$$`, `$tag$...$tag$`) are recognized as literal content.
 - The source database remains opened with `DuckDBAccessMode.READ_ONLY`.
 - DuckDB extension auto-install / auto-load, community extensions, and external access are disabled when the runtime supports those settings.
 - Runtime CSP remains `connect-src 'none'`.
