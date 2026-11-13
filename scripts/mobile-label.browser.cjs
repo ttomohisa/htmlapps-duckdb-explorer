@@ -22,14 +22,16 @@ async function main() {
         await page.locator('#langBtn').waitFor();
         if(await page.locator('html').getAttribute('lang')!==language)await page.locator('#langBtn').click();
         const badge=page.locator('[data-i18n="brandMeta"]');
-        assert.equal(await badge.innerText(),language==='ja'?'単一HTML・完全ローカル処理・読み取り専用':'Single HTML · Fully local processing · read only');
-        assert.equal(await badge.isVisible(), width > 760, label+': preserve existing mobile badge hiding');
+        assert.equal(await badge.innerText(),language==='ja'?'テーブル閲覧 · SQL検索 · 構造比較':'Tables · SQL queries · Schema comparison');
+        assert.equal(await badge.isVisible(), width > 760, label+': hide header subtitle on mobile');
+        assert.equal(await page.locator('.local-badge').isVisible(), width > 760, label+': hide local badge on mobile');
         if(width > 760) assert.ok(await badge.evaluate(el=>{const r=el.getBoundingClientRect(),p=el.parentElement.getBoundingClientRect();return r.left>=p.left&&r.right<=p.right+1;}), label+': badge not clipped');
         assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),label+': page width');
         assert.equal(await page.locator('footer').count(),0,'No informational footer is added.');
         if(width!==393) await page.screenshot({path:path.join(evidence,label+'.png')});
         await page.locator('#helpBtn').click();
         const body=page.locator('#helpDialog .dialog-body');
+        assert.equal(await page.locator('#helpDialog .dialog-body > h3:first-child').evaluate(el=>getComputedStyle(el).marginTop),'0px',label+': no excessive space above the first help heading');
         await body.evaluate(el=>{el.scrollTop=el.scrollHeight;});
         const helpEnd = await page.locator('[data-i18n="helpNote3"]').evaluate(el=>{const r=el.getBoundingClientRect(),body=el.closest(".dialog-body").getBoundingClientRect(),dialog=el.closest('dialog').getBoundingClientRect();return {top:r.top,bottom:r.bottom,clipTop:Math.max(0,body.top,dialog.top),clipBottom:Math.min(innerHeight,body.bottom,dialog.bottom)};});
         assert.ok(helpEnd.top>=helpEnd.clipTop-1&&helpEnd.bottom<=helpEnd.clipBottom+1,label+': final Help guidance reachable '+JSON.stringify(helpEnd));
