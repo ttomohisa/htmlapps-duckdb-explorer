@@ -93,7 +93,9 @@ jobs:
             echo "GitHub Release $TAG already exists; no duplicate will be created."
             exit 0
           fi
-          existing="$(gh api "repos/$GITHUB_REPOSITORY/git/ref/tags/$TAG" --jq '.object.sha' 2>/dev/null || true)"
+          # Matching refs returns [] when this version tag does not exist. An actual API
+          # failure still stops the job, instead of treating its JSON error as a SHA.
+          existing="$(gh api "repos/$GITHUB_REPOSITORY/git/matching-refs/tags/$TAG" --jq ".[] | select(.ref == \"refs/tags/$TAG\") | .object.sha")"
           if [[ -n "$existing" && "$existing" != "$TARGET_SHA" ]]; then
             echo "Tag $TAG already refers to $existing, not the current main commit $TARGET_SHA." >&2
             echo 'Refusing to move an existing version tag or publish mismatched release assets.' >&2
