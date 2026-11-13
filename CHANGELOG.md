@@ -2,7 +2,9 @@
 
 ## Unreleased
 
-- Standardize the equivalent English local-processing header without changing database handling or exported reports.
+- Describe table browsing, SQL queries, and schema comparison in the Japanese/English header and landing copy.
+- Hide the local-processing badge on narrow screens and remove excess space above the first Help heading.
+- Extend the Chromium layout regression to cover mobile badge visibility and Help heading spacing.
 
 
 ## 1.0.5 - 2026-11-13
