@@ -178,6 +178,10 @@ npmやBuilder GitHub Releaseからの取得はビルド時処理であり、ユ�
 
 詳細は[THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)を参照してください。
 
+## マージ後の自動リリース
+
+PRを`main`へマージすると、`.github/workflows/release-on-main.yml`が固定済みランタイムを使ってビルドと検査を行います。`app.config.json`のバージョンが未公開であれば、対象の`main`コミットに`vMAJOR.MINOR.PATCH`タグを作成し、通常版・自己展開版の単一HTMLと`SHA256SUMS.txt`を添付してGitHub Releaseを公開します。リリースノートは`CHANGELOG.md`の該当バージョンから取得します。同じバージョンのリリースは重複作成せず、既存タグが別コミットを指している場合は移動せず停止します。ビルドが失敗した場合はタグもReleaseも作成しません。PRのマージ自体は自動化しません。
+
 ## リリース確認
 
 正式リリース前は`build-standalone.bat -ForceDownload`を実行し、[RELEASE_CHECKLIST.md](RELEASE_CHECKLIST.md)に沿って確認します。offline回帰の詳細は[VERIFY_OFFLINE.md](VERIFY_OFFLINE.md)にあります。
