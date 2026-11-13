@@ -2,12 +2,19 @@
 
 ## Unreleased
 
-- Describe table browsing, SQL queries, and schema comparison in the Japanese/English header and landing copy.
-- Hide the local-processing badge on narrow screens and remove excess space above the first Help heading.
-- Extend the Chromium layout regression to cover mobile badge visibility and Help heading spacing.
-
-
 ## 1.0.5 - 2026-11-13
+
+### Changed
+
+- Use concise bilingual descriptions of table browsing, SQL queries, and schema comparison in the header and landing area.
+- Hide the local-processing badge on narrow screens and remove excess top margin from the Help dialog's first heading.
+- Create a version tag and GitHub Release automatically after a successful verified build of a new version on `main`, with both standalone HTML variants and SHA-256 checksums.
+
+### Additional fixes
+
+- Keep data-dictionary metadata and completed profile snapshots on the original database if another file is opened during report creation; discard stale exports.
+- Bind both column-profile queries to the selected connection and relation throughout a database switch.
+- Add source-ownership regressions for report export and column analysis, alongside the Chromium layout checks.
 
 ### Fixed
 
