@@ -56,3 +56,5 @@ jobs:
           fi
           git -c user.name='github-actions[bot]' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' commit -m 'Rebuild DuckDB Explorer standalone HTML for updated UI'
           git push origin HEAD:refs/heads/fix/duckdb-explorer-async-sql-compare-20261113
+
+# Rerun after updating the existing bilingual dialog regression.
