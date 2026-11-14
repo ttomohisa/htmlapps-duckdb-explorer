@@ -27,7 +27,10 @@ async function main() {
         assert.equal(await page.locator('.local-badge').isVisible(), width > 760, label+': hide local badge on mobile');
         if(width > 760) assert.ok(await badge.evaluate(el=>{const r=el.getBoundingClientRect(),p=el.parentElement.getBoundingClientRect();return r.left>=p.left&&r.right<=p.right+1;}), label+': badge not clipped');
         assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),label+': page width');
-        assert.equal(await page.locator('footer').count(),0,'No informational footer is added.');
+        const footer=page.locator('footer');
+        assert.equal(await footer.count(),1,label+': shared informational footer is present');
+        assert.equal(await footer.isVisible(),width>760,label+': footer hidden on phone widths');
+        if(width>760) assert.equal((await footer.innerText()).trim(),language==='ja'?'DuckDB Explorer · MIT License · データの閲覧はブラウザー内で完結':'DuckDB Explorer · MIT License · Data viewing stays in the browser',label+': footer text');
         if(width!==393) await page.screenshot({path:path.join(evidence,label+'.png')});
         await page.locator('#helpBtn').click();
         const body=page.locator('#helpDialog .dialog-body');
