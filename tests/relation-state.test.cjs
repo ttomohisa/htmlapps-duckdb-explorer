@@ -17,17 +17,52 @@ function actual(name, optional = false) {
   const next = source.slice(start + 1).search(/^  (?:async )?function /m);
   return source.slice(start, next < 0 ? source.length : start + 1 + next).trim();
 }
-const functions = ['t', 'applyLanguage', 'renderColumns', 'renderRelationHead', 'escapeHtml', 'formatCount', 'sqlIdent', 'arrowRows', 'normalizeValue', 'safeValue', 'disposeDatabase', 'selectObject', 'buildWhereClause', 'buildOrderClause', 'refreshQuery', 'loadPage', 'renderCell', 'dataToolbarHtml', 'renderFilterSummary', 'renderData', 'renderDataFromCache', 'bindDataControls', 'csvCell', 'safeFilenamePart', 'downloadText', 'exportVisible', 'renderRelationError', 'exportSqlResult', 'downloadSqlText', 'openRowDetail', 'openSqlRowDetail'];
-const stateHelpers = ['isArrowRecord', 'arrowDecimalText', 'materializeArrowValue', 'relationRequestKey', 'isRelationRequestCurrent', 'hasCurrentRelationResult', 'beginRelationLoad', 'renderRelationState', 'setRelationError', 'openCellDetail', 'openSqlCellDetail', 'renderSqlCell'];
+const functions = ['t', 'applyLanguage', 'renderColumns', 'renderRelationHead', 'escapeHtml', 'formatCount', 'sqlIdent', 'arrowRows', 'normalizeValue', 'safeValue', 'disposeDatabase', 'selectObject', 'buildWhereClause', 'buildOrderClause', 'refreshQuery', 'loadPage', 'renderCell', 'renderRelationPanel', 'mobileSortHtml', 'countRelationRows', 'bindRowSearch', 'renderFilterSummary', 'renderData', 'renderDataFromCache', 'bindDataControls', 'csvCell', 'safeFilenamePart', 'downloadText', 'exportVisible', 'renderRelationError', 'exportSqlResult', 'downloadSqlText', 'openRowDetail', 'openSqlRowDetail'];
+const stateHelpers = ['isArrowRecord', 'arrowDecimalText', 'arrowCalendarDate', 'arrowTemporalText', 'arrowValueReader', 'arrowMapKeyReader', 'relationRequestKey', 'isRelationRequestCurrent', 'hasCurrentRelationResult', 'beginRelationLoad', 'renderRelationState', 'setRelationError', 'openCellDetail', 'openSqlCellDetail', 'renderSqlCell'];
 function element() {
   const listeners = new Map();
-  return { innerHTML: '', textContent: '', value: '', disabled: false, style: {}, dataset: {}, classList: { add() {}, remove() {}, toggle() {} }, setAttribute() {}, querySelectorAll() { return []; }, append() {}, remove() {}, click() { return this.fire('click'); }, close() {}, showModal() {}, focus() {}, addEventListener(type, fn) { listeners.set(type, fn); }, fire(type, event = {}) { return listeners.get(type)?.(event); } };
+  return { innerHTML: '', textContent: '', value: '', disabled: false, style: {}, dataset: {}, classList: { add() {}, remove() {}, toggle() {} }, setAttribute() {}, querySelectorAll() { return []; }, append() {}, remove() {}, click() { return this.fire('click'); }, close() {}, showModal() {}, focus() {}, addEventListener(type, fn) { listeners.set(type, fn); }, fire(type, event = {}) { return listeners.get(type)?.({target:this, ...event}); } };
 }
 function setup(Arrow) {
   const nodes = new Map(), dynamicNodes = [], timers = new Map(), downloads = [], blobs = new Map(), toasts = [];
   let timerId = 0;
   const dataPanel = element();
-  Object.defineProperty(dataPanel, 'innerHTML', { get() { return this.html || ''; }, set(html) { this.html = html; nodes.clear(); dynamicNodes.length = 0; for (const match of html.matchAll(/<(?:button|th)\b([^>]*)>/g)) { const node = element(), selectors = []; for (const attr of match[1].matchAll(/data-([a-z-]+)(?:="([^"]*)")?/g)) { node.dataset[attr[1].replace(/-([a-z])/g, (_, ch) => ch.toUpperCase())] = attr[2] || ''; selectors.push(`[data-${attr[1]}]`); } if (/class="cell-btn"/.test(match[1])) selectors.push('.cell-btn'); if (selectors.length) dynamicNodes.push({ node, selectors }); } for (const match of html.matchAll(/<(?:input|button)\b([^>]*\bid="([^"]+)"[^>]*)>/g)) { const node = element(); node.value = match[1].match(/\bvalue="([^"]*)"/)?.[1] || ''; node.disabled = /\bdisabled\b/.test(match[1]); nodes.set(match[2], node); } } });
+  function trackMarkup(container) {
+    let markup = '';
+    const children = new Map(), controls = [];
+    Object.defineProperty(container, 'innerHTML', {
+      get() {
+        return markup.replace(/(<div\b[^>]*\bid="([^"]+)"[^>]*>)(<\/div>)/g,
+          (whole, open, id, close) => open + (children.get(id)?.innerHTML || '') + close);
+      },
+      set(html) {
+        for (const [id, child] of children) {
+          if (child.clearMarkup) child.clearMarkup();
+          nodes.delete(id);
+        }
+        children.clear();
+        for (const entry of controls) dynamicNodes.splice(dynamicNodes.indexOf(entry), 1);
+        controls.length = 0; markup = html;
+        for (const match of html.matchAll(/<(button|th|input|select|div)\b([^>]*)>/g)) {
+          const [, tag, attrs] = match, node = element(), selectors = [];
+          const id = attrs.match(/\bid="([^"]+)"/)?.[1];
+          if (id) {
+            if (tag === 'div') trackMarkup(node);
+            node.value = attrs.match(/\bvalue="([^"]*)"/)?.[1] || '';
+            node.disabled = /\bdisabled\b/.test(attrs); nodes.set(id, node); children.set(id,node);
+          }
+          for (const attr of attrs.matchAll(/data-([a-z-]+)(?:="([^"]*)")?/g)) {
+            node.dataset[attr[1].replace(/-([a-z])/g, (_, ch) => ch.toUpperCase())] = attr[2] || '';
+            selectors.push('[' + 'data-' + attr[1] + ']');
+          }
+          if (/class="cell-btn"/.test(attrs)) selectors.push('.cell-btn');
+          if (selectors.length) {const entry={node,selectors};dynamicNodes.push(entry);controls.push(entry);}
+        }
+      }
+    });
+    container.clearMarkup = () => { container.innerHTML = ''; };
+  }
+  trackMarkup(dataPanel);
   const el = { dataPanel, columnsPanel: element(), profileDialog: element(), overviewView: element(), comparisonView: element(), sqlView: element(), emptyRelation: element(), relationView: element(), relationKicker: element(), relationName: element(), rowCount: element(), columnCount: element(), detailTitle: element(), detailMeta: element(), detailValue: element(), detailDialog: element() };
   const context = vm.createContext({ el, Blob, Date, Map, ArrayBuffer, Uint8Array, window: { innerWidth: 1000, Arrow }, console: { error() {} }, StandaloneAssets: { revoke() {} }, URL: { createObjectURL(blob) { const url = 'blob:' + blobs.size; blobs.set(url, blob); return url; }, revokeObjectURL() {} }, setTimeout(fn) { timers.set(++timerId, fn); return timerId; }, clearTimeout(id) { timers.delete(id); }, document: { documentElement: {}, querySelectorAll(selector) { return dynamicNodes.filter(item => item.selectors.includes(selector)).map(item => item.node); }, body: element(), createElement() { const a = element(); a.click = () => downloads.push({ name: a.download, blob: blobs.get(a.href) }); return a; } }, $: id => id === 'langBtn' ? element() : nodes.get(id), toast: message => toasts.push(message), renderObjectTree() {}, renderColumns() {}, renderRelationHead() {}, updateFilterDialogOptions() {}, setMobileSection() {} });
   const translations = source.slice(source.indexOf('  const I18N='), source.indexOf('  let lang='));
@@ -55,28 +90,91 @@ test('language changes keep a pending page loading and block both exports', asyn
   assert.equal(h.downloads[0].name, 'fictional-main-orders-page-2.json');
   assert.deepEqual(JSON.parse(await h.downloads[0].blob.text()), [{ id: '2' }]);
 });
+test('opening a relation previews one extra row without running a full count', async () => {
+  const h = setup(), issued = [];
+  h.state.conn = { query: async sql => {
+    issued.push(sql);
+    if (sql.includes('information_schema')) return table([{column_name:'id', data_type:'INTEGER'}]);
+    if (sql.includes('count(*)')) return table([{row_count:3n}], ['row_count']);
+    return table([{id:1n},{id:2n}]);
+  }};
+  await h.call('selectObject', h.state.selected);
+  assert.equal(issued.some(sql=>sql.includes('count(*)')), false);
+  assert.match(issued.at(-1), /LIMIT 2 OFFSET 0/);
+  assert.equal(h.state.filteredRows, null);
+  assert.equal(h.nodes.get('nextPage').disabled, false);
+  h.call('exportVisible','json');
+  assert.deepEqual(JSON.parse(await h.downloads[0].blob.text()), [{id:'1'}]);
+});
+
+for (const total of [0, 99, 100, 101, 200]) test(`preview discovers the last page without COUNT for ${total} rows`, async () => {
+  const h=setup(), issued=[];
+  Object.assign(h.state,{totalRows:null,filteredRows:null,pageSize:100n});
+  h.state.conn={query:async sql=>{
+    issued.push(sql);
+    const [,limit,offset]=sql.match(/LIMIT (\d+) OFFSET (\d+)$/);
+    const n=Math.min(Number(limit),total-Number(offset));
+    return table(Array.from({length:n},(_,i)=>({id:i+Number(offset)+1})));
+  }};
+  await h.call('loadPage');
+  assert.equal(h.state.lastRows.length,Math.min(100,total));
+  if(total>100){assert.equal(h.state.filteredRows,null);await h.nodes.get('nextPage').click()}
+  assert.equal(h.state.filteredRows,BigInt(total));
+  assert.equal(h.nodes.get('nextPage').disabled,true);
+  assert.ok(issued.every(sql=>!sql.includes('count(*)')));
+});
+
+test('a late explicit count cannot replace newer search results or jump to the old last page',async()=>{
+  const h=setup(),count=deferred();
+  Object.assign(h.state,{filteredRows:null,totalRows:null});
+  await ready(h,[{id:1n},{id:2n}]);
+  h.state.conn.query=()=>count.promise;
+  const pending=h.call('countRelationRows',true);
+  h.state.search='new';
+  h.state.conn.query=async()=>table([{id:10n}]);
+  await h.call('refreshQuery');
+  count.resolve(table([{row_count:42n}],['row_count']));await pending;
+  assert.equal(h.state.page,0n);
+  assert.equal(h.state.filteredRows,1n);
+  assert.equal(h.state.lastRows[0].id,10n);
+});
+
+test('search box keeps its identity during and after a result refresh', async () => {
+  const h = setup(); await ready(h);
+  const input = h.nodes.get('rowSearch');
+  input.value='pa'; input.fire('input');
+  await h.flushTimers();
+  assert.equal(h.nodes.get('rowSearch'), input);
+});
+
+test('mobile sorting uses the same column and direction as desktop sorting', async () => {
+  const h = setup(); await ready(h);
+  const sort = h.nodes.get('mobileSort'); assert.ok(sort);
+  sort.value = 'desc:0'; await sort.fire('change');
+  assert.equal(h.state.sort.column,'id'); assert.equal(h.state.sort.direction,'desc');
+});
+
 test('a failed page keeps its error across languages and can be retried', async () => {
   const h = setup(); await ready(h); h.state.page = 1n; h.state.conn.query = async () => { throw new Error('Fictional page failure'); }; await h.call('loadPage');
   for (const lang of ['ja', 'en']) { h.language(lang); assert.match(h.el.dataPanel.innerHTML, /error-card/); assert.match(h.el.dataPanel.innerHTML, /Fictional page failure/); assertUnavailable(h); }
   h.state.conn.query = async () => table([{ id: 2n }]); await h.call('loadPage'); h.language('ja');
   assert.doesNotMatch(h.el.dataPanel.innerHTML, /error-card/); h.call('exportVisible', 'json'); assert.deepEqual(JSON.parse(await h.downloads[0].blob.text()), [{ id: '2' }]);
 });
-for (const condition of ['search', 'filter', 'sort']) test(`${condition} refresh owns count and row loading through language changes`, async () => {
-  const h = setup(); await ready(h); h.state.page = 1n;
-  if (condition === 'filter') h.state.filters = [{ column: 'id', operator: 'equals', value: '2' }];
-  else h.state.search = '2';
-  if (condition === 'sort') h.state.sort = { column: 'id', direction: 'desc' };
-  const count = deferred(), rows = deferred(), issued = [];
-  h.state.conn.query = sql => { issued.push(sql); return issued.length === 1 ? count.promise : rows.promise; };
-  const pending = h.call('refreshQuery', condition !== 'sort'); h.language('ja'); assertLoading(h);
-  count.resolve(table([{ row_count: 2n }], ['row_count'])); await Promise.resolve(); await Promise.resolve(); h.language('en'); assertLoading(h);
-  rows.resolve(table([{ id: 2n }])); await pending;
-  const where = issued[0].slice(issued[0].indexOf(' WHERE ')); assert.ok(issued[1].includes(where), 'Count and page use the same filter');
-  if (condition === 'sort') assert.match(issued[1], /ORDER BY "id" DESC NULLS LAST LIMIT 1 OFFSET 1/);
-  else assert.match(issued[1], /LIMIT 1 OFFSET 0/);
-  h.call('exportVisible', 'json'); assert.deepEqual(JSON.parse(await h.downloads[0].blob.text()), [{ id: '2' }]);
+for(const condition of ['search','filter','sort']) test(`${condition} refresh previews the current rows through language changes`,async()=>{
+  const h=setup(); await ready(h); h.state.page=1n;
+  if(condition==='filter')h.state.filters=[{column:'id',operator:'equals',value:'2'}];
+  else h.state.search='2';
+  if(condition==='sort')h.state.sort={column:'id',direction:'desc'};
+  const rows=deferred(),issued=[];
+  h.state.conn.query=sql=>{issued.push(sql);return rows.promise};
+  const pending=h.call('refreshQuery',condition!=='sort');h.language('ja');assertLoading(h);
+  rows.resolve(table([{id:2n}]));await pending;
+  assert.equal(issued.length,1);assert.match(issued[0],/ WHERE /);
+  if(condition==='sort')assert.match(issued[0],/ORDER BY "id" DESC NULLS LAST LIMIT 1 OFFSET 1/);
+  else assert.match(issued[0],/LIMIT 2 OFFSET 0/);
+  h.call('exportVisible','json');assert.deepEqual(JSON.parse(await h.downloads[0].blob.text()),[{id:'2'}]);
 });
-test('count failure remains an error, never a cached successful page', async () => {
+test('preview failure remains an error, never a cached successful page', async () => {
   const h = setup(); await ready(h); h.state.search = 'fictional'; h.state.conn.query = async () => { throw new Error('Fictional count failure'); }; await h.call('refreshQuery');
   h.language('ja'); assert.match(h.el.dataPanel.innerHTML, /Fictional count failure/); assertUnavailable(h);
 });
@@ -95,7 +193,7 @@ test('editing search immediately prevents exporting or relabeling the previous r
   const h = setup(); await ready(h); const search = h.nodes.get('rowSearch'); search.value = 'fictional'; search.fire('input');
   assertUnavailable(h); for (const id of ['exportCsv', 'exportJson', 'firstPage', 'prevPage', 'nextPage', 'lastPage']) assert.equal(h.nodes.get(id).disabled, true, `${id} is disabled while search is pending`); h.language('ja'); assertLoading(h);
 });
-test('stale count cannot start a page query after the filter changes', async () => {
+test('stale preview cannot supply a row count after the filter changes', async () => {
   const h = setup(); await ready(h); const count = deferred(); let calls = 0; h.state.search = 'old'; h.state.conn.query = () => { calls++; return count.promise; };
   const pending = h.call('refreshQuery'); h.state.search = 'new'; count.resolve(table([{ row_count: 99n }], ['row_count'])); await pending;
   assert.equal(calls, 1); assert.notEqual(h.state.filteredRows, 99n); assertUnavailable(h);
@@ -261,7 +359,7 @@ for (const outcome of ['success', 'failure']) test(`stale boundary page ${outcom
   const q = deferred(); h.state.conn.query = () => q.promise; const pending = h.nodes.get('lastPage').click();
   h.state.search = 'new'; h.state.filters = [{ column: 'id', operator: 'equals', value: '201' }]; h.state.sort = { column: 'id', direction: 'desc' };
   const issued = [];
-  h.state.conn.query = async sql => { issued.push(sql); return sql.includes('count(*)') ? table([{ row_count: 201n }], ['row_count']) : table([{ id: /OFFSET 200$/.test(sql) ? 201n : 1n }]); };
+  h.state.conn.query = async sql => { issued.push(sql); return sql.includes('count(*)') ? table([{ row_count: 201n }], ['row_count']) : /LIMIT 101 OFFSET 0$/.test(sql) ? table(Array.from({length:101},(_,i)=>({id:BigInt(i+1)}))) : table([{ id: /OFFSET 200$/.test(sql) ? 201n : 1n }]); };
   await h.call('refreshQuery'); await h.nodes.get('lastPage').click();
   if (outcome === 'success') q.resolve(table([{ id: 'stale' }])); else q.reject(new Error('stale boundary failure'));
   await pending; h.language('ja'); h.language('en');
@@ -395,7 +493,7 @@ test('real Arrow decimals retain sign, exact precision, scale, nulls and sliced 
   assert.equal(h.call('arrowRows', typedTable([['value', decimalVector([1n], 38)]]))[0].value, '0.' + '0'.repeat(37) + '1');
 });
 
-for (const sql of [false, true]) test(`${sql ? 'SQL' : 'relation'} fixture decimals display and export exact strings while BLOB and timestamp keep their behavior`, async () => {
+for (const sql of [false, true]) test(`${sql ? 'SQL' : 'relation'} details and downloads preserve exact decimals, BLOB bytes and timestamp text`, async () => {
   const h = setup(Arrow), timestamp = new Arrow.TimestampMicrosecond();
   const result = typedTable([
     ['subtotal', decimalVector([2435n], 2, 12)], ['tax', decimalVector([244n], 2, 12)], ['total', decimalVector([2679n], 2, 12)],
@@ -405,7 +503,7 @@ for (const sql of [false, true]) test(`${sql ? 'SQL' : 'relation'} fixture decim
   ]);
   h.state.conn = { query: async () => result }; await h.call('loadPage');
   Object.assign(h.state, { sqlHasResult: true, sqlLastFields: result.schema.fields.map(f => f.name), sqlLastRows: h.call('arrowRows', result) });
-  const expected = { subtotal: '24.35', tax: '2.44', total: '26.79', blob: { bytes: [131, 9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] }, ordered_at: 1735729200000, id: '9007199254740993' };
+  const expected = { subtotal: '24.35', tax: '2.44', total: '26.79', blob: { bytes: [131, 9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] }, ordered_at: '2025-01-01T11:00:00', id: '9007199254740993' };
   for (const language of ['ja', 'en']) {
     h.language(language);
     const rows = sql ? h.state.sqlLastRows : h.state.lastRows;
@@ -418,7 +516,7 @@ for (const sql of [false, true]) test(`${sql ? 'SQL' : 'relation'} fixture decim
   assert.deepEqual(JSON.parse(await h.downloads[0].blob.text()), [expected]);
   h.call(sql ? 'exportSqlResult' : 'exportVisible', 'csv');
   const csv = Buffer.from(await h.downloads[1].blob.arrayBuffer()).toString('utf8');
-  assert.equal(csv, '\uFEFFsubtotal,tax,total,blob,ordered_at,id\r\n24.35,2.44,26.79,"' + JSON.stringify(expected.blob).replaceAll('"', '""') + '",1735729200000,9007199254740993');
+  assert.equal(csv, '\uFEFFsubtotal,tax,total,blob,ordered_at,id\r\n24.35,2.44,26.79,"' + JSON.stringify(expected.blob).replaceAll('"', '""') + '",2025-01-01T11:00:00,9007199254740993');
 });
 
 test('typed nested decimals preserve scale and own special keys in LIST, ARRAY, STRUCT and MAP', () => {

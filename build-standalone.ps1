@@ -354,6 +354,16 @@ foreach ($dependency in $dependencies) {
   }
 }
 
+$demoPath = Join-Path $Root "test-data/browser-kitty-sample.duckdb"
+$demoBytes = [System.IO.File]::ReadAllBytes($demoPath)
+$storedDemo = Compress-GzipBytes $demoBytes
+$assetBundle["demoDatabase"] = [ordered]@{
+  compression = "gzip"
+  originalBytes = $demoBytes.Length
+  storedBytes = $storedDemo.Length
+  base64 = [Convert]::ToBase64String($storedDemo)
+}
+
 $manifest = [ordered]@{
   schemaVersion = 2
   builder = "single-html-app-template/1.2"
@@ -364,6 +374,10 @@ $manifest = [ordered]@{
     version = [string]$appConfig.version
   }
   dependencies = $manifestDependencies
+  demoDatabase = [ordered]@{
+    path = "test-data/browser-kitty-sample.duckdb"
+    sha256 = Get-Sha256FileHex $demoPath
+  }
 }
 if ($null -ne $customDuckDB) {
   $manifest["duckdbWasmOverride"] = [ordered]@{
@@ -452,9 +466,15 @@ if (-not $SkipSelfExtract -and ($appConfig.build.PSObject.Properties.Name -conta
 $readableBytes = (Get-Item $OutputPath).Length
 $selfExtractBytes = 0
 if ($selfExtractEnabled -and (Test-Path $selfExtractOutputPath)) { $selfExtractBytes = (Get-Item $selfExtractOutputPath).Length }
-$assetRawBytes = 0
-$assetStoredBytes = 0
-$sizeAssets = @()
+$assetRawBytes = [long]$demoBytes.Length
+$assetStoredBytes = [long]$storedDemo.Length
+$sizeAssets = @([ordered]@{
+  dependency = "app"
+  key = "demoDatabase"
+  compression = "gzip"
+  originalBytes = [long]$demoBytes.Length
+  storedBytes = [long]$storedDemo.Length
+})
 foreach ($dependencyEntry in $manifestDependencies) {
   foreach ($assetEntry in @($dependencyEntry.assets)) {
     $assetRawBytes += [long]$assetEntry.bytes

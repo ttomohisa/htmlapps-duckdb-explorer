@@ -23,7 +23,7 @@ v1.0.0 is the first stable release baseline. It does not add a new product area 
 - lightweight database overview before relation selection
 - schema grouping
 - tables and views
-- exact row count for the selected relation
+- exact row count on demand for the current result
 - row viewer with 100-row pagination and First / Previous / Next / Last controls
 - free-text search across the selected relation
 - column filters:
@@ -34,7 +34,9 @@ v1.0.0 is the first stable release baseline. It does not add a new product area 
   - ends with
   - is NULL
   - is not NULL
-- column sorting by clicking a header
+  - numeric lower/upper bounds and inclusive ranges
+  - inclusive calendar bounds for dates and timestamps
+- column sorting by clicking a header or selecting a column and direction on mobile
 - filtered row count and pagination using the same query conditions
 - column name, data type, nullability, and default value
 - on-demand analysis for a selected column:
@@ -102,13 +104,13 @@ v1.0.0 is the first stable release baseline. It does not add a new product area 
 
 ## Main flow
 
-1. User opens or drops a `.duckdb` / `.db` file.
+1. User opens or drops a `.duckdb` / `.db` file, or chooses the embedded sample to open `main.orders` directly.
 2. The embedded DuckDB-Wasm runtime starts.
 3. The file is registered and opened read-only.
 4. Catalog metadata is read from `duckdb_tables()` / `duckdb_views()` and a lightweight database overview is shown.
 5. No exact count is run across every table during database open.
 6. User selects a table or view from the overview or object tree.
-7. The selected relation's columns, exact row count, and first 100 rows are shown.
+7. The viewer loads column metadata and previews up to 100 rows. An extra row establishes whether Next is available.
 8. User can search, add filters, sort columns, change pages, inspect full values, or switch to column definitions.
 9. From Columns, user can explicitly analyze one column at a time.
 10. User can export only the currently visible page to CSV or JSON.
@@ -171,7 +173,7 @@ JSON:
 
 - exports an array of objects
 - DECIMAL values are materialized using Arrow field metadata before display/export, preserving sign, all digits, and declared scale without conversion to Number/DOUBLE; JSON uses strings, including nested LIST/ARRAY/STRUCT/MAP values
-- Genuine BLOB values retain binary display and `{bytes:[...]}` JSON serialization; timestamp representation is unchanged
+- Genuine BLOB values retain binary display and `{bytes:[...]}` JSON serialization; DATE uses calendar text, naive TIMESTAMP uses ISO local date/time, and timezone-aware TIMESTAMP uses a UTC `Z` suffix across display, CSV and JSON
 - BigInt values are converted to decimal strings
 - Date values are converted to ISO strings
 - nested values are recursively normalized
@@ -206,7 +208,7 @@ Schema report HTML:
 - Do not calculate exact counts for every table during database open. The overview uses catalog metadata only.
 - Calculate count only for the selected relation.
 - Fetch 100 rows per page.
-- Search/filter count queries run only after the condition changes.
+- Preview unknown-size results with a 101-row query. Infer the count at the last page. Count explicitly when the user requests it or jumps to Last. Search input remains mounted during updates.
 - Debounce free-text search by 350 ms.
 - Register the browser File handle rather than eagerly copying the whole database into JS memory.
 - Reuse one DuckDB connection until another file is opened.

@@ -59,13 +59,15 @@ After building, `dist/index.html` can be opened directly with `file://` and used
 
 ## Usage
 
-1. Choose or drop a `.duckdb` / `.db` file.
+1. Choose or drop a `.duckdb` / `.db` file. **Try sample database** opens the 250 sample orders included in the HTML.
 2. Review **Overview** to understand the database structure without exact-counting every table.
 3. Select a table or view from **Objects**.
-4. Use search, filters, sorting, cell details, and the **Columns** view as needed.
+4. Keep typing in search to refine the results. Use numeric bounds or inclusive calendar dates in **Add filter**. Select a column header or the phone’s **Sort by** control to sort.
 5. Run column analysis only for columns you want to inspect.
 6. Use **SQL** for guarded read-only statements.
 7. From **Overview**, save a data dictionary HTML or compare another DuckDB file.
+
+The first page displays up to 100 rows. Choose **Count rows** or **Last** to calculate an exact count when needed. Dates and timestamps share the same text representation across the viewer, SQL, CSV and JSON. For example, the first order was placed at `2025-01-01T11:00:00`. Timezone-aware timestamps use UTC with a `Z` suffix. For a `TIME WITH TIME ZONE` column, use `CAST(column_name AS VARCHAR)` in SQL to inspect its original offset.
 
 ### Viewer export
 

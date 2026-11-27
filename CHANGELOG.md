@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- Open the bundled orders demo offline and browse the first 100 rows before requesting an exact count.
+- Keep search input focused during result updates, filter by numeric and calendar bounds, and sort records on phones.
+- Display and export dates and timestamps as readable text, preserving timestamp precision and timezone semantics.
+
 ## 1.0.5 - 2026-11-13
 
 ### Changed

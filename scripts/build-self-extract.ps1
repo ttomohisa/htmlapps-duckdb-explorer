@@ -119,6 +119,8 @@ $encodedAppNameJa = ConvertTo-AsciiHtmlText $AppNameJa
 $faviconTag = Get-EmbeddedFaviconTag $inputHtml
 $sourceBytes = $inputBytes.Length
 $gzipBytes = $compressedBytes.Length
+# document.write preserves the loader's CSP when the application starts.
+$wasmPolicy = if ($inputHtml -match "script-src[^;]*'wasm-unsafe-eval'") { " 'wasm-unsafe-eval'" } else { "" }
 
 $wrapper = @"
 <!doctype html>
@@ -126,7 +128,7 @@ $wrapper = @"
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: blob:; script-src 'self' 'unsafe-inline' blob:; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data: blob:; media-src 'self' data: blob:; worker-src 'self' blob:; connect-src 'none'; object-src 'none'; frame-src 'none'; base-uri 'none'; form-action 'none'">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: blob:; script-src 'self' 'unsafe-inline'$wasmPolicy blob:; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data: blob:; media-src 'self' data: blob:; worker-src 'self' blob:; connect-src 'none'; object-src 'none'; frame-src 'none'; base-uri 'none'; form-action 'none'">
   <meta name="robots" content="noindex,nofollow">
   <meta name="generator" content="single-html-app-template self-extract builder">
   <meta name="self-extract-source-sha256" content="$sourceSha256">

@@ -102,6 +102,10 @@ try {
 }
 
 $restoredHtml = [System.Text.Encoding]::UTF8.GetString($restoredBytes)
+$wasmScriptPolicy = "script-src[^;]*'wasm-unsafe-eval'"
+if ($restoredHtml -match $wasmScriptPolicy -and $html -notmatch $wasmScriptPolicy) {
+  throw "The loader CSP blocks WebAssembly required by the restored application."
+}
 if (-not $restoredHtml.TrimStart().StartsWith("<!doctype html>", [StringComparison]::OrdinalIgnoreCase)) {
   throw "The restored payload is not an HTML document."
 }
