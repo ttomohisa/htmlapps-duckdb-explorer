@@ -4,12 +4,12 @@ const fs = require('node:fs');
 const path = require('node:path');
 const { pathToFileURL } = require('node:url');
 const { chromium } = require('playwright');
-const evidence = path.resolve('test-results/mobile-label');
+const evidence = path.resolve(process.env.GITHUB_ACTIONS ? 'test-results/mobile-label' : '.cache/mobile-label');
 async function main() {
   fs.mkdirSync(evidence, { recursive: true });
-  const browser = await chromium.launch();
+  const browser = await chromium.launch({channel:process.env.PLAYWRIGHT_CHANNEL || undefined});
   try {
-    for (const language of ['ja', 'en']) for (const [width, height] of [[1360,900],[320,568],[393,252]]) {
+    for (const language of ['ja', 'en']) for (const [width, height] of [[1920,1080],[1360,900],[960,700],[320,568],[393,252]]) {
       const context = await browser.newContext({ viewport: {width,height}, locale: language, reducedMotion:'reduce' });
       const page = await context.newPage();
       const errors=[], requests=[];
@@ -21,12 +21,25 @@ async function main() {
         await page.goto(pathToFileURL(path.resolve(__dirname,'../dist/index.html')).href);
         await page.locator('#langBtn').waitFor();
         if(await page.locator('html').getAttribute('lang')!==language)await page.locator('#langBtn').click();
-        const badge=page.locator('[data-i18n="brandMeta"]');
-        assert.equal(await badge.innerText(),language==='ja'?'テーブル閲覧 · SQL検索 · 構造比較':'Tables · SQL queries · Schema comparison');
-        assert.equal(await badge.isVisible(), width > 760, label+': hide header subtitle on mobile');
-        assert.equal(await page.locator('.local-badge').isVisible(), width > 760, label+': hide local badge on mobile');
-        if(width > 760) assert.ok(await badge.evaluate(el=>{const r=el.getBoundingClientRect(),p=el.parentElement.getBoundingClientRect();return r.left>=p.left&&r.right<=p.right+1;}), label+': badge not clipped');
+        const picker=page.locator('#sourcePicker');
+        assert.equal(await picker.isVisible(),true,label+': idle chooser is visible');
+        assert.equal(await page.locator('#workspace').isVisible(),false);
+        if(width===1360&&language==='ja')await page.screenshot({path:path.join(evidence,'start-desktop.png')});
+        await page.locator('#chooseSample').click();
+        const source=page.locator('#sampleSource');
+        await page.locator('#relationRows :is(th,.record-card):visible').first().waitFor();
+        assert.equal(await source.innerText(),language==='ja'?'サンプルDB':'Sample database');
+        assert.ok(await source.isVisible(),label+': bundled data is identified at all widths');
+        const open=page.locator('#changeFileBtn');
+        assert.ok(await open.isVisible(),label+': file picker remains available');
+        assert.ok(await open.locator('span').evaluate(el=>el.getBoundingClientRect().width>24),label+': file action has a visible label');
         assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),label+': page width');
+        if (width>760) {
+          const bounds=await page.locator('#workspace').boundingBox();
+          assert.ok(bounds.x>=20 && bounds.x+bounds.width<=width-20,label+': workspace has side margins');
+          assert.ok(bounds.width<=1180 && bounds.height<=680,label+': workspace is bounded on wide displays');
+          assert.ok(bounds.y>60 && bounds.y+bounds.height<height-16,label+': workspace has vertical breathing room');
+        }
         const footer=page.locator('footer');
         assert.equal(await footer.count(),1,label+': shared informational footer is present');
         assert.equal(await footer.isVisible(),width>760,label+': footer hidden on phone widths');

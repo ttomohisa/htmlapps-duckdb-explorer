@@ -23,7 +23,7 @@ v1.0.0 is the first stable release baseline. It does not add a new product area 
 - lightweight database overview before relation selection
 - schema grouping
 - tables and views
-- exact row count for the selected relation
+- exact row count on demand for the current result
 - row viewer with 100-row pagination and First / Previous / Next / Last controls
 - free-text search across the selected relation
 - column filters:
@@ -34,7 +34,9 @@ v1.0.0 is the first stable release baseline. It does not add a new product area 
   - ends with
   - is NULL
   - is not NULL
-- column sorting by clicking a header
+  - numeric lower/upper bounds and inclusive ranges
+  - inclusive calendar bounds for dates and timestamps
+- column sorting by clicking a header or selecting a column and direction on mobile
 - filtered row count and pagination using the same query conditions
 - column name, data type, nullability, and default value
 - on-demand analysis for a selected column:
@@ -102,14 +104,14 @@ v1.0.0 is the first stable release baseline. It does not add a new product area 
 
 ## Main flow
 
-1. User opens or drops a `.duckdb` / `.db` file.
+1. Startup shows a file chooser with no database open. Selecting or dropping a local file opens its overview. Choosing the sample explicitly opens `main.orders`. The DuckDB worker starts only after a source is selected.
 2. The embedded DuckDB-Wasm runtime starts.
 3. The file is registered and opened read-only.
 4. Catalog metadata is read from `duckdb_tables()` / `duckdb_views()` and a lightweight database overview is shown.
 5. No exact count is run across every table during database open.
-6. User selects a table or view from the overview or object tree.
-7. The selected relation's columns, exact row count, and first 100 rows are shown.
-8. User can search, add filters, sort columns, change pages, inspect full values, or switch to column definitions.
+6. The user can open a relation from the overview directory or search the catalog by schema and relation name. `/` focuses catalog search. Enter opens its first match and focuses value search. Clearing a catalog search restores the user's collapsed schema groups.
+7. The viewer loads column metadata and previews up to 100 rows. An extra row establishes whether Next is available.
+8. Value search filters rows across all columns and highlights matching text in visible scalar previews. The viewer also supports typed filters, sorting, full value details and column definitions. Paging, exact count and the current-page export menu sit below the results.
 9. From Columns, user can explicitly analyze one column at a time.
 10. User can export only the currently visible page to CSV or JSON.
 11. User can open SQL from the global navigation and run one guarded read-only statement.
@@ -171,7 +173,7 @@ JSON:
 
 - exports an array of objects
 - DECIMAL values are materialized using Arrow field metadata before display/export, preserving sign, all digits, and declared scale without conversion to Number/DOUBLE; JSON uses strings, including nested LIST/ARRAY/STRUCT/MAP values
-- Genuine BLOB values retain binary display and `{bytes:[...]}` JSON serialization; timestamp representation is unchanged
+- Genuine BLOB values retain binary display and `{bytes:[...]}` JSON serialization; DATE uses calendar text, naive TIMESTAMP uses ISO local date/time, and timezone-aware TIMESTAMP uses a UTC `Z` suffix across display, CSV and JSON
 - BigInt values are converted to decimal strings
 - Date values are converted to ISO strings
 - nested values are recursively normalized
@@ -206,7 +208,7 @@ Schema report HTML:
 - Do not calculate exact counts for every table during database open. The overview uses catalog metadata only.
 - Calculate count only for the selected relation.
 - Fetch 100 rows per page.
-- Search/filter count queries run only after the condition changes.
+- Preview unknown-size results with a 101-row query. Infer the count at the last page. Count explicitly when the user requests it or jumps to Last. Search input remains mounted during updates.
 - Debounce free-text search by 350 ms.
 - Register the browser File handle rather than eagerly copying the whole database into JS memory.
 - Reuse one DuckDB connection until another file is opened.
@@ -247,9 +249,9 @@ Only one primary pane is shown at a time.
 
 The Data pane does not render the wide desktop table. It renders record cards instead:
 
-- first five fields are shown on each card
+- the first field heads each card and up to four more fields appear underneath. When searching, matching scalar fields take priority, including fields beyond the first five columns
 - long values remain truncated inside the card
-- `Record details` opens all fields as formatted JSON
+- the detail button opens all fields as formatted JSON
 - search/filter/export controls wrap without page-level horizontal scrolling
 
 ## Test fixture
@@ -310,6 +312,5 @@ The secondary database is opened in a separate DuckDB-Wasm runtime using `DuckDB
 - Long column titles wrap within a bounded, scrollable heading; the close control keeps its size and remains visible.
 - Native Escape, backdrop dismissal and focus restoration remain unchanged.
 
-- The header subtitle describes the app's table browsing, SQL queries, and schema comparison in Japanese and English instead of repeating runtime/privacy badges.
-- The introductory local-processing badge is visible on desktop and hidden at viewport widths of 760px or less. The first Help heading has no additional top margin beyond the dialog-body padding.
+- At desktop widths the data workspace is centered, with 24px minimum side margins and a maximum size of 1180 × 680px. On phones, the open database uses the available space above the bottom navigation. The active source and a labeled file picker are visible at both sizes. The catalog shows the read-only status. The first Help heading has no additional top margin beyond the dialog-body padding.
 - Exported schema-report footers are not application page footers and remain unchanged.

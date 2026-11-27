@@ -58,11 +58,11 @@ $requiredSourceTokens = @(
   'class="app-header"',
   'class="header-inner"',
   'class="version-badge"',
-  'class="brand-meta"',
+  'id="fileName"',
   'id="headerFile"',
   'class="language-button"',
-  'class="local-badge"',
-  'data-i18n="heroTitle"',
+  'id="sampleSource"',
+  'id="changeFileBtn"',
   "mobile-nav",
   "safe-area-inset-bottom"
 )
@@ -243,8 +243,8 @@ if ($RequireBuiltOutput) {
   try {
     foreach ($variant in @("index.html", "index.self-extract.html")) {
       $env:APP_HTML = Join-Path $distRoot $variant
-      & node --test (Join-Path $Root "tests/relation-state.test.cjs") (Join-Path $Root "tests/toolbar-layout.test.cjs")
-      if ($LASTEXITCODE -ne 0) { throw "Relation-state regression tests failed for $variant." }
+      & node --test (Join-Path $Root "tests/relation-state.test.cjs") (Join-Path $Root "tests/toolbar-layout.test.cjs") (Join-Path $Root "tests/demo-database.test.cjs") (Join-Path $Root "tests/typed-filters.test.cjs") (Join-Path $Root "tests/temporal-values.test.cjs")
+      if ($LASTEXITCODE -ne 0) { throw "Standalone regression tests failed for $variant." }
     }
   } finally {
     $env:APP_HTML = $previousAppHtml
