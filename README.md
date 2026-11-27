@@ -59,7 +59,7 @@ After building, `dist/index.html` can be opened directly with `file://` and used
 
 ## Usage
 
-1. The app opens directly to the bundled orders table. Select **Open file** or drop a `.duckdb` / `.db` file anywhere in the workspace to switch to your database.
+1. Choose or drop your `.duckdb` / `.db` file. To try the bundled orders instead, select **Open sample database**.
 2. Review **Overview** to understand the database structure without exact-counting every table.
 3. Press `/` to search tables and views by name or schema. Enter `main.orders` and press Enter to open the first match and focus the value search.
 4. Type `paid` in the value search to find matching rows across all columns. Matches are highlighted in the table and on phone record cards. Use the filter for numeric bounds or inclusive dates, and sort using a column header or the phone’s sort control.

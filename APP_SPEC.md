@@ -104,7 +104,7 @@ v1.0.0 is the first stable release baseline. It does not add a new product area 
 
 ## Main flow
 
-1. Startup opens the embedded sample at `main.orders` in the interactive viewer. The header identifies the sample and always offers a file picker. A user can open or drop a `.duckdb` / `.db` immediately, including while the sample is still loading.
+1. Startup shows a file chooser with no database open. Selecting or dropping a local file opens its overview. Choosing the sample explicitly opens `main.orders`. The DuckDB worker starts only after a source is selected.
 2. The embedded DuckDB-Wasm runtime starts.
 3. The file is registered and opened read-only.
 4. Catalog metadata is read from `duckdb_tables()` / `duckdb_views()` and a lightweight database overview is shown.
@@ -312,5 +312,5 @@ The secondary database is opened in a separate DuckDB-Wasm runtime using `DuckDB
 - Long column titles wrap within a bounded, scrollable heading; the close control keeps its size and remains visible.
 - Native Escape, backdrop dismissal and focus restoration remain unchanged.
 
-- The active source and a labeled file picker are visible at desktop and phone widths. The catalog shows the read-only status. The first Help heading has no additional top margin beyond the dialog-body padding.
+- At desktop widths the data workspace is centered, with 24px minimum side margins and a maximum size of 1180 × 680px. On phones, the open database uses the available space above the bottom navigation. The active source and a labeled file picker are visible at both sizes. The catalog shows the read-only status. The first Help heading has no additional top margin beyond the dialog-body padding.
 - Exported schema-report footers are not application page footers and remain unchanged.

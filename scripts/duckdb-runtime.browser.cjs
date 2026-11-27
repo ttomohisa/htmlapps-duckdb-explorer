@@ -155,8 +155,18 @@ async function checkSession(browser, variant, mobile) {
   page.on('websocket', socket => requests.push(socket.url()));
   try {
     await page.goto(pathToFileURL(path.join(root, 'dist', variant)).href);
+    const picker = page.locator('#sourcePicker');
+    await picker.waitFor({timeout:5000});
+    assert.equal(await page.locator('#workspace').isVisible(), false);
+    assert.equal(await page.locator('#sampleSource').isVisible(), false);
+    assert.equal(page.workers().length, 0, 'The file chooser runs without a database worker');
+    const firstChooser = page.waitForEvent('filechooser');
+    await page.locator('#chooseLocal').click();
+    await (await firstChooser).setFiles([]);
+    assert.equal(await picker.isVisible(), true, 'Cancel keeps the database closed');
+    await page.locator('#chooseSample').click();
     await page.locator('#rowSearch').waitFor({timeout:15000});
-    assert.equal(await page.locator('#sampleSource').isVisible(), true, 'Startup identifies the live sample');
+    assert.equal(await page.locator('#sampleSource').isVisible(), true, 'The selected sample is identified');
     assert.equal(await page.locator('#changeFileBtn').isVisible(), true);
     await checkExploration(page, mobile);
     const chooser = page.waitForEvent('filechooser');
@@ -218,6 +228,14 @@ async function checkSession(browser, variant, mobile) {
     assert.equal(await page.locator('#objectSearch').inputValue(), '', 'Replacing the database clears its catalog search');
     assert.equal(await page.locator('#fileName').textContent(),path.basename(compareFile));
     assert.equal(await page.locator('#comparisonView').isVisible(),false,'Source switch clears comparison view');
+    await page.reload();
+    await picker.waitFor();
+    const localChooser = page.waitForEvent('filechooser');
+    await page.locator('#chooseLocal').click();
+    await (await localChooser).setFiles(compareFile);
+    await page.locator('#overviewView .overview-stat').first().waitFor();
+    assert.equal(await page.locator('#fileName').textContent(), path.basename(compareFile));
+    assert.equal(await page.locator('#sampleSource').isVisible(), false);
     assert.deepEqual(errors,[],`${label} JavaScript exceptions`);
     assert.deepEqual(requests,[],`${label} external runtime requests`);
     console.log('PASS '+label+': demo, paging/count, sorting, search focus, typed filters, temporal exports, SQL, report, comparison, replacement, offline');
