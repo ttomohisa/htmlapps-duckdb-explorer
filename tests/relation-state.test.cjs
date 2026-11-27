@@ -18,7 +18,7 @@ function actual(name, optional = false) {
   return source.slice(start, next < 0 ? source.length : start + 1 + next).trim();
 }
 const functions = ['t', 'applyLanguage', 'renderColumns', 'renderRelationHead', 'escapeHtml', 'formatCount', 'sqlIdent', 'arrowRows', 'normalizeValue', 'safeValue', 'disposeDatabase', 'selectObject', 'buildWhereClause', 'buildOrderClause', 'refreshQuery', 'loadPage', 'renderCell', 'renderRelationPanel', 'mobileSortHtml', 'countRelationRows', 'bindRowSearch', 'renderFilterSummary', 'renderData', 'renderDataFromCache', 'bindDataControls', 'csvCell', 'safeFilenamePart', 'downloadText', 'exportVisible', 'renderRelationError', 'exportSqlResult', 'downloadSqlText', 'openRowDetail', 'openSqlRowDetail'];
-const stateHelpers = ['isArrowRecord', 'arrowDecimalText', 'arrowCalendarDate', 'arrowTemporalText', 'arrowValueReader', 'arrowMapKeyReader', 'relationRequestKey', 'isRelationRequestCurrent', 'hasCurrentRelationResult', 'beginRelationLoad', 'renderRelationState', 'setRelationError', 'openCellDetail', 'openSqlCellDetail', 'renderSqlCell'];
+const stateHelpers = ['searchHighlighter', 'numericFilterType', 'isArrowRecord', 'arrowDecimalText', 'arrowCalendarDate', 'arrowTemporalText', 'arrowValueReader', 'arrowMapKeyReader', 'relationRequestKey', 'isRelationRequestCurrent', 'hasCurrentRelationResult', 'beginRelationLoad', 'renderRelationState', 'setRelationError', 'openCellDetail', 'openSqlCellDetail', 'renderSqlCell'];
 function element() {
   const listeners = new Map();
   return { innerHTML: '', textContent: '', value: '', disabled: false, style: {}, dataset: {}, classList: { add() {}, remove() {}, toggle() {} }, setAttribute() {}, querySelectorAll() { return []; }, append() {}, remove() {}, click() { return this.fire('click'); }, close() {}, showModal() {}, focus() {}, addEventListener(type, fn) { listeners.set(type, fn); }, fire(type, event = {}) { return listeners.get(type)?.({target:this, ...event}); } };
@@ -78,6 +78,66 @@ function deferred() { let resolve, reject; const promise = new Promise((yes, no)
 async function ready(h, rows = [{ id: 1n }], fields = ['id']) { h.state.conn = { query: async () => table(rows, fields) }; await h.call('loadPage'); }
 function assertUnavailable(h) { for (const format of ['json', 'csv']) h.call('exportVisible', format); assert.equal(h.downloads.length, 0, 'No stale rows may be downloaded'); }
 function assertLoading(h) { assert.match(h.el.dataPanel.innerHTML, /spinner/); assert.doesNotMatch(h.el.dataPanel.innerHTML, /id="exportJson"|class="cell-btn"/); assertUnavailable(h); }
+
+test('the relation title identifies the object and its separate context identifies its schema', async () => {
+  const h = setup();
+  await ready(h);
+  assert.equal(h.el.relationName.textContent, 'orders');
+  assert.match(h.el.relationKicker.textContent, /main/);
+  assert.match(h.el.relationKicker.textContent, /table/i);
+});
+
+test('exports share a keyboard-accessible disclosure outside the search and filtering controls', async () => {
+  const h = setup();
+  await ready(h);
+  const toolbar = h.nodes.get('relationActions').innerHTML;
+  assert.doesNotMatch(toolbar, /exportJson|exportCsv|countRows/);
+  assert.match(h.el.dataPanel.innerHTML, /<button[^>]*popovertarget="relationExportMenu"/);
+  assert.match(h.el.dataPanel.innerHTML, /<div[^>]*id="relationExportMenu"[^>]*popover/);
+  assert.ok(h.nodes.get('exportJson'));
+  assert.ok(h.nodes.get('exportCsv'));
+});
+
+test('numeric table cells align by type and mobile records start with the first actual field', async () => {
+  const h = setup();
+  h.state.columns = [{column_name:'id',data_type:'BIGINT'}, {column_name:'label',data_type:'VARCHAR'}];
+  await ready(h, [{id:23n,label:'sample'}], ['id','label']);
+  const rows = h.nodes.get('relationRows').innerHTML;
+  assert.match(rows, /<td class="numeric-cell"><button[^>]*data-column="id"/);
+  assert.doesNotMatch(rows, /<td class="numeric-cell"><button[^>]*data-column="label"/);
+  const mobile = rows.slice(rows.indexOf('class="record-list"'));
+  assert.ok(mobile.indexOf('>23<') >= 0 && mobile.indexOf('>23<') < mobile.indexOf('data-row-detail'));
+});
+
+test('desktop and mobile highlight literal case-insensitive values and keep exports intact', async () => {
+  const h=setup();
+  h.state.search='a[+]<';
+  const value='Before A[+]<script> and a[+]<after';
+  await ready(h,[{id:value}]);
+  const rows=h.nodes.get('relationRows').innerHTML;
+  const expected='Before <mark>A[+]&lt;</mark>script&gt; and <mark>a[+]&lt;</mark>after';
+  assert.equal(rows.split(expected).length-1,2);
+  assert.doesNotMatch(rows,/<script>/i);
+  h.call('exportVisible','json');
+  assert.deepEqual(JSON.parse(await h.downloads[0].blob.text()),[{id:value}]);
+});
+
+test('phone previews show a matching column beyond the fifth field and keep the row identifier', async () => {
+  const h=setup(), row={id:17, customer:3, date:'2025-01-01', status:'paid', subtotal:20, tax:2, note:'Manual review'};
+  h.state.search='review';
+  await ready(h,[row],Object.keys(row));
+  const mobile=h.nodes.get('relationRows').innerHTML.split('class="record-list"')[1];
+  assert.match(mobile,/record-head[^]*?>17<\/span>/);
+  assert.match(mobile,/Manual <mark>review<\/mark>/);
+  assert.equal((mobile.match(/class="record-field"/g)||[]).length,5);
+});
+
+test('a very long matching cell keeps its full text and bounds the number of highlight elements', () => {
+  const value='a'.repeat(100_000),h=setup();
+  const html=h.call('searchHighlighter','a')(value);
+  assert.ok((html.match(/<mark>/g)||[]).length<1000);
+  assert.equal(html.replace(/<\/?mark>/g,''),value);
+});
 
 // Removing the state/identity guard would make these tests expose old rows,
 // the wrong page filename, a hidden error, or an out-of-order query result.

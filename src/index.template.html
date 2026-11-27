@@ -9,9 +9,6 @@
   <title>DuckDB Explorer</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2064%2064%22%3E%0A%20%20%3Crect%20width%3D%2264%22%20height%3D%2264%22%20rx%3D%2216%22%20fill%3D%22%2316624f%22/%3E%0A%20%20%3Cg%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-width%3D%223.5%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%0A%20%20%20%20%3Cellipse%20cx%3D%2230%22%20cy%3D%2214%22%20rx%3D%2215.5%22%20ry%3D%226%22/%3E%0A%20%20%20%20%3Cpath%20d%3D%22M14.5%2014v10.5c0%203.3%206.9%206%2015.5%206s15.5-2.7%2015.5-6V14%22/%3E%0A%20%20%20%20%3Cpath%20d%3D%22M14.5%2024.5V34c0%203.3%206.9%206%2015.5%206S45.5%2037.3%2045.5%2034v-9.5%22/%3E%0A%20%20%20%20%3Ccircle%20cx%3D%2246.5%22%20cy%3D%2234.5%22%20r%3D%227.5%22/%3E%0A%20%20%20%20%3Cpath%20d%3D%22M51.8%2039.8%2056%2044%22/%3E%0A%20%20%3C/g%3E%0A%20%20%3Ctext%20x%3D%2232%22%20y%3D%2255%22%20text-anchor%3D%22middle%22%20fill%3D%22%23fff%22%20font-family%3D%22Arial%2C%20Helvetica%2C%20sans-serif%22%20font-size%3D%2212%22%20font-weight%3D%22800%22%20letter-spacing%3D%22.1%22%3EDuckDB%3C/text%3E%0A%3C/svg%3E%0A">
   <style>
-    .landing-actions{display:flex;justify-content:center;flex-wrap:wrap;gap:8px}
-    .landing-actions button{min-height:44px}
-    #demoError{color:var(--danger);font-size:13px}
     :root{--brand:#16624F;--brand-dark:#104b3d;--brand-soft:#e7f0ed;--ink:#18211f;--muted:#66716d;--line:#dce2de;--bg:#f5f6f3;--panel:#fff;--danger:#a53a32;--shadow:0 10px 30px rgba(21,46,39,.08);--radius:16px;--header:66px;--mobile-nav:68px}
     *{box-sizing:border-box}html,body{margin:0;min-height:100%;background:var(--bg);color:var(--ink);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans JP",sans-serif}body{overflow-x:hidden}button,input{font:inherit}button{cursor:pointer}button:disabled{cursor:not-allowed;opacity:.5}.hidden{display:none!important}
     header{height:var(--header);display:flex;align-items:center;justify-content:space-between;padding:0 22px;border-bottom:1px solid var(--line);background:rgba(245,246,243,.96);position:sticky;top:0;z-index:30}.brand{display:flex;align-items:center;gap:11px;min-width:0}.brand-mark{width:42px;height:42px;flex:none}.brand-text{min-width:0}.brand-name{font-size:16px;font-weight:760;line-height:1.1;white-space:nowrap}.version{font-size:11px;color:var(--muted);margin-top:3px}.header-actions{display:flex;gap:6px}.icon-btn{width:40px;height:40px;border:0;background:transparent;border-radius:10px;display:grid;place-items:center;color:#43504c}.icon-btn:hover{background:#e9edea}.icon-btn svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
@@ -45,12 +42,340 @@
     .app-main{max-width:none;width:min(1440px,100%);margin:0 auto;padding:20px clamp(14px,2.4vw,28px) 70px}.app-main .intro{max-width:none;margin:0}.app-main .hero{display:flex;align-items:flex-start;justify-content:space-between;gap:20px;padding:2px 2px 16px;text-align:left;margin:0}.app-main .hero h1{margin:0;font-size:clamp(21px,2.7vw,27px);line-height:1.3;letter-spacing:-.025em}.app-main .hero p{margin:5px 0 0;max-width:780px;color:var(--muted);font-size:13px;line-height:1.5}.local-badge{display:inline-flex;align-items:center;gap:7px;flex:0 0 auto;margin-top:3px;padding:7px 0;border:0;border-radius:0;color:var(--brand);background:transparent;font-size:12px;font-weight:500;white-space:nowrap}.local-badge svg{width:15px;height:15px}
     .app-main .dropzone{min-height:310px;display:grid;place-items:center;padding:24px;border:1.5px dashed #bfc1ba;border-radius:18px;background:var(--panel);box-shadow:var(--shadow-sm);transition:.16s}.app-main .dropzone.drag{border-color:var(--brand);background:var(--brand-soft)}.app-main .drop-inner{text-align:center;max-width:560px}.app-main .drop-icon{display:grid;place-items:center;width:64px;height:64px;margin:0 auto 18px;border-radius:18px;background:var(--brand-soft);color:var(--brand)}.app-main .drop-icon svg{width:34px;height:34px}.app-main .drop-inner h2{margin:0;font-size:21px}.app-main .drop-body{margin:8px 0 18px;color:var(--muted);font-size:13px}.app-main .drop-note{margin:14px 0 0;color:var(--muted);font-size:11px;line-height:1.5}.landing-primary{min-height:40px;padding:8px 14px;border-radius:10px}.file-input{display:none}
     @media(max-width:760px){:root{--header:58px}.header-inner{padding-block:8px}.app-header .brand-mark{width:34px;height:34px;border-radius:25%}.app-header .brand-name{font-size:15px}.brand-meta,.header-file{display:none!important}.app-main{padding-top:14px;padding-left:12px;padding-right:12px;padding-bottom:calc(var(--mobile-nav) + 16px)}.app-main .intro{margin:0}.app-main .hero{flex-direction:column;gap:9px;padding-bottom:14px}.app-main .hero h1{font-size:clamp(22px,7vw,28px)}.app-main .hero p{font-size:13px}.local-badge{display:none}.app-main .dropzone{min-height:360px;padding:24px 16px;border-radius:18px}.app-main .drop-inner h2{font-size:20px}.language-button{min-width:24px}.header-icon-button{min-width:24px}}
+    /* Catalog directory, field definitions and query workspace. */
+    #overviewView,#columnsPanel,#sqlView{--workspace-mono:ui-monospace,SFMono-Regular,Consolas,"Liberation Mono",monospace;background:#fff;container-type:inline-size}
+    .directory-scroll,.field-scroll{flex:1;min-height:0;overflow:auto}
+    .directory-head{padding:24px 24px 0}
+    .directory-file{display:flex;align-items:center;gap:7px;color:#51665c;font:12px/1.45 var(--workspace-mono);overflow-wrap:anywhere}
+    .directory-file svg,.directory-icon svg,.directory-arrow,.directory-actions svg,.field-action svg{flex:none;width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+    .directory-heading-row{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px 20px;margin-top:7px}
+    .directory-heading-row h2{margin:0;font-size:27px;line-height:1.2;letter-spacing:-.035em;color:#123d35}
+    .directory-actions{display:flex;align-items:center;flex-wrap:wrap;gap:6px}
+    .directory-short{display:none}
+    .directory-actions .secondary{min-height:34px;border-radius:6px;border:1px solid #cbd6ce;background:#fff;color:#234d40;padding:5px 10px;gap:6px;font-size:12px;font-weight:650}
+    .directory-actions .secondary:hover{background:#edf4e9;border-color:#90ab98}
+    .directory-stats{display:flex;flex-wrap:wrap;gap:5px 20px;margin:16px 0 0;padding:12px 0 14px;border-top:1px solid #d7dfd6}
+    .directory-stats .overview-stat{display:inline-flex;align-items:baseline;gap:6px;min-width:0;padding:0;border:0;border-radius:0;background:none;font-size:12px;line-height:1.5}
+    .directory-stats dt{color:#52655c}.directory-stats dd{margin:0;color:#153f34;font-weight:670;font-variant-numeric:tabular-nums}
+    .directory-columns,.directory-row{display:grid;grid-template-columns:minmax(130px,2.4fr) minmax(62px,1fr) minmax(48px,.6fr) minmax(82px,.85fr) 17px;align-items:center;gap:14px;padding-inline:24px}
+    .directory-columns{min-height:34px;position:sticky;top:0;z-index:1;background:#f4f5ef;color:#435b50;font-size:11px;line-height:1.35;font-weight:680;border-block:1px solid #d7dfd6}
+    .directory-columns>span:nth-child(4),.directory-count{text-align:right}
+    .directory-list{padding:0;margin:0;list-style:none}
+    .directory-row{width:100%;min-height:48px;padding-block:8px;border:0;border-bottom:1px solid #e5e9e2;background:#fff;color:#213c31;text-align:left;font:inherit}
+    .directory-row:hover,.directory-row:focus-visible{background:#f1f6e8}
+    .directory-row:focus-visible{outline:2px solid #30775f;outline-offset:-3px}
+    .directory-name{min-width:0;display:flex;align-items:center;gap:10px;color:#143c30;font-family:var(--workspace-mono);font-size:13px;line-height:1.45}
+    .directory-name strong,.directory-schema{min-width:0;overflow-wrap:anywhere}
+    .directory-icon{display:grid;place-items:center;flex:none;width:28px;height:28px;background:#e9f0e5;border-radius:6px;color:#276149}
+    .directory-schema,.directory-count{font:12px/1.5 var(--workspace-mono);color:#43574d}
+    .directory-kind{font-size:12px;color:#4d6156}
+    .directory-arrow{width:15px;height:15px;color:#697d6d}.directory-row:hover .directory-arrow{color:#16624f}
+    .directory-empty,.directory-note,.directory-comparison{margin:0;padding:15px 24px;color:#52645a}
+    .directory-note{font-size:11px;line-height:1.55;background:#fafaf6}
+    .directory-comparison{background:#f1f5e8;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;color:#284c3c;font-size:13px}
+    .directory-comparison p{font-size:12px;margin:2px 0 0;overflow-wrap:anywhere}
+    .field-table{width:100%;table-layout:fixed;border-collapse:separate;border-spacing:0;font-size:13px;font-variant-numeric:tabular-nums}
+    .field-table :is(th,td){padding:11px 12px;text-align:left;overflow-wrap:anywhere;border:0;border-bottom:1px solid #e2e8e0;vertical-align:middle;color:#344a3e}
+    .field-table tr>:first-child{padding-left:22px}.field-table tr>:last-child{padding-right:22px;text-align:right}
+    .field-table thead th{position:sticky;top:0;z-index:1;background:#f4f5ef;color:#42584d;font-size:11px;font-weight:650;line-height:1.4}
+    .field-table thead th:nth-child(1){width:27%}.field-table thead th:nth-child(2){width:23%}.field-table thead th:nth-child(3){width:13%}.field-table thead th:nth-child(5){width:108px}
+    .field-name,.field-type code,.field-default{font-family:var(--workspace-mono)}
+    .field-table .field-name{color:#173d30;font-size:13px;font-weight:650}.field-table .field-type{font-size:12px;color:#295f4b}
+    .field-default,.field-nullable{font-size:12px}
+    .field-action .profile-btn{display:inline-flex;align-items:center;justify-content:center;gap:5px;width:auto;min-width:0;min-height:31px;padding:4px 8px;border-radius:5px;border:1px solid #cddbd0;background:#f7faf4;color:#245844;font:inherit;font-size:12px}
+    .field-action .profile-btn:hover{background:#e5f0d8;border-color:#8eac93}.field-action svg{height:15px;width:15px}
+    #sqlView{min-width:0;overflow:auto}
+    #sqlView .sql-editor-card{flex:none;background:#123d35;color:#f1f6ed;padding:18px 22px 14px;border:0}
+    #sqlView .sql-editor-toolbar{display:flex;align-items:center;justify-content:space-between;flex-direction:row;flex-wrap:wrap;margin:0 0 12px}
+    #sqlEditorTitle{font-size:20px;line-height:1.3;letter-spacing:-.025em;margin:0;color:#f4f7eb}
+    #sqlView .sql-history-select{min-width:0;width:auto;max-width:210px;height:32px;border:1px solid #779486;border-radius:5px;background:#214b40;color:#ecf1e8;font:inherit;font-size:12px;padding:3px 7px;color-scheme:dark}
+    #sqlView .sql-history-select:disabled{opacity:1;color:#bccec0;border-color:#557465}
+    #sqlEditor{background:#0d3029;border:1px solid #507265;border-radius:5px;color:#f0f5e7;caret-color:#d9eb9a;font:14px/1.6 var(--workspace-mono);padding:11px 14px;min-height:118px;height:145px;max-height:40vh}
+    #sqlEditor::placeholder{color:#b8cdbb;opacity:1}#sqlEditor:focus-visible{outline:2px solid #d9eb9a;outline-offset:2px;box-shadow:none}
+    #sqlView .sql-actions{gap:7px;margin-top:10px}
+    #sqlView .sql-actions button{min-height:35px;padding:5px 11px;border-radius:5px;font-size:12px;gap:6px}
+    #sqlView .sql-actions .primary{background:#d9eb9a;color:#123d35;border:1px solid #d9eb9a}
+    #sqlView .sql-actions .primary:hover{background:#e7f4bc}
+    #sqlView .sql-actions .secondary{color:#e8f0e6;border:1px solid #6c8d7d;background:transparent}
+    #sqlView .sql-actions .secondary:hover{background:#245044}
+    #sqlView .sql-shortcut,#sqlView .sql-safety{color:#c4d5c7}
+    #sqlView .sql-safety{margin:9px 0 0;font-size:11px}
+    #sqlView .sql-output-title{flex:none;margin:0;padding:16px 22px 10px;font-size:17px;line-height:1.35;letter-spacing:-.02em;color:#173e32;border-bottom:1px solid #d9e1d7}
+    #sqlView .sql-result{min-height:165px}
+    #sqlView .sql-result-toolbar{background:#f7f8f1;padding:7px 22px;min-height:40px}
+    #sqlView .sql-result-status{color:#3c5446;font-variant-numeric:tabular-nums}
+    #sqlView .sql-empty{display:flex;align-items:flex-start;justify-content:flex-start;gap:10px;text-align:left;min-height:100px;padding:20px 22px;color:#52655a}
+    #sqlView .sql-empty svg{flex:none;width:20px;height:20px;margin:0;stroke:#607d6b}
+    #sqlView .sql-record-list{min-height:0}
+    .query-sr-only{position:absolute;width:1px;height:1px;padding:0;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+    @container(max-width:590px){
+      .directory-head{padding:18px 14px 0}.directory-heading-row h2{font-size:23px}
+      .directory-stats{gap:3px 12px;margin-top:12px;padding:8px 0 10px}
+      .directory-stats .overview-stat{font-size:11px}
+      .directory-columns{display:none}
+      .directory-long{display:none}.directory-short{display:inline}
+      .directory-row{grid-template-columns:minmax(0,1fr) auto 14px;gap:1px 9px;padding:9px 14px;min-height:55px}
+      .directory-name{grid-row:1;grid-column:1;gap:7px}.directory-icon{width:23px;height:23px}
+      .directory-schema{grid-row:2;grid-column:1;padding-left:30px;font-size:11px}
+      .directory-kind{grid-row:1;grid-column:2;text-align:right}.directory-count{grid-row:2;grid-column:2;font-size:11px}
+      .directory-arrow{grid-column:3;grid-row:1/span 2}.directory-comparison,.directory-empty,.directory-note{padding-inline:14px}
+      .field-table,.field-table tbody{display:block}.field-table thead{position:absolute;clip-path:inset(50%);width:1px;height:1px;overflow:hidden}
+      .field-table tbody tr{display:grid;grid-template-columns:minmax(0,1.65fr) minmax(88px,1fr);gap:4px 9px;padding:10px 14px;border-bottom:1px solid #dce4d9}
+      .field-table tbody tr>:is(td,th){display:block;padding:0;border:0;text-align:left}
+      .field-table tbody tr>:first-child,.field-table tbody tr>:last-child{padding-inline:0}
+      .field-name,.field-type{grid-column:1}
+      .field-table .field-action{grid-column:2;grid-row:1/span 2;align-self:center;justify-self:end}
+      .field-table .field-action button{min-height:34px}
+      .field-table .field-nullable,.field-table .field-default{grid-row:3;line-height:1.4}
+      .field-table .field-nullable{grid-column:1}.field-table .field-default{grid-column:2;justify-self:end}
+      .field-nullable::before,.field-default::before{content:attr(data-mobile-label) " · ";font-family:system-ui,sans-serif;color:#58695e}
+      #sqlView .sql-editor-card{padding:14px}#sqlView .sql-editor-toolbar{gap:6px}
+      #sqlEditorTitle{font-size:18px}#sqlView .sql-history-select{max-width:145px}
+      #sqlEditor{height:142px;font-size:16px;padding:9px}
+      #sqlView .sql-actions{gap:5px}#sqlView .sql-actions button{flex:1 1 auto;min-width:0;padding-inline:7px;white-space:nowrap}
+      #sqlView .sql-output-title,#sqlView .sql-result-toolbar,#sqlView .sql-empty{padding-inline:14px}
+    }
     .relation-toolbar-actions,.relation-output{display:contents}
+    .app-main #intro{--entry-ink:#123d35;--entry-accent:#d9eb9a;--entry-mono:"IBM Plex Mono",ui-monospace,Consolas,monospace;width:min(1176px,100%);margin:clamp(38px,7vh,80px) auto 0;color:var(--entry-ink)}
+    .entry-layout{display:grid;grid-template-columns:minmax(0,.95fr) minmax(0,1.05fr);gap:clamp(32px,5vw,78px);align-items:center}
+    .entry-source{min-width:0}
+    .entry-source h1{margin:0;font-size:clamp(32px,3.4vw,52px);line-height:1.13;letter-spacing:-.035em;font-weight:720;text-wrap:balance}
+    .entry-lead{max-width:47ch;margin:15px 0 27px;color:#495b52;line-height:1.7;font-size:16px}
+    #intro .dropzone{display:flex;flex-direction:column;align-items:flex-start;min-height:0;padding:22px 24px;gap:11px;border:1px dashed #869c8b;border-radius:12px;box-shadow:none;background:#fff}
+    #intro .dropzone.drag{border-color:var(--entry-ink);outline:2px solid var(--entry-ink);background:#edf4d9}
+    .entry-file-actions{display:flex;align-items:center;flex-wrap:wrap;gap:8px 14px}
+    #intro .entry-file-button,#intro .entry-demo-button{display:inline-flex;align-items:center;justify-content:center;gap:9px;border:0;min-height:44px;padding:9px 17px;border-radius:6px;font:inherit;font-size:14px;font-weight:680}
+    #intro .entry-file-button{background:var(--entry-ink);color:#fff}
+    #intro .entry-file-button:hover{background:#205347}
+    .entry-file-button svg,.entry-demo-button svg{width:17px;height:17px;stroke:currentColor;stroke-width:1.7;fill:none;stroke-linecap:round;stroke-linejoin:round}
+    .entry-drop-hint{margin:0;color:#40574e;font-size:14px}
+    .entry-formats{font-family:var(--entry-mono);font-size:12px;color:#51675e}
+    #intro .local-badge{margin:12px 0 0;color:#446054}
+    .entry-sample{display:grid;min-width:0;background:var(--entry-ink);color:#eff6e9;border-radius:12px;overflow:hidden}
+    .entry-sample-heading{padding:22px 24px 19px}
+    .entry-sample-file{display:flex;align-items:center;gap:8px;min-width:0;margin:7px 0 0;color:#c0e1c7;font:12px/1.5 var(--entry-mono);overflow-wrap:anywhere}
+    .entry-sample-file svg{width:14px;height:14px;flex:none;fill:none;stroke:currentColor;stroke-width:1.6}
+    .entry-sample h2{margin:0;color:#fff;font:600 clamp(23px,2.5vw,33px)/1.2 var(--entry-mono);letter-spacing:-.025em}
+    .entry-schema{color:#b6cebe}
+    .entry-sample table{width:100%;border-collapse:collapse;font:13px/1.45 var(--entry-mono);text-align:left;font-variant-numeric:tabular-nums;white-space:nowrap}
+    .entry-sample th{background:#1b493e;color:#d5e4d7;font-size:12px;font-weight:500}
+    .entry-sample td,.entry-sample th{padding:9px 8px;border-block-start:1px solid #386053;vertical-align:middle}
+    .entry-sample :is(th,td):first-child{padding-left:24px}
+    .entry-sample :is(th,td):last-child{padding-right:24px}
+    .entry-sample time span{display:inline-block}
+    .entry-sample-footer{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px 12px;padding:16px 24px;border-top:1px solid #386053}
+    .entry-sample-size{margin:0;color:#c0e1c7;font-size:12px;font-variant-numeric:tabular-nums}
+    #intro .entry-demo-button{background:var(--entry-accent);color:#173e2d}
+    #intro .entry-demo-button:hover{background:#e9f6b9}
+    #intro button:focus-visible{outline:3px solid #277396;outline-offset:3px}
+    #intro .entry-demo-button:focus-visible{outline-color:#fff}
+    #intro #demoError{margin:0;padding:0 24px 16px;background:var(--entry-ink);color:#ffe0c3;font-size:14px}
+    @media(max-width:960px) and (min-width:761px){.entry-layout{gap:24px;grid-template-columns:minmax(0,.88fr) minmax(0,1.12fr)}.entry-sample time span{display:block}.entry-file-actions{align-items:flex-start;flex-direction:column}}
+    @media(max-width:760px){
+      .app-main #intro{width:min(540px,100%);margin:20px auto 0}
+      .entry-layout{grid-template-columns:minmax(0,1fr);gap:20px}
+      .entry-source h1{font-size:clamp(29px,7vw,37px);line-height:1.2}
+      .entry-lead{margin:8px 0 15px;font-size:14px;line-height:1.55}
+      #intro .dropzone{padding:15px 17px;gap:6px}
+      .entry-sample-heading{padding:16px 17px 12px}
+      .entry-sample h2{font-size:23px}
+      .entry-sample-file{margin-top:4px}
+      .entry-sample :is(th,td):first-child{padding-left:16px}
+      .entry-sample :is(th,td):last-child{padding-right:16px}
+      .entry-sample td,.entry-sample th{padding:6px;font-size:12px}
+      .entry-sample-footer{grid-row:2;padding:0 16px 12px;border:0}
+      #intro .entry-demo-button{padding-inline:12px}
+      .entry-sample time span{display:block}
+    }
     .mobile-sort{display:none}
     @media(max-width:760px){
       .panel-toolbar .data-controls{display:grid;grid-template-columns:auto minmax(0,1fr) auto}
       .panel-toolbar .search-box,.panel-toolbar .export-group{grid-column:1/-1}
       .mobile-sort{display:block;width:100%;min-width:0}
+    }
+    #relationView{min-width:0;background:#fff}
+    #relationView .content-head{display:flex;align-items:flex-end;justify-content:space-between;gap:12px 24px;flex-wrap:wrap;flex:none;padding:22px 24px 0;background:#fff;border-bottom:1px solid #ced8d1}
+    .relation-identity{min-width:0;padding-bottom:16px}
+    #relationView .relation-name{margin:0;line-height:1.13;font-weight:735;font-size:29px;letter-spacing:-.032em;color:#123d35;overflow-wrap:anywhere}
+    #relationView .relation-meta{display:flex;align-items:center;flex-wrap:wrap;gap:2px 0;margin:6px 0 0;font-size:12px;color:#56645d}
+    #relationView .relation-meta span{max-width:100%;overflow-wrap:anywhere}
+    #relationView .relation-meta span+span:not(:empty)::before{content:"·";padding-inline:8px;color:#718178}
+    #relationView .tabs{align-self:flex-end;gap:7px}
+    #relationView .tab{padding:10px 7px 11px;border-radius:0;border-bottom-width:3px;font-size:13px;color:#53655b}
+    #relationView .tab.active{color:#125541;border-color:#16624f}
+    #dataPanel{min-width:0}
+    #dataPanel .panel-toolbar{padding:13px 22px;min-height:0;gap:0;background:#fff;border-bottom:1px solid #d8e0d9}
+    #dataPanel .data-controls{display:flex;align-items:center;flex-wrap:wrap;gap:8px;flex:1 1 100%;width:100%}
+    #dataPanel .search-box{flex:1 1 240px;max-width:none}
+    #dataPanel .search-box input{height:42px;padding:8px 38px 8px 40px;border:1px solid #9eafa4;border-radius:5px;background:#f8faf7;color:#18372b;outline-offset:2px;font-size:14px}
+    #dataPanel .search-box input::placeholder{color:#56675d;opacity:1}
+    #dataPanel .search-box>svg{left:13px;width:18px;height:18px;stroke:#416b58}
+    #dataPanel .search-box input:focus{outline:2px solid #16624f;outline-offset:1px;background:#fff;box-shadow:none}
+    #dataPanel .clear-search{top:50%;transform:translateY(-50%)}
+    #dataPanel .search-box input::-webkit-search-cancel-button{display:none}
+    #dataPanel .tool-btn{border-radius:5px;min-height:40px;height:auto;justify-content:center;padding:7px 13px;border-color:#b5c2b8;color:#254938;background:#fff}
+    #dataPanel .tool-btn.active,#dataPanel .tool-btn:hover:not(:disabled){background:#edf5ed;border-color:#8ea995}
+    #dataPanel .filter-summary{padding:8px 22px;gap:6px;background:#f8faf6;border-bottom:1px solid #d6e1d8}
+    #dataPanel .filter-chip{border-radius:5px;background:#e4f0e8;color:#214c37;max-width:100%}
+    #dataPanel .filter-chip>span{min-width:0;overflow-wrap:anywhere}
+    #relationRows .table-wrap{scrollbar-color:#b8c7bc #f2f4ee}
+    #relationRows .data-table{font-size:14px;color:#24332b}
+    #relationRows .data-table th{padding:0;border-bottom:1px solid #baccc0;border-inline-end:1px solid #dfe7df;background:#eff4ee;color:#30513e}
+    .column-sort{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;min-height:38px;border:0;padding:8px 12px;background:transparent;color:inherit;font-family:ui-monospace,Consolas,monospace;font-size:12px;text-align:left;font-weight:650}
+    .column-sort svg{width:14px;height:14px;flex:none;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+    #relationRows .data-table th[aria-sort="ascending"],#relationRows .data-table th[aria-sort="descending"]{background:#dcece0;color:#124c37}
+    #relationRows .data-table td{height:38px;padding:7px 12px;border-bottom:1px solid #e1e7df;border-inline-end:1px solid #edf0e9}
+    #relationRows .data-table tbody tr:hover td{background:#f4f8f1}
+    #relationRows .data-table th:last-child,#relationRows .data-table td:last-child{border-inline-end:0}
+    #relationRows .numeric-cell .cell-btn,.record-field .numeric-value{font-family:ui-monospace,Consolas,monospace;font-variant-numeric:tabular-nums}
+    #relationRows .numeric-cell .cell-btn{text-align:right;font-size:13px}
+    #relationRows .numeric-cell .column-sort{justify-content:flex-end}
+    #relationRows mark{padding:.06em 0;border-radius:2px;background:#ffe5a2;color:#382d13}
+    #relationPager{flex:none;display:flex;align-items:center;flex-wrap:wrap;gap:8px 12px;padding:9px 18px;border-top:1px solid #ced8d1;background:#f8f9f4;font-variant-numeric:tabular-nums}
+    #relationPager:empty{display:none}
+    .page-range{min-width:0;flex:1 1 auto;display:flex;align-items:center;flex-wrap:wrap;gap:2px 10px}
+    #relationPager .panel-status{color:#465c4e;font-size:12px}
+    .page-nav{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:3px;min-width:0;max-width:100%}
+    .page-nav button{width:30px;height:32px;border-radius:4px;border-color:transparent;background:transparent;color:#305641}
+    .page-nav button:hover:not(:disabled){background:#e3eee3}
+    #relationPager .page-label{min-width:0;margin:0 4px;color:#344e3c}
+    #relationPager .count-link{display:inline-block;width:auto;height:auto;border:0;border-radius:3px;padding:4px 0;background:transparent;color:#185c42;text-decoration:underline;text-underline-offset:3px;font-size:12px}
+    #relationPager #exportMenuButton{display:inline-flex;width:auto;min-height:32px;height:auto;gap:7px;padding:5px 9px;font-size:12px}
+    #relationExportMenu{position:fixed;inset:auto;margin:0;padding:4px;width:max-content;min-width:160px;max-width:calc(100vw - 16px);border:1px solid #b2c2b6;border-radius:6px;background:#fff;color:#244535;box-shadow:0 6px 20px #223b2f22}
+    #relationExportMenu button{display:block;width:100%;height:auto;min-height:36px;text-align:left;padding:7px 10px;border:0;border-radius:3px;background:transparent;color:inherit;font-size:13px}
+    #relationExportMenu button:hover,#relationExportMenu button:focus-visible{background:#e7f2e7}
+    #relationView :is(button,select):focus-visible{outline:2px solid #16624f;outline-offset:-2px}
+    @media(max-width:760px){
+      #relationView .content-head{padding:13px 16px 0}
+      .relation-identity{padding-bottom:12px}
+      #relationView .relation-name{font-size:25px}
+      #dataPanel .panel-toolbar{padding:10px 14px}
+      #dataPanel .data-controls{display:grid;grid-template-columns:auto minmax(0,1fr);gap:7px}
+      #dataPanel .search-box{grid-column:1/-1}
+      #dataPanel .mobile-sort{display:block;width:100%;min-width:0;text-overflow:ellipsis}
+      #dataPanel .tool-btn{min-height:34px;padding:5px 10px}
+      #dataPanel .filter-summary{padding:5px 14px;max-height:95px;overflow:auto}
+      #relationRows .table-wrap{display:none}
+      #relationRows .record-list{min-height:0;overscroll-behavior:contain}
+      #relationRows .record-card{padding:10px 15px 12px;border-bottom:1px solid #d8e2d8}
+      #relationRows .record-head{align-items:center;margin:0 0 7px}
+      #relationRows .record-head>.record-field{display:flex;min-width:0;align-items:baseline;gap:8px}
+      #relationRows .record-head .record-field-value{order:-1;font-size:17px;font-weight:700;line-height:1.25;color:#173e2b}
+      #relationRows .record-head .record-field-name{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+      #relationRows .record-detail-btn{display:inline-flex;align-items:center;gap:3px;flex:none;min-height:32px;padding:3px 0 3px 8px;color:#215d43}
+      .record-detail-btn svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:1.8}
+      #relationRows .record-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px 12px}
+      #relationRows .record-field{min-width:0;display:flex;flex-direction:column;gap:1px}
+      #relationRows .record-head>.record-field{flex-direction:row}
+      #relationRows .record-field-name{font-family:ui-monospace,Consolas,monospace;font-size:12px;font-weight:500;line-height:1.25;color:#5c695f}
+      #relationRows .record-field-value{font-size:13px;line-height:1.35;color:#27392c}
+      #relationPager{gap:3px 8px;padding:5px 14px}
+      #relationPager .page-nav{order:1;flex-basis:100%}
+      #relationPager #exportMenuButton{min-height:30px}
+      #relationPager .page-nav button{min-width:36px;height:32px}
+    }
+    @media(max-height:480px){#dataPanel{overflow:auto}#relationRows :is(.table-wrap,.record-list){min-height:8rem}}
+
+    /* The catalog and the result sheet share a full-height workspace. */
+    :root{--bg:#f7f6f0;--ink:#182d27;--muted:#52665c;--line:#d5ded6;--brand-dark:#123d35;--brand-soft:#e6f0e6;--catalog:#163d34;--catalog-rule:#3b5c51;--catalog-text:#eff5eb;--catalog-muted:#bbcec2;--acid:#d9eb9a;--mono:ui-monospace,"Cascadia Mono",Consolas,monospace;--header:60px}
+    body{background:var(--bg);color:var(--ink)}
+    body:has(#intro:not(.hidden)){min-height:100dvh;display:flex;flex-direction:column}
+    .app-main:has(#intro:not(.hidden)){flex:1}
+    button:focus-visible,summary:focus-visible,select:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid var(--brand);outline-offset:2px}
+    ::selection{background:#d5e9ac;color:#142d22}
+    .app-header{background:#fff;backdrop-filter:none;border-color:var(--line)}
+    .header-inner{width:100%;min-height:var(--header);padding:7px clamp(14px,2vw,30px)}
+    .app-header .brand-mark{width:35px;height:35px;box-shadow:none}
+    .app-header .brand-name{color:#17362d;letter-spacing:-.035em}
+    .brand-meta{font-size:12px;color:#54675c}
+    .version-badge{border:0;border-radius:4px;padding:1px 5px;letter-spacing:0;background:#edf1e9;color:#48604d;vertical-align:2px}
+    .app-header .header-actions{gap:7px}
+    .header-file{padding:0;box-shadow:none;background:transparent;border:0}
+    .header-file button{min-height:36px;padding:0 12px;gap:6px;display:inline-flex;align-items:center;font-weight:650;border:1px solid var(--line);border-radius:6px;color:var(--brand-dark);background:#fff}
+    .header-file button:hover{background:#edf3eb}
+    .header-file svg{width:17px;height:17px;stroke:currentColor;stroke-width:1.7;fill:none;stroke-linejoin:round}
+    .language-button,.header-icon-button{min-width:36px;min-height:36px;border-radius:6px;color:#455f51}
+    .header-icon-button:hover,.language-button:hover{background:#edf3eb}
+    .app-main:has(.workspace:not(.hidden)){width:100%;max-width:none;margin:0;padding:0}
+    .workspace:not(.hidden){grid-template-columns:clamp(232px,19.5vw,294px) minmax(0,1fr);gap:0;height:calc(100dvh - var(--header));min-height:0}
+    .workspace .sidebar,.workspace .content-card{border:0;border-radius:0;min-height:0;box-shadow:none}
+    .workspace .content-card{background:#fff}
+    .workspace .sidebar{background:var(--catalog);color:var(--catalog-text)}
+    .file-card{padding:20px 17px 14px;border:0;background:transparent}
+    .file-top{align-items:flex-start;gap:10px}
+    .file-icon{height:30px;width:30px;background:transparent;color:var(--acid);border:1px solid var(--catalog-rule);border-radius:6px}
+    .file-icon svg{height:18px;width:18px}
+    .file-info{display:flex;align-items:center;flex-wrap:wrap;gap:4px 8px}
+    .file-name{flex:0 0 100%;min-width:0;width:100%;white-space:normal;overflow-wrap:anywhere;line-height:1.4;font-size:14px;color:#fff}
+    .file-meta,.file-badge{margin:0;color:var(--catalog-muted);font-size:12px;line-height:1.4}
+    .file-badge{background:transparent;border:0;border-radius:0;padding:0}
+    .file-badge::before{content:"·";padding-right:7px}
+    .catalog-nav{display:flex;gap:4px;flex-wrap:wrap;padding:0 15px 15px;border-bottom:1px solid var(--catalog-rule)}
+    .catalog-nav[hidden],.catalog-search[hidden],.catalog-nav button[hidden]{display:none}
+    .catalog-nav .relation{width:auto;padding:5px 8px;min-height:32px;gap:6px;border-radius:5px;color:var(--catalog-muted);font-weight:600;font-size:13px}
+    .catalog-nav .relation:hover,.sidebar .catalog-relation:hover,.schema-title:hover{background:#264c40;color:#fff}
+    .catalog-nav .relation.active{background:#335a4e;color:#fff}
+    .catalog-nav svg{width:15px;height:15px}
+    .catalog-search{padding:17px 16px 10px;flex:none}
+    .catalog-label{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px}
+    .catalog-label label{font-size:14px;font-weight:710}
+    .catalog-label output,.schema-count{color:var(--catalog-muted);font:12px var(--mono);font-variant-numeric:tabular-nums}
+    .catalog-input{display:flex;align-items:center;gap:8px;min-height:36px;padding:0 9px;border:1px solid #6c8b79;background:#20473c;border-radius:5px}
+    .catalog-input:focus-within{outline:2px solid var(--acid);outline-offset:2px}
+    .catalog-input svg{width:16px;height:16px;stroke:var(--catalog-muted);stroke-width:1.8;fill:none;flex:none}
+    .catalog-input input{flex:1;width:0;min-width:0;min-height:34px;padding:0;color:white;background:transparent;border:0;outline:0;caret-color:var(--acid);font-size:13px;color-scheme:dark}
+    .catalog-input input:focus-visible{outline:0}
+    .catalog-input input::placeholder{color:#c1d0c5;opacity:1}
+    .catalog-input kbd{border:1px solid #648272;padding:0 4px;border-radius:3px;color:#c7d6ca;font:12px var(--mono)}
+    .sidebar .tree{flex:1;min-height:0;overflow:auto;overscroll-behavior:contain;padding:0 10px 16px;scrollbar-color:#628273 transparent}
+    .schema-group{margin:5px 0 9px}
+    .schema-title{list-style:none;cursor:pointer;color:#d6e2d8;padding:6px 9px;gap:8px;text-transform:none;font-family:var(--mono);font-size:13px;font-weight:650;border-radius:4px}
+    .schema-title::-webkit-details-marker{display:none}
+    .schema-title>span:first-of-type{overflow-wrap:anywhere;min-width:0}
+    .schema-title svg{width:12px;height:12px;flex:none;stroke:#c2d3c5}
+    .schema-group[open]>.schema-title svg{transform:rotate(90deg)}
+    .schema-count{margin-left:auto}
+    .sidebar .catalog-relation{min-height:33px;padding:5px 9px 5px 25px;gap:8px;border-radius:4px;color:var(--catalog-text)}
+    .catalog-relation .relation-label{font:13px/1.5 var(--mono)}
+    .catalog-relation svg{color:#b8d2bd;width:15px;height:15px}
+    .catalog-relation .relation-type{font-size:11px;color:var(--catalog-muted)}
+    .sidebar .catalog-relation.active{background:var(--acid);color:#153825}
+    .catalog-relation.active svg,.catalog-relation.active .relation-type{color:#345638}
+    .catalog-relation.active .relation-label{font-weight:bold}
+    .sidebar :is(button,summary):focus-visible{outline-color:var(--acid);outline-offset:-2px}
+    .sidebar .tree-empty{color:var(--catalog-muted);padding:12px 8px;font-size:13px}
+    .tree-empty button{display:block;margin-top:8px;border:0;padding:3px 0;background:none;text-decoration:underline;text-underline-offset:3px;color:var(--acid)}
+    .sidebar .state{color:var(--catalog-muted)}
+    .mobile-nav button[aria-current="page"]{background:#e2eddc;color:#173f30}
+    .mobile-nav button:disabled{opacity:.5}
+    footer.app-footer{max-width:none;padding:12px clamp(14px,2vw,30px);border-top:1px solid var(--line)}
+    @media(max-width:760px){
+      :root{--header:54px;--mobile-nav:60px}
+      .header-inner{padding:5px 12px;gap:6px}
+      .app-header .brand{gap:7px}
+      .app-header .brand-name{font-size:15px}
+      .app-header .brand-mark{width:30px;height:30px}
+      .app-header .header-actions{gap:2px}
+      .header-file:not([hidden]){display:flex!important}
+      .header-file button{min-height:36px;width:36px;justify-content:center;padding:0}
+      .header-file button span{position:absolute;clip-path:inset(50%);width:1px;height:1px;overflow:hidden;white-space:nowrap}
+      .workspace:not(.hidden){height:calc(100dvh - var(--header) - var(--mobile-nav) - env(safe-area-inset-bottom,0px))}
+      .workspace .sidebar,.workspace .content-card{height:100%;min-height:0}
+      .workspace .sidebar{overflow:auto}
+      .catalog-nav{display:none}
+      .catalog-search{border-top:1px solid var(--catalog-rule);padding-top:13px}
+      .file-card{padding:13px 16px}
+      .catalog-input{min-height:42px}
+      .catalog-input input{font-size:16px;min-height:40px}
+      .catalog-input kbd{display:none}
+      .sidebar .catalog-relation,.schema-title{min-height:42px}
+      .catalog-relation .relation-label{font-size:14px}
+      .mobile-nav{background:#fff;border-color:var(--line);padding-inline:4px}
+      .mobile-nav button{border-radius:5px;margin:0 2px}
+    }
+    @media(max-width:760px) and (max-height:440px){
+      .workspace .sidebar,.workspace .content-card{overflow:auto}
+      .sidebar .tree{min-height:120px}
     }
   </style>
 </head>
@@ -67,7 +392,7 @@
       </div>
     </div>
     <div class="header-actions">
-      <div class="header-file" id="headerFile" hidden><span class="header-file-name" id="headerFileName"></span><span class="header-file-size" id="headerFileSize"></span><button id="replaceFileHeader" type="button" aria-label="別のファイルを開く" title="別のファイルを開く">×</button></div>
+      <div class="header-file" id="headerFile" hidden><button id="changeFileBtn" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 8V6.5A1.5 1.5 0 0 1 4.5 5H10l2 2h7.5A1.5 1.5 0 0 1 21 8.5V10M3.5 10h17l-2 9H5z"/></svg><span data-i18n="openFileLabel">ファイルを開く</span></button></div>
       <button class="language-button" id="langBtn" type="button" aria-label="Switch language">EN</button>
       <button class="header-icon-button" id="helpBtn" type="button" aria-label="Help">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="12" cy="12" r="9"/><path d="M9.8 9a2.35 2.35 0 1 1 3.72 1.9c-.92.67-1.52 1.12-1.52 2.1"/><circle cx="12" cy="17" r="1" fill="currentColor" stroke="none"/></svg>
@@ -77,40 +402,61 @@
 </header>
 <main class="app-main">
   <section class="intro" id="intro">
-    <div class="hero">
-      <div>
-        <h1 data-i18n="heroTitle">DuckDBファイルの中身を確認する</h1>
-        <p data-i18n="heroBody">テーブルやビューのデータを確認し、SQLで検索できます。別のファイルと構造を比較することもできます。</p>
+    <div class="entry-layout">
+      <div class="entry-source">
+        <h1 data-i18n="heroTitle">DuckDBファイルを開く</h1>
+        <p class="entry-lead" data-i18n="entryLead">テーブルを開いて、探したい値を検索できます。ファイルはこの端末で読み取ります。</p>
+        <div class="dropzone" id="dropzone" aria-labelledby="dropTitle">
+          <div class="entry-file-actions">
+            <button class="entry-file-button" id="openBtn" type="button"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M3 17V6a1 1 0 0 1 1-1h5l2 2h8a1 1 0 0 1 1 1v2M3 18l2-7h17l-2 7a1.5 1.5 0 0 1-1.5 1H4a1 1 0 0 1-1-1Z"/></svg><span data-i18n="chooseFile">ファイルを選択</span></button>
+            <p class="entry-drop-hint" id="dropTitle" data-i18n="entryDrop">または、ここにドロップ</p>
+          </div>
+          <span class="entry-formats">.duckdb / .db</span>
+        </div>
+        <div class="local-badge"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="5" y="10" width="14" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg><span data-i18n="entryLocal">ローカルで読み取り専用</span></div>
       </div>
-      <div class="local-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 5 6v5c0 4.6 2.8 8 7 10 4.2-2 7-5.4 7-10V6z"/><path d="m9 12 2 2 4-5"/></svg><span data-i18n="local">完全ローカル処理</span></div>
-    </div>
-    <div class="dropzone" id="dropzone" aria-labelledby="dropTitle">
-      <div class="drop-inner">
-        <div class="drop-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><ellipse cx="12" cy="6" rx="7" ry="3"/><path d="M5 6v6c0 1.7 3.1 3 7 3s7-1.3 7-3V6M5 12v6c0 1.7 3.1 3 7 3s7-1.3 7-3v-6"/></svg></div>
-        <h2 id="dropTitle" data-i18n="dropTitle">DuckDBファイルをドロップ</h2>
-        <p class="drop-body" data-i18n="dropNote">.duckdb / .db を選択してください。ファイルは外部へ送信されません。</p>
-        <div class="landing-actions">
-          <button class="primary landing-primary" id="openBtn" type="button"><span data-i18n="chooseFile">ファイルを選択</span></button>
-          <button class="secondary" id="openDemoBtn" type="button" data-i18n="openDemo">サンプルDBで試す</button>
+      <section class="entry-sample" aria-labelledby="sampleRelation">
+        <div class="entry-sample-heading">
+          <h2 id="sampleRelation"><span class="entry-schema">main.</span>orders</h2>
+          <p class="entry-sample-file"><svg aria-hidden="true" viewBox="0 0 20 20"><path d="M5 2h6l4 4v12H5zM11 2v5h4"/></svg>browser-kitty-sample.duckdb</p>
+        </div>
+        <table aria-labelledby="sampleRelation">
+          <thead><tr><th scope="col">order_id</th><th scope="col">ordered_at</th><th scope="col">status</th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td><time datetime="2025-01-01T11:00:00"><span>2025-01-01</span> <span>11:00:00</span></time></td><td>paid</td></tr>
+            <tr><td>2</td><td><time datetime="2025-01-01T14:00:00"><span>2025-01-01</span> <span>14:00:00</span></time></td><td>shipped</td></tr>
+            <tr><td>3</td><td><time datetime="2025-01-01T17:00:00"><span>2025-01-01</span> <span>17:00:00</span></time></td><td>delivered</td></tr>
+          </tbody>
+        </table>
+        <div class="entry-sample-footer">
+          <p class="entry-sample-size" data-i18n="entrySampleSize">250 行 · 9 列</p>
+          <button class="entry-demo-button" id="openDemoBtn" type="button"><span data-i18n="openDemo">サンプルDBで試す</span><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M4 12h15m-6-6 6 6-6 6"/></svg></button>
         </div>
         <p id="demoError" role="alert" data-i18n="demoFailed" hidden>デモを開けませんでした。もう一度試すか、ファイルを選択してください。</p>
-        <p class="drop-note" data-i18n="largeDbNote">大きなデータベースでは、検索・列分析・DB比較に時間がかかる場合があります。</p>
-      </div>
+      </section>
     </div>
     <input class="file-input" id="fileInput" type="file" accept=".duckdb,.db,application/octet-stream" hidden>
     <input id="compareFileInput" type="file" accept=".duckdb,.db,application/octet-stream" hidden>
   </section>
 
-  <section class="workspace hidden mobile-objects" id="workspace" aria-live="polite">
+  <section class="workspace hidden mobile-objects" id="workspace">
     <aside class="sidebar" id="sidebar">
       <div class="file-card">
         <div class="file-top">
           <div class="file-icon"><svg viewBox="0 0 24 24"><ellipse cx="12" cy="6" rx="7" ry="3"/><path d="M5 6v12c0 1.7 3.1 3 7 3s7-1.3 7-3V6M5 12c0 1.7 3.1 3 7 3s7-1.3 7-3"/></svg></div>
           <div class="file-info"><div class="file-name" id="fileName"></div><div class="file-meta" id="fileMeta"></div><div class="file-badge" data-i18n="readOnly">読み取り専用</div></div>
         </div>
-        <div class="file-actions"><button class="secondary" id="changeFileBtn" type="button"><svg viewBox="0 0 24 24"><path d="M4 19V7a2 2 0 0 1 2-2h4l2 2h6a2 2 0 0 1 2 2v10H4Z"/><path d="M8 13h8"/></svg><span data-i18n="openAnother">別のファイルを開く</span></button></div>
+
       </div>
-      <div class="tree-head" data-i18n="objects">データベース内</div>
+      <nav id="catalogNav" class="catalog-nav" aria-label="Database" hidden>
+        <button class="relation" id="overviewTreeButton" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M10 10v10"/></svg><span data-i18n="overview">概要</span></button>
+        <button class="relation" id="sqlTreeButton" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8 7-5 5 5 5m8-10 5 5-5 5m-3-13-2 16"/></svg><span>SQL</span></button>
+        <button class="relation" id="compareTreeButton" type="button" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h15l-4-4m5 14H5l4 4"/></svg><span data-i18n="compareTitle">構造比較</span></button>
+      </nav>
+      <div class="catalog-search" id="catalogSearch" hidden>
+        <div class="catalog-label"><label for="objectSearch" data-i18n="catalogTitle">テーブルとビュー</label><output id="catalogCount" for="objectSearch" aria-live="polite"></output></div>
+        <div class="catalog-input"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10" cy="10" r="6"/><path d="m15 15 5 5"/></svg><input type="search" id="objectSearch" autocomplete="off" spellcheck="false" data-i18n-placeholder="catalogSearchHint" placeholder="テーブル名を検索"><kbd aria-hidden="true">/</kbd></div>
+      </div>
       <div class="tree" id="tree"><div class="state"><div><div class="spinner"></div><div data-i18n="readingObjects">構造を確認しています…</div></div></div></div>
     </aside>
 
@@ -118,27 +464,28 @@
       <div class="overview-view hidden" id="overviewView"></div>
       <div class="compare-view hidden" id="comparisonView"></div>
       <div class="sql-view hidden" id="sqlView">
-        <div class="sql-head"><div class="relation-kicker" data-i18n="sqlReadOnly">読み取り専用SQL</div><div class="sql-title" data-i18n="sql">SQL</div><div class="sql-sub" data-i18n="sqlIntro">SELECTなどの読み取り専用SQLを1文ずつ実行できます。元のデータベースは変更しません。</div></div>
-        <div class="sql-editor-card">
-          <div class="sql-editor-toolbar"><div class="sql-history-wrap"><select id="sqlHistorySelect" class="sql-history-select" aria-label="SQL history"></select></div></div>
-          <textarea id="sqlEditor" class="sql-editor" spellcheck="false" autocapitalize="off" autocomplete="off" data-i18n-placeholder="sqlPlaceholder" aria-label="SQL"></textarea>
+        <section class="sql-editor-card" aria-labelledby="sqlEditorTitle">
+          <div class="sql-editor-toolbar"><h2 id="sqlEditorTitle" data-i18n="sqlReadOnly">読み取り専用SQL</h2><div class="sql-history-wrap"><label class="query-sr-only" for="sqlHistorySelect" data-i18n="sqlHistory">クエリ履歴</label><select id="sqlHistorySelect" class="sql-history-select"></select></div></div>
+          <textarea id="sqlEditor" class="sql-editor" spellcheck="false" autocapitalize="off" autocomplete="off" data-i18n-placeholder="sqlPlaceholder" aria-labelledby="sqlEditorTitle"></textarea>
           <div class="sql-actions">
             <button class="primary" id="runSqlBtn" type="button"><svg viewBox="0 0 24 24"><path d="m8 5 11 7-11 7V5Z"/></svg><span data-i18n="runSql">実行</span></button>
             <button class="secondary" id="explainSqlBtn" type="button"><svg viewBox="0 0 24 24"><path d="M4 5h16M4 12h10M4 19h7"/></svg><span data-i18n="explainSql">実行計画</span></button>
             <button class="secondary" id="clearSqlBtn" type="button"><svg viewBox="0 0 24 24"><path d="M5 6h14M9 6V4h6v2M8 9v9M12 9v9M16 9v9M7 6l1 15h8l1-15"/></svg><span data-i18n="clearSql">入力をクリア</span></button>
             <span class="sql-shortcut" data-i18n="sqlShortcut">Ctrl / ⌘ + Enter で実行</span>
           </div>
-          <div class="sql-safety" data-i18n="sqlSafety">読み取り専用の1文だけ実行します。結果は最大1,000行まで表示し、履歴は現在のファイルを開いている間だけ保持します。</div>
-        </div>
-        <div class="sql-result" id="sqlResult"></div>
+          <p class="sql-safety" data-i18n="sqlSafety">読み取り専用の1文だけ実行します。結果は最大1,000行まで表示し、履歴は現在のファイルを開いている間だけ保持します。</p>
+        </section>
+        <h3 class="sql-output-title" id="sqlOutputTitle" data-i18n="sqlResult">クエリ結果</h3>
+        <section class="sql-result" id="sqlResult" aria-labelledby="sqlOutputTitle"></section>
       </div>
       <div class="empty-relation" id="emptyRelation"><div><svg viewBox="0 0 24 24"><ellipse cx="12" cy="6" rx="7" ry="3"/><path d="M5 6v12c0 1.7 3.1 3 7 3s7-1.3 7-3V6M5 12c0 1.7 3.1 3 7 3s7-1.3 7-3"/></svg><div data-i18n="selectObject">左からテーブルまたはビューを選択してください。</div></div></div>
       <div id="relationView" class="hidden" style="display:flex;flex:1;min-height:0;flex-direction:column">
         <div class="content-head">
-          <div class="relation-kicker" id="relationKicker"></div>
-          <div class="relation-name" id="relationName"></div>
-          <div class="relation-meta"><span id="rowCount"></span><span id="columnCount"></span></div>
-          <div class="tabs"><button class="tab active" id="dataTab" type="button" data-i18n="data">データ</button><button class="tab" id="columnsTab" type="button" data-i18n="columns">列</button></div>
+          <div class="relation-identity">
+            <h2 class="relation-name" id="relationName"></h2>
+            <div class="relation-meta"><span id="relationKicker"></span><span id="columnCount"></span><span id="rowCount"></span></div>
+          </div>
+          <div class="tabs"><button class="tab active" id="dataTab" type="button" aria-pressed="true" data-i18n="data">データ</button><button class="tab" id="columnsTab" type="button" aria-pressed="false" data-i18n="columns">列</button></div>
         </div>
         <div class="panel" data-panel="data" id="dataPanel"><div class="state"><div><div class="spinner"></div><div data-i18n="readingData">データを読み込んでいます…</div></div></div></div>
         <div class="panel" data-panel="columns" id="columnsPanel"><div class="state"><div><div class="spinner"></div><div data-i18n="readingColumns">列を確認しています…</div></div></div></div>
@@ -163,7 +510,7 @@
     <h3 data-i18n="helpCanTitle">できること</h3><p data-i18n="helpCanBody">DuckDBデータベースファイルを読み取り専用で開き、概要、テーブル、ビュー、データ、列定義を確認できます。列分析、読み取り専用SQL、データ辞書HTML、2つのDuckDBファイルの構造比較にも対応しています。</p>
     <!-- APP:HELP:BEGIN -->
     <p data-i18n="helpPageExport">CSV / JSONは、読み込みに成功した現在のページだけを保存します。読み込み中や失敗後は保存できません。DECIMALは精度と小数桁数を保って表示・CSV保存し、JSONでは文字列として保存します。 日付と日時は画面・CSV・JSONで同じ形式になります。</p>
-    <h3 data-i18n="helpStepsTitle">使い方</h3><ol><li data-i18n="helpStep1">自分の .duckdb / .db ファイルを選ぶか、「サンプルDBで試す」で注文一覧を開きます。</li><li data-i18n="helpStep2">左の一覧からテーブルまたはビューを選びます。</li><li data-i18n="helpStep3">データは100行ずつ表示します。「件数を集計」または最後のページを選ぶと、必要に応じて正確な件数を計算します。数値・日付の範囲は「フィルタ」、スマートフォンの並べ替え指定は「並べ替え」を使います。「列」では必要な列だけ分析できます。</li><li data-i18n="helpStep4">「SQL」ではSELECTなどの読み取り専用SQLを1文ずつ実行できます。</li><li data-i18n="helpStep5">「概要」からデータ辞書HTMLを保存できます。行データは含めず、実行済みの列分析だけを含めます。</li><li data-i18n="helpStep6">「概要」から別のDuckDBファイルを選び、構造差分を比較できます。</li></ol>
+    <h3 data-i18n="helpStepsTitle">使い方</h3><ol><li data-i18n="helpStep1">自分の .duckdb / .db ファイルを選ぶか、「サンプルDBで試す」で注文一覧を開きます。</li><li data-i18n="helpStep2">「テーブルとビュー」で名前を検索します。スキーマ名でも絞り込みでき、Enterで先頭の候補を開いて値の検索に進めます。</li><li data-i18n="helpStep3">データは100行ずつ表示します。「件数を集計」または最後のページを選ぶと、必要に応じて正確な件数を計算します。数値・日付の範囲は「フィルタ」、スマートフォンの並べ替え指定は「並べ替え」を使います。「列」では必要な列だけ分析できます。</li><li data-i18n="helpStep4">「SQL」ではSELECTなどの読み取り専用SQLを1文ずつ実行できます。</li><li data-i18n="helpStep5">「概要」からデータ辞書HTMLを保存できます。行データは含めず、実行済みの列分析だけを含めます。</li><li data-i18n="helpStep6">「概要」から別のDuckDBファイルを選び、構造差分を比較できます。</li></ol>
     <!-- APP:HELP:END -->
     <h3 data-i18n="helpPrivacyTitle">プライバシー</h3><p data-i18n="helpPrivacyBody">データベースファイルはブラウザー内で処理され、外部サーバーへ送信されません。DuckDB WebAssemblyと必要なコードも配布物へ内包します。</p>
     <h3 data-i18n="helpNotesTitle">注意事項</h3><ul><li data-i18n="helpNote1">読み取り専用です。元のDuckDBファイルは変更しません。</li><li data-i18n="helpNote2">大きなテーブルや複雑なビューでは、件数取得・検索・列分析・SQL実行に時間がかかる場合があります。DB比較では比較先を別のブラウザー内ランタイムで一時的に開きます。</li><li data-i18n="helpNote3">DuckDBのバージョンや追加機能に依存するデータベースは、ブラウザー版DuckDBで開けない場合があります。</li></ul>
@@ -209,19 +556,27 @@
   window.StandaloneAssets=Object.freeze({manifest:BUILD_MANIFEST,list(){return Object.entries(assetBundle.dependencies||{}).flatMap(([dependencyId,dependency])=>Object.keys(dependency.assets||{}).map(assetKey=>`${dependencyId}/${assetKey}`))},has(dependencyId,assetKey){return Boolean(assetBundle.dependencies?.[dependencyId]?.assets?.[assetKey])},async bytesAsync(dependencyId,assetKey){const cacheKey=`${dependencyId}/${assetKey}`;if(!assetByteCache.has(cacheKey))assetByteCache.set(cacheKey,inflateAsset(getAsset(dependencyId,assetKey)));return new Uint8Array(await assetByteCache.get(cacheKey))},async blobUrlAsync(dependencyId,assetKey){const asset=getAsset(dependencyId,assetKey);const url=URL.createObjectURL(new Blob([await this.bytesAsync(dependencyId,assetKey)],{type:asset.mime||'application/octet-stream'}));blobUrls.add(url);return url},async loadClassicScript(dependencyId,assetKey,globalName=''){const sourceUrl=await this.blobUrlAsync(dependencyId,assetKey);try{await new Promise((resolve,reject)=>{const script=document.createElement('script');script.src=sourceUrl;script.onload=()=>{script.remove();resolve()};script.onerror=()=>{script.remove();reject(new Error(`Failed to load embedded script: ${dependencyId}/${assetKey}`))};document.head.append(script)});return globalName?window[globalName]:true}finally{URL.revokeObjectURL(sourceUrl);blobUrls.delete(sourceUrl)}},revoke(url){if(url&&blobUrls.has(url)){URL.revokeObjectURL(url);blobUrls.delete(url)}},revokeAll(){for(const url of blobUrls)URL.revokeObjectURL(url);blobUrls.clear()}});
 
   const I18N={
-    ja:{brandMeta:'テーブル閲覧 · SQL検索 · 構造比較',heroTitle:'DuckDBファイルの中身を確認する',heroBody:'テーブルやビューのデータを確認し、SQLで検索できます。別のファイルと構造を比較することもできます。',local:'完全ローカル処理',pageFooter:'データの閲覧はブラウザー内で完結',dropTitle:'DuckDBファイルをドロップ',dropNote:'.duckdb / .db を選択してください。ファイルは外部へ送信されません。',largeDbNote:'大きなデータベースでは、検索・列分析・DB比較に時間がかかる場合があります。',chooseFile:'ファイルを選択',readOnly:'読み取り専用',openAnother:'別のファイルを開く',objects:'データベース内',objectsShort:'一覧',overview:'概要',sql:'SQL',sqlReadOnly:'読み取り専用SQL',sqlIntro:'SELECT / WITH / VALUES / SHOW / DESCRIBE / EXPLAIN を1文ずつ実行できます。元のデータベースは変更しません。',sqlPlaceholder:'SELECT *\nFROM main.table_name\nLIMIT 100;',runSql:'実行',explainSql:'実行計画',clearSql:'入力をクリア',sqlShortcut:'Ctrl / ⌘ + Enter で実行',sqlSafety:'読み取り専用の1文だけ実行します。結果は最大1,000行まで表示し、履歴は現在のファイルを開いている間だけ保持します。',sqlHistory:'実行履歴',sqlHistoryEmpty:'実行履歴はまだありません',sqlResult:'実行結果',sqlEmptyTitle:'SQLを入力して実行',sqlEmptyBody:'テーブルを横断した確認や集計に使えます。SQLは読み取り専用として検査してから実行します。',sqlRunning:'SQLを実行しています…',sqlFailed:'SQLを実行できませんでした。',sqlOnlyRead:'読み取り専用SQLだけ実行できます。',sqlSingleStatement:'SQLは1文ずつ実行してください。',sqlExplainOnly:'実行計画は SELECT / WITH / VALUES に対応しています。',sqlRows:'{count} 行',sqlDuration:'{ms} ms',sqlLimited:'先頭1,000行を表示',sqlNoRows:'結果は0行です。',sqlExportCsv:'結果をCSV',sqlExportJson:'結果をJSON',sqlResultExported:'SQL結果を保存しました',sqlResultEmpty:'保存できるSQL結果がありません',databaseOverview:'データベース概要',fileSize:'ファイルサイズ',schemas:'スキーマ',tables:'テーブル',views:'ビュー',totalColumns:'列数',duckdbVersion:'DuckDBバージョン',databaseObjects:'テーブルとビュー',estimatedRows:'推定行数',noDatabaseObjects:'表示できるテーブルまたはビューがありません。',saveSchemaReport:'データ辞書HTMLを保存',reportSaving:'データ辞書HTMLを作成しています…',reportSaved:'データ辞書HTMLを保存しました',reportFailed:'データ辞書HTMLを作成できませんでした。',reportNote:'DB構造と実行済みの列分析を単一HTMLにまとめます。テーブルの行データは含めません。列分析の「よくある値」は含まれます。',compareDatabase:'別のDBと比較',compareAnother:'比較先を選び直す',compareTitle:'データベース比較',compareIntro:'現在のDBと別のDuckDBファイルの構造差分を比較します。行データの全件比較は行いません。',compareCurrent:'現在のDB',compareTarget:'比較先',compareLoading:'比較先の構造を確認しています…',compareReady:'データベースを比較しました',compareFailed:'データベースを比較できませんでした。',compareFailedBody:'比較先が対応していないDuckDBファイル、破損したファイル、またはブラウザー版DuckDBで利用できない機能を含んでいる可能性があります。',compareBack:'概要へ戻る',compareAgain:'別のDBと比較',compareAdded:'追加',compareRemoved:'削除',compareChanged:'変更',compareNoChanges:'構造上の差分は見つかりませんでした。',compareSchemas:'スキーマの差分',compareObjects:'テーブル / ビューの差分',compareColumns:'列の差分',compareEstimatedRows:'推定行数',compareObjectType:'種類',compareDataType:'型',compareNullable:'NULL可否',compareDefault:'既定値',comparePosition:'列の位置',compareViewDefinition:'ビュー定義',compareStructureOnly:'schema / table / view / 列定義（列順を含む）と推定行数を比較します。テーブルの行データそのものは比較しません。',compareResultAvailable:'比較結果があります',compareResultSub:'{name} との構造差分を確認できます。',compareViewResult:'比較結果を見る',profile:'分析',analyzeColumn:'列を分析',profileTitle:'列の傾向',profileLoading:'列を分析しています…',profileHint:'この列全体を集計します。大きなテーブルや複雑なビューでは時間がかかる場合があります。',totalRowsProfile:'全行',nonNullRows:'値あり',nullRows:'NULL',nullRate:'NULL率',approxDistinct:'ユニーク数（推定）',minimum:'最小',maximum:'最大',average:'平均',median:'中央値（推定）',q1:'25%点（推定）',q3:'75%点（推定）',minLength:'最短文字数',maxLength:'最長文字数',avgLength:'平均文字数',topValues:'よくある値',noTopValues:'表示できる上位値はありません。',profileFailed:'列を分析できませんでした。',profileFailedBody:'このデータ型またはビューでは集計できない可能性があります。',approxNote:'ユニーク数は高速化のため推定値です。',emptyString:'（空文字）',readingObjects:'構造を確認しています…',selectObject:'左からテーブルまたはビューを選択してください。',data:'データ',columns:'列',readingData:'データを読み込んでいます…',readingColumns:'列を確認しています…',table:'テーブル',view:'ビュー',rows:'行',columnsCount:'列',page:'ページ',of:'/',firstPage:'最初のページ',prevPage:'前のページ',nextPage:'次のページ',lastPage:'最後のページ',unknownRows:'件数を確認中',noRows:'該当するデータがありません',noObjects:'表示できるテーブルまたはビューがありません。',runtimeLoading:'DuckDBを準備しています…',dbOpening:'データベースを開いています…',loadFailed:'データベースを開けませんでした。',loadFailedBody:'対応していないDuckDBファイル、破損したファイル、またはブラウザー版DuckDBで利用できない機能が含まれている可能性があります。',retry:'別のファイルを選択',nullable:'NULL可',defaultValue:'既定値',position:'位置',type:'型',name:'列名',yes:'はい',no:'いいえ',opened:'データベースを開きました',searchRows:'表示データを検索',filter:'フィルタ',filterTitle:'フィルタを追加',filterColumn:'列',filterOperator:'条件',filterValue:'値',applyFilter:'フィルタを追加',cancel:'キャンセル',close:'閉じる',clearSearch:'検索を消去',clearFilters:'フィルタをすべて解除',contains:'含む',equals:'一致',notEquals:'一致しない',searchLabel:'検索',removeFilter:'フィルタを解除',isNull:'NULL',isNotNull:'NULLではない',startsWith:'で始まる',endsWith:'で終わる',sortAsc:'昇順',sortDesc:'降順',exportCsv:'表示中をCSV',exportJson:'表示中をJSON',exported:'ファイルを保存しました',exportEmpty:'保存できる行がありません',copyValue:'値をコピー',copied:'コピーしました',copyFailed:'コピーできませんでした',cellDetails:'セルの詳細',recordDetails:'レコードの詳細',record:'レコード',moreColumns:'ほか {count} 列',filteredRows:'{filtered} / 全 {total} 行',searchAndFilters:'検索・フィルタ',helpTitle:'使い方と注意事項',helpCanTitle:'できること',helpCanBody:'DuckDBデータベースファイルを読み取り専用で開き、概要、テーブル、ビュー、データ、列定義を確認できます。列分析、読み取り専用SQL、データ辞書HTMLに加え、2つのDuckDBファイルの構造比較にも対応しています。',helpPageExport:'CSV / JSONは、読み込みに成功した現在のページだけを保存します。読み込み中や失敗後は保存できません。DECIMALは精度と小数桁数を保って表示・CSV保存し、JSONでは文字列として保存します。 日付と日時は画面・CSV・JSONで同じ形式になります。',helpStepsTitle:'使い方',helpStep1:'自分の .duckdb / .db ファイルを選ぶか、「サンプルDBで試す」で注文一覧を開きます。',helpStep2:'左の一覧からテーブルまたはビューを選びます。',helpStep3:'データは100行ずつ表示します。「件数を集計」または最後のページを選ぶと、必要に応じて正確な件数を計算します。数値・日付の範囲は「フィルタ」、スマートフォンの列順指定は「並べ替え」を使います。「列」では必要な列だけ分析できます。',helpStep4:'「SQL」ではSELECTなどの読み取り専用SQLを1文ずつ実行できます。',helpStep5:'「概要」からデータ辞書HTMLを保存できます。行データは含めず、実行済みの列分析だけを含めます。',helpStep6:'「概要」から別のDuckDBファイルを選び、schema、table、view、列定義（列順を含む）、推定行数の差分を比較できます。',helpPrivacyTitle:'プライバシー',helpPrivacyBody:'データベースファイルはブラウザー内で処理され、外部サーバーへ送信されません。DuckDB WebAssemblyと必要なコードも配布物へ内包します。',helpNotesTitle:'注意事項',helpNote1:'読み取り専用です。元のDuckDBファイルは変更しません。',helpNote2:'大きなテーブルや複雑なビューでは、件数取得・検索・列分析・SQL実行に時間がかかる場合があります。',helpNote3:'DuckDBのバージョンや追加機能に依存するデータベースは、ブラウザー版DuckDBで開けない場合があります。'},
-    en:{brandMeta:'Tables · SQL queries · Schema comparison',heroTitle:'Explore a DuckDB database',heroBody:'Browse tables and views, query data with SQL, and compare database structures using a second file.',local:'Fully local processing',pageFooter:'Data viewing stays in the browser',dropTitle:'Drop a DuckDB file',dropNote:'Choose a .duckdb or .db file, or select Try sample database to browse sample orders. The file is never sent to an external server.',largeDbNote:'Large databases can take longer to search, profile, or compare.',chooseFile:'Choose file',readOnly:'Read only',openAnother:'Open another file',objects:'Database objects',objectsShort:'Objects',overview:'Overview',sql:'SQL',sqlReadOnly:'Read-only SQL',sqlIntro:'Run one SELECT / WITH / VALUES / SHOW / DESCRIBE / EXPLAIN statement at a time. The original database is not modified.',sqlPlaceholder:'SELECT *\nFROM main.table_name\nLIMIT 100;',runSql:'Run',explainSql:'Explain',clearSql:'Clear editor',sqlShortcut:'Ctrl / ⌘ + Enter to run',sqlSafety:'Only one read-only statement is executed. Results are limited to 1,000 rows, and history is kept only while the current file is open.',sqlHistory:'Query history',sqlHistoryEmpty:'No query history yet',sqlResult:'Query result',sqlEmptyTitle:'Enter SQL and run it',sqlEmptyBody:'Use SQL for cross-table checks and aggregations. Statements are checked as read-only before execution.',sqlRunning:'Running SQL…',sqlFailed:'Could not run this SQL.',sqlOnlyRead:'Only read-only SQL is allowed.',sqlSingleStatement:'Run one SQL statement at a time.',sqlExplainOnly:'Explain is available for SELECT / WITH / VALUES.',sqlRows:'{count} rows',sqlDuration:'{ms} ms',sqlLimited:'Showing first 1,000 rows',sqlNoRows:'The result has 0 rows.',sqlExportCsv:'Result to CSV',sqlExportJson:'Result to JSON',sqlResultExported:'SQL result saved',sqlResultEmpty:'There is no SQL result to save',databaseOverview:'Database overview',fileSize:'File size',schemas:'Schemas',tables:'Tables',views:'Views',totalColumns:'Columns',duckdbVersion:'DuckDB version',databaseObjects:'Tables and views',estimatedRows:'Estimated rows',noDatabaseObjects:'No tables or views were found.',saveSchemaReport:'Save data dictionary HTML',reportSaving:'Creating data dictionary HTML…',reportSaved:'Data dictionary HTML saved',reportFailed:'Could not create the data dictionary HTML.',reportNote:'Creates a standalone HTML report with database structure and completed column analyses. Table rows are not included. Common values from analyzed columns are included.',compareDatabase:'Compare another DB',compareAnother:'Choose another comparison file',compareTitle:'Database comparison',compareIntro:'Compare the structure of the current database with another DuckDB file. Table rows are not compared exhaustively.',compareCurrent:'Current DB',compareTarget:'Comparison DB',compareLoading:'Reading comparison database structure…',compareReady:'Database comparison completed',compareFailed:'Could not compare this database.',compareFailedBody:'The comparison file may be unsupported or damaged, or it may use DuckDB features unavailable in the browser build.',compareBack:'Back to overview',compareAgain:'Compare another DB',compareAdded:'Added',compareRemoved:'Removed',compareChanged:'Changed',compareNoChanges:'No structural differences were found.',compareSchemas:'Schema differences',compareObjects:'Table / view differences',compareColumns:'Column differences',compareEstimatedRows:'Estimated rows',compareObjectType:'Object type',compareDataType:'Type',compareNullable:'Nullable',compareDefault:'Default',comparePosition:'Column position',compareViewDefinition:'View definition',compareStructureOnly:'Compares schemas, tables, views, column definitions (including order), and estimated row counts. Table row data itself is not compared.',compareResultAvailable:'Comparison available',compareResultSub:'Structural differences against {name} are available.',compareViewResult:'View comparison',profile:'Analyze',analyzeColumn:'Analyze column',profileTitle:'Column insights',profileLoading:'Analyzing column…',profileHint:'This scans the selected column. Large tables or complex views can take time.',totalRowsProfile:'Total rows',nonNullRows:'Non-null',nullRows:'NULL',nullRate:'NULL rate',approxDistinct:'Distinct (estimate)',minimum:'Min',maximum:'Max',average:'Average',median:'Median (approx.)',q1:'25th percentile (approx.)',q3:'75th percentile (approx.)',minLength:'Shortest length',maxLength:'Longest length',avgLength:'Average length',topValues:'Common values',noTopValues:'No common values to display.',profileFailed:'Could not analyze this column.',profileFailedBody:'This data type or view may not support one of the required aggregates.',approxNote:'Distinct count is estimated for faster analysis.',emptyString:'(empty)',readingObjects:'Reading database structure…',selectObject:'Choose a table or view from the list.',data:'Data',columns:'Columns',readingData:'Loading rows…',readingColumns:'Reading columns…',table:'Table',view:'View',rows:'rows',columnsCount:'columns',page:'Page',of:'of',firstPage:'First page',prevPage:'Previous page',nextPage:'Next page',lastPage:'Last page',unknownRows:'Counting rows',noRows:'No matching rows',noObjects:'No tables or views were found.',runtimeLoading:'Preparing DuckDB…',dbOpening:'Opening database…',loadFailed:'Could not open this database.',loadFailedBody:'The file may be unsupported or damaged, or it may use DuckDB features that are unavailable in the browser build.',retry:'Choose another file',nullable:'Nullable',defaultValue:'Default',position:'Position',type:'Type',name:'Column',yes:'Yes',no:'No',opened:'Database opened',searchRows:'Search displayed data',filter:'Filter',filterTitle:'Add filter',filterColumn:'Column',filterOperator:'Condition',filterValue:'Value',applyFilter:'Add filter',cancel:'Cancel',close:'Close',clearSearch:'Clear search',clearFilters:'Clear all filters',contains:'contains',equals:'equals',notEquals:'does not equal',searchLabel:'Search',removeFilter:'Remove filter',isNull:'is NULL',isNotNull:'is not NULL',startsWith:'starts with',endsWith:'ends with',sortAsc:'Ascending',sortDesc:'Descending',exportCsv:'Visible rows to CSV',exportJson:'Visible rows to JSON',exported:'File saved',exportEmpty:'There are no rows to export',copyValue:'Copy value',copied:'Copied',copyFailed:'Could not copy',cellDetails:'Cell details',recordDetails:'Record details',record:'Record',moreColumns:'{count} more columns',filteredRows:'{filtered} / {total} total rows',searchAndFilters:'Search & filters',helpTitle:'Help & notes',helpCanTitle:'What it does',helpCanBody:'Open DuckDB database files in read-only mode and inspect the overview, tables, views, rows, and column definitions. Column analysis, read-only SQL, data dictionary HTML, and structural comparison between two DuckDB files are also supported.',helpPageExport:'CSV / JSON saves only the current successfully loaded page. Export is unavailable while loading or after a failure. DECIMAL values keep their exact precision and scale in display and CSV; JSON stores them as strings. Dates and timestamps use the same format in the viewer, CSV and JSON.',helpStepsTitle:'How to use',helpStep1:'Choose a .duckdb or .db file, or select Try sample database to browse sample orders.',helpStep2:'Choose a table or view from the object list.',helpStep3:'Browse 100 rows at a time. Use Count rows or Last to calculate the exact count when needed. Filter by number or date range, use Sort by on a phone, and analyze individual columns in Columns.',helpStep4:'Use SQL to run one read-only SELECT-style statement at a time.',helpStep5:'Save a data dictionary HTML from Overview. It excludes table rows and includes only column analyses already run in this session.',helpStep6:'From Overview, choose another DuckDB file to compare schemas, tables, views, column definitions (including order), and estimated row counts.',helpPrivacyTitle:'Privacy',helpPrivacyBody:'Database files are processed in your browser and are not sent to an external server. DuckDB WebAssembly and required code are embedded in the distributed app.',helpNotesTitle:'Notes',helpNote1:'This app is read-only and never modifies the original DuckDB file.',helpNote2:'Counting, searching, column analysis, or SQL on very large tables and complex views can take time.',helpNote3:'Databases that depend on a different DuckDB version or optional extensions may not open in the browser build.'}
+    ja:{brandMeta:'テーブル閲覧 · SQL検索 · 構造比較',heroTitle:'DuckDBファイルの中身を確認する',heroBody:'テーブルやビューのデータを確認し、SQLで検索できます。別のファイルと構造を比較することもできます。',local:'完全ローカル処理',pageFooter:'データの閲覧はブラウザー内で完結',dropTitle:'DuckDBファイルをドロップ',dropNote:'.duckdb / .db を選択してください。ファイルは外部へ送信されません。',largeDbNote:'大きなデータベースでは、検索・列分析・DB比較に時間がかかる場合があります。',chooseFile:'ファイルを選択',readOnly:'読み取り専用',openAnother:'別のファイルを開く',objects:'データベース内',objectsShort:'一覧',overview:'概要',sql:'SQL',sqlReadOnly:'読み取り専用SQL',sqlIntro:'SELECT / WITH / VALUES / SHOW / DESCRIBE / EXPLAIN を1文ずつ実行できます。元のデータベースは変更しません。',sqlPlaceholder:'SELECT *\nFROM main.table_name\nLIMIT 100;',runSql:'実行',explainSql:'実行計画',clearSql:'入力をクリア',sqlShortcut:'Ctrl / ⌘ + Enter で実行',sqlSafety:'読み取り専用の1文だけ実行します。結果は最大1,000行まで表示し、履歴は現在のファイルを開いている間だけ保持します。',sqlHistory:'実行履歴',sqlHistoryEmpty:'実行履歴はまだありません',sqlResult:'実行結果',sqlEmptyTitle:'SQLを入力して実行',sqlEmptyBody:'テーブルを横断した確認や集計に使えます。SQLは読み取り専用として検査してから実行します。',sqlRunning:'SQLを実行しています…',sqlFailed:'SQLを実行できませんでした。',sqlOnlyRead:'読み取り専用SQLだけ実行できます。',sqlSingleStatement:'SQLは1文ずつ実行してください。',sqlExplainOnly:'実行計画は SELECT / WITH / VALUES に対応しています。',sqlRows:'{count} 行',sqlDuration:'{ms} ms',sqlLimited:'先頭1,000行を表示',sqlNoRows:'結果は0行です。',sqlExportCsv:'結果をCSV',sqlExportJson:'結果をJSON',sqlResultExported:'SQL結果を保存しました',sqlResultEmpty:'保存できるSQL結果がありません',databaseOverview:'データベース概要',fileSize:'ファイルサイズ',schemas:'スキーマ',tables:'テーブル',views:'ビュー',totalColumns:'列数',duckdbVersion:'DuckDBバージョン',databaseObjects:'テーブルとビュー',estimatedRows:'推定行数',noDatabaseObjects:'表示できるテーブルまたはビューがありません。',saveSchemaReport:'データ辞書HTMLを保存',reportSaving:'データ辞書HTMLを作成しています…',reportSaved:'データ辞書HTMLを保存しました',reportFailed:'データ辞書HTMLを作成できませんでした。',reportNote:'DB構造と実行済みの列分析を単一HTMLにまとめます。テーブルの行データは含めません。列分析の「よくある値」は含まれます。',compareDatabase:'別のDBと比較',compareAnother:'比較先を選び直す',compareTitle:'データベース比較',compareIntro:'現在のDBと別のDuckDBファイルの構造差分を比較します。行データの全件比較は行いません。',compareCurrent:'現在のDB',compareTarget:'比較先',compareLoading:'比較先の構造を確認しています…',compareReady:'データベースを比較しました',compareFailed:'データベースを比較できませんでした。',compareFailedBody:'比較先が対応していないDuckDBファイル、破損したファイル、またはブラウザー版DuckDBで利用できない機能を含んでいる可能性があります。',compareBack:'概要へ戻る',compareAgain:'別のDBと比較',compareAdded:'追加',compareRemoved:'削除',compareChanged:'変更',compareNoChanges:'構造上の差分は見つかりませんでした。',compareSchemas:'スキーマの差分',compareObjects:'テーブル / ビューの差分',compareColumns:'列の差分',compareEstimatedRows:'推定行数',compareObjectType:'種類',compareDataType:'型',compareNullable:'NULL可否',compareDefault:'既定値',comparePosition:'列の位置',compareViewDefinition:'ビュー定義',compareStructureOnly:'schema / table / view / 列定義（列順を含む）と推定行数を比較します。テーブルの行データそのものは比較しません。',compareResultAvailable:'比較結果があります',compareResultSub:'{name} との構造差分を確認できます。',compareViewResult:'比較結果を見る',profile:'分析',analyzeColumn:'列を分析',profileTitle:'列の傾向',profileLoading:'列を分析しています…',profileHint:'この列全体を集計します。大きなテーブルや複雑なビューでは時間がかかる場合があります。',totalRowsProfile:'全行',nonNullRows:'値あり',nullRows:'NULL',nullRate:'NULL率',approxDistinct:'ユニーク数（推定）',minimum:'最小',maximum:'最大',average:'平均',median:'中央値（推定）',q1:'25%点（推定）',q3:'75%点（推定）',minLength:'最短文字数',maxLength:'最長文字数',avgLength:'平均文字数',topValues:'よくある値',noTopValues:'表示できる上位値はありません。',profileFailed:'列を分析できませんでした。',profileFailedBody:'このデータ型またはビューでは集計できない可能性があります。',approxNote:'ユニーク数は高速化のため推定値です。',emptyString:'（空文字）',readingObjects:'構造を確認しています…',selectObject:'左からテーブルまたはビューを選択してください。',data:'データ',columns:'列',readingData:'データを読み込んでいます…',readingColumns:'列を確認しています…',table:'テーブル',view:'ビュー',rows:'行',columnsCount:'列',page:'ページ',of:'/',firstPage:'最初のページ',prevPage:'前のページ',nextPage:'次のページ',lastPage:'最後のページ',unknownRows:'件数を確認中',noRows:'該当するデータがありません',noObjects:'表示できるテーブルまたはビューがありません。',runtimeLoading:'DuckDBを準備しています…',dbOpening:'データベースを開いています…',loadFailed:'データベースを開けませんでした。',loadFailedBody:'対応していないDuckDBファイル、破損したファイル、またはブラウザー版DuckDBで利用できない機能が含まれている可能性があります。',retry:'別のファイルを選択',nullable:'NULL可',defaultValue:'既定値',position:'位置',type:'型',name:'列名',yes:'はい',no:'いいえ',opened:'データベースを開きました',searchRows:'表示データを検索',filter:'フィルタ',filterTitle:'フィルタを追加',filterColumn:'列',filterOperator:'条件',filterValue:'値',applyFilter:'フィルタを追加',cancel:'キャンセル',close:'閉じる',clearSearch:'検索を消去',clearFilters:'フィルタをすべて解除',contains:'含む',equals:'一致',notEquals:'一致しない',searchLabel:'検索',removeFilter:'フィルタを解除',isNull:'NULL',isNotNull:'NULLではない',startsWith:'で始まる',endsWith:'で終わる',sortAsc:'昇順',sortDesc:'降順',exportCsv:'表示中をCSV',exportJson:'表示中をJSON',exported:'ファイルを保存しました',exportEmpty:'保存できる行がありません',copyValue:'値をコピー',copied:'コピーしました',copyFailed:'コピーできませんでした',cellDetails:'セルの詳細',recordDetails:'レコードの詳細',record:'レコード',moreColumns:'ほか {count} 列',filteredRows:'{filtered} / 全 {total} 行',searchAndFilters:'検索・フィルタ',helpTitle:'使い方と注意事項',helpCanTitle:'できること',helpCanBody:'DuckDBデータベースファイルを読み取り専用で開き、概要、テーブル、ビュー、データ、列定義を確認できます。列分析、読み取り専用SQL、データ辞書HTMLに加え、2つのDuckDBファイルの構造比較にも対応しています。',helpPageExport:'CSV / JSONは、読み込みに成功した現在のページだけを保存します。読み込み中や失敗後は保存できません。DECIMALは精度と小数桁数を保って表示・CSV保存し、JSONでは文字列として保存します。 日付と日時は画面・CSV・JSONで同じ形式になります。',helpStepsTitle:'使い方',helpStep1:'自分の .duckdb / .db ファイルを選ぶか、「サンプルDBで試す」で注文一覧を開きます。',helpStep2:'「テーブルとビュー」で名前を検索します。スキーマ名でも絞り込みでき、Enterで先頭の候補を開いて値の検索に進めます。',helpStep3:'データは100行ずつ表示します。「件数を集計」または最後のページを選ぶと、必要に応じて正確な件数を計算します。数値・日付の範囲は「フィルタ」、スマートフォンの列順指定は「並べ替え」を使います。「列」では必要な列だけ分析できます。',helpStep4:'「SQL」ではSELECTなどの読み取り専用SQLを1文ずつ実行できます。',helpStep5:'「概要」からデータ辞書HTMLを保存できます。行データは含めず、実行済みの列分析だけを含めます。',helpStep6:'「概要」から別のDuckDBファイルを選び、schema、table、view、列定義（列順を含む）、推定行数の差分を比較できます。',helpPrivacyTitle:'プライバシー',helpPrivacyBody:'データベースファイルはブラウザー内で処理され、外部サーバーへ送信されません。DuckDB WebAssemblyと必要なコードも配布物へ内包します。',helpNotesTitle:'注意事項',helpNote1:'読み取り専用です。元のDuckDBファイルは変更しません。',helpNote2:'大きなテーブルや複雑なビューでは、件数取得・検索・列分析・SQL実行に時間がかかる場合があります。',helpNote3:'DuckDBのバージョンや追加機能に依存するデータベースは、ブラウザー版DuckDBで開けない場合があります。'},
+    en:{brandMeta:'Tables · SQL queries · Schema comparison',heroTitle:'Explore a DuckDB database',heroBody:'Browse tables and views, query data with SQL, and compare database structures using a second file.',local:'Fully local processing',pageFooter:'Data viewing stays in the browser',dropTitle:'Drop a DuckDB file',dropNote:'Choose a .duckdb or .db file, or select Try sample database to browse sample orders. The file is never sent to an external server.',largeDbNote:'Large databases can take longer to search, profile, or compare.',chooseFile:'Choose file',readOnly:'Read only',openAnother:'Open another file',objects:'Database objects',objectsShort:'Objects',overview:'Overview',sql:'SQL',sqlReadOnly:'Read-only SQL',sqlIntro:'Run one SELECT / WITH / VALUES / SHOW / DESCRIBE / EXPLAIN statement at a time. The original database is not modified.',sqlPlaceholder:'SELECT *\nFROM main.table_name\nLIMIT 100;',runSql:'Run',explainSql:'Explain',clearSql:'Clear editor',sqlShortcut:'Ctrl / ⌘ + Enter to run',sqlSafety:'Only one read-only statement is executed. Results are limited to 1,000 rows, and history is kept only while the current file is open.',sqlHistory:'Query history',sqlHistoryEmpty:'No query history yet',sqlResult:'Query result',sqlEmptyTitle:'Enter SQL and run it',sqlEmptyBody:'Use SQL for cross-table checks and aggregations. Statements are checked as read-only before execution.',sqlRunning:'Running SQL…',sqlFailed:'Could not run this SQL.',sqlOnlyRead:'Only read-only SQL is allowed.',sqlSingleStatement:'Run one SQL statement at a time.',sqlExplainOnly:'Explain is available for SELECT / WITH / VALUES.',sqlRows:'{count} rows',sqlDuration:'{ms} ms',sqlLimited:'Showing first 1,000 rows',sqlNoRows:'The result has 0 rows.',sqlExportCsv:'Result to CSV',sqlExportJson:'Result to JSON',sqlResultExported:'SQL result saved',sqlResultEmpty:'There is no SQL result to save',databaseOverview:'Database overview',fileSize:'File size',schemas:'Schemas',tables:'Tables',views:'Views',totalColumns:'Columns',duckdbVersion:'DuckDB version',databaseObjects:'Tables and views',estimatedRows:'Estimated rows',noDatabaseObjects:'No tables or views were found.',saveSchemaReport:'Save data dictionary HTML',reportSaving:'Creating data dictionary HTML…',reportSaved:'Data dictionary HTML saved',reportFailed:'Could not create the data dictionary HTML.',reportNote:'Creates a standalone HTML report with database structure and completed column analyses. Table rows are not included. Common values from analyzed columns are included.',compareDatabase:'Compare another DB',compareAnother:'Choose another comparison file',compareTitle:'Database comparison',compareIntro:'Compare the structure of the current database with another DuckDB file. Table rows are not compared exhaustively.',compareCurrent:'Current DB',compareTarget:'Comparison DB',compareLoading:'Reading comparison database structure…',compareReady:'Database comparison completed',compareFailed:'Could not compare this database.',compareFailedBody:'The comparison file may be unsupported or damaged, or it may use DuckDB features unavailable in the browser build.',compareBack:'Back to overview',compareAgain:'Compare another DB',compareAdded:'Added',compareRemoved:'Removed',compareChanged:'Changed',compareNoChanges:'No structural differences were found.',compareSchemas:'Schema differences',compareObjects:'Table / view differences',compareColumns:'Column differences',compareEstimatedRows:'Estimated rows',compareObjectType:'Object type',compareDataType:'Type',compareNullable:'Nullable',compareDefault:'Default',comparePosition:'Column position',compareViewDefinition:'View definition',compareStructureOnly:'Compares schemas, tables, views, column definitions (including order), and estimated row counts. Table row data itself is not compared.',compareResultAvailable:'Comparison available',compareResultSub:'Structural differences against {name} are available.',compareViewResult:'View comparison',profile:'Analyze',analyzeColumn:'Analyze column',profileTitle:'Column insights',profileLoading:'Analyzing column…',profileHint:'This scans the selected column. Large tables or complex views can take time.',totalRowsProfile:'Total rows',nonNullRows:'Non-null',nullRows:'NULL',nullRate:'NULL rate',approxDistinct:'Distinct (estimate)',minimum:'Min',maximum:'Max',average:'Average',median:'Median (approx.)',q1:'25th percentile (approx.)',q3:'75th percentile (approx.)',minLength:'Shortest length',maxLength:'Longest length',avgLength:'Average length',topValues:'Common values',noTopValues:'No common values to display.',profileFailed:'Could not analyze this column.',profileFailedBody:'This data type or view may not support one of the required aggregates.',approxNote:'Distinct count is estimated for faster analysis.',emptyString:'(empty)',readingObjects:'Reading database structure…',selectObject:'Choose a table or view from the list.',data:'Data',columns:'Columns',readingData:'Loading rows…',readingColumns:'Reading columns…',table:'Table',view:'View',rows:'rows',columnsCount:'columns',page:'Page',of:'of',firstPage:'First page',prevPage:'Previous page',nextPage:'Next page',lastPage:'Last page',unknownRows:'Counting rows',noRows:'No matching rows',noObjects:'No tables or views were found.',runtimeLoading:'Preparing DuckDB…',dbOpening:'Opening database…',loadFailed:'Could not open this database.',loadFailedBody:'The file may be unsupported or damaged, or it may use DuckDB features that are unavailable in the browser build.',retry:'Choose another file',nullable:'Nullable',defaultValue:'Default',position:'Position',type:'Type',name:'Column',yes:'Yes',no:'No',opened:'Database opened',searchRows:'Search displayed data',filter:'Filter',filterTitle:'Add filter',filterColumn:'Column',filterOperator:'Condition',filterValue:'Value',applyFilter:'Add filter',cancel:'Cancel',close:'Close',clearSearch:'Clear search',clearFilters:'Clear all filters',contains:'contains',equals:'equals',notEquals:'does not equal',searchLabel:'Search',removeFilter:'Remove filter',isNull:'is NULL',isNotNull:'is not NULL',startsWith:'starts with',endsWith:'ends with',sortAsc:'Ascending',sortDesc:'Descending',exportCsv:'Visible rows to CSV',exportJson:'Visible rows to JSON',exported:'File saved',exportEmpty:'There are no rows to export',copyValue:'Copy value',copied:'Copied',copyFailed:'Could not copy',cellDetails:'Cell details',recordDetails:'Record details',record:'Record',moreColumns:'{count} more columns',filteredRows:'{filtered} / {total} total rows',searchAndFilters:'Search & filters',helpTitle:'Help & notes',helpCanTitle:'What it does',helpCanBody:'Open DuckDB database files in read-only mode and inspect the overview, tables, views, rows, and column definitions. Column analysis, read-only SQL, data dictionary HTML, and structural comparison between two DuckDB files are also supported.',helpPageExport:'CSV / JSON saves only the current successfully loaded page. Export is unavailable while loading or after a failure. DECIMAL values keep their exact precision and scale in display and CSV; JSON stores them as strings. Dates and timestamps use the same format in the viewer, CSV and JSON.',helpStepsTitle:'How to use',helpStep1:'Choose a .duckdb or .db file, or select Try sample database to browse sample orders.',helpStep2:'Find a table or view by name or schema in the catalog. Press Enter to open the first match and search its values.',helpStep3:'Browse 100 rows at a time. Use Count rows or Last to calculate the exact count when needed. Filter by number or date range, use Sort by on a phone, and analyze individual columns in Columns.',helpStep4:'Use SQL to run one read-only SELECT-style statement at a time.',helpStep5:'Save a data dictionary HTML from Overview. It excludes table rows and includes only column analyses already run in this session.',helpStep6:'From Overview, choose another DuckDB file to compare schemas, tables, views, column definitions (including order), and estimated row counts.',helpPrivacyTitle:'Privacy',helpPrivacyBody:'Database files are processed in your browser and are not sent to an external server. DuckDB WebAssembly and required code are embedded in the distributed app.',helpNotesTitle:'Notes',helpNote1:'This app is read-only and never modifies the original DuckDB file.',helpNote2:'Counting, searching, column analysis, or SQL on very large tables and complex views can take time.',helpNote3:'Databases that depend on a different DuckDB version or optional extensions may not open in the browser build.'}
   };
   Object.assign(I18N.ja,{openDemo:'サンプルDBで試す',demoFailed:'デモを開けませんでした。もう一度試すか、ファイルを選択してください。'});
   Object.assign(I18N.en,{openDemo:'Try sample database',demoFailed:'Couldn’t open the demo. Try again or choose a file.'});
+  Object.assign(I18N.ja,{heroTitle:'DuckDBファイルを開く',entryLead:'テーブルを開いて、探したい値を検索できます。ファイルはこの端末で読み取ります。',entryDrop:'または、ここにドロップ',entrySampleSize:'250 行 · 9 列',entryLocal:'ローカルで読み取り専用'});
+  Object.assign(I18N.en,{heroTitle:'Open a DuckDB file',entryLead:'Browse tables and search for values. Your file stays on this device.',entryDrop:'or drop it here',entrySampleSize:'250 rows · 9 columns',entryLocal:'Local, read-only access'});
+  Object.assign(I18N.ja,{objectName:'名前',schemaLabel:'スキーマ',objectKind:'種別',compareShort:'DBを比較',dictionaryShort:'データ辞書を保存',estimatedCount:'{count} 行',queryReady:'クエリを実行すると、ここに結果が表示されます。'});
+  Object.assign(I18N.en,{objectName:'Name',schemaLabel:'Schema',objectKind:'Type',compareShort:'Compare',dictionaryShort:'Save dictionary',estimatedCount:'{count} rows',queryReady:'Run a query to see the results here.'});
   Object.assign(I18N.ja,{countRows:'件数を集計', uncounted:'件数未集計', matchingRows:'該当 {count} 行', sortBy:'並べ替え', noSort:'並べ替えなし'});
   Object.assign(I18N.en,{countRows:'Count rows', uncounted:'Rows not counted', matchingRows:'{count} matching rows', sortBy:'Sort by', noSort:'Unsorted'});
+  Object.assign(I18N.ja,{searchRows:'すべての列から値を検索',exportPage:'書き出す',rangeRows:'{range} 行を表示',viewRecord:'詳細'});
+  Object.assign(I18N.en,{searchRows:'Search values across all columns',exportPage:'Export',rangeRows:'Rows {range}',viewRecord:'Details'});
+  Object.assign(I18N.ja,{catalogTitle:'テーブルとビュー',catalogSearchHint:'テーブル名を検索',catalogNoMatch:'一致するテーブルやビューはありません。',catalogReset:'検索をクリア',openFileLabel:'ファイルを開く'});
+  Object.assign(I18N.en,{catalogTitle:'Tables & views',catalogSearchHint:'Find a table or view',catalogNoMatch:'No matching tables or views.',catalogReset:'Clear search',openFileLabel:'Open file'});
   let lang=(localStorage.getItem('duckdb-explorer-language')||'').toLowerCase();if(!['ja','en'].includes(lang))lang=navigator.language?.toLowerCase().startsWith('ja')?'ja':'en';
-  const $=id=>document.getElementById(id);const el={intro:$('intro'),workspace:$('workspace'),dropzone:$('dropzone'),fileInput:$('fileInput'),compareFileInput:$('compareFileInput'),openBtn:$('openBtn'),changeFileBtn:$('changeFileBtn'),headerFile:$('headerFile'),headerFileName:$('headerFileName'),headerFileSize:$('headerFileSize'),replaceFileHeader:$('replaceFileHeader'),fileName:$('fileName'),fileMeta:$('fileMeta'),tree:$('tree'),overviewView:$('overviewView'),comparisonView:$('comparisonView'),sqlView:$('sqlView'),sqlEditor:$('sqlEditor'),sqlResult:$('sqlResult'),sqlHistorySelect:$('sqlHistorySelect'),runSqlBtn:$('runSqlBtn'),explainSqlBtn:$('explainSqlBtn'),clearSqlBtn:$('clearSqlBtn'),emptyRelation:$('emptyRelation'),relationView:$('relationView'),relationKicker:$('relationKicker'),relationName:$('relationName'),rowCount:$('rowCount'),columnCount:$('columnCount'),dataTab:$('dataTab'),columnsTab:$('columnsTab'),dataPanel:$('dataPanel'),columnsPanel:$('columnsPanel'),mobileNav:$('mobileNav'),helpDialog:$('helpDialog'),filterDialog:$('filterDialog'),detailDialog:$('detailDialog'),profileDialog:$('profileDialog'),profileTitle:$('profileTitle'),profileBody:$('profileBody'),filterColumn:$('filterColumn'),filterOperator:$('filterOperator'),filterValue:$('filterValue'),filterValueWrap:$('filterValueWrap'),applyFilterBtn:$('applyFilterBtn'),detailTitle:$('detailTitle'),detailMeta:$('detailMeta'),detailValue:$('detailValue'),copyDetailBtn:$('copyDetailBtn'),toast:$('toast')};
+  const $=id=>document.getElementById(id);const el={intro:$('intro'),workspace:$('workspace'),dropzone:$('dropzone'),fileInput:$('fileInput'),compareFileInput:$('compareFileInput'),openBtn:$('openBtn'),changeFileBtn:$('changeFileBtn'),headerFile:$('headerFile'),objectSearch:$('objectSearch'),fileName:$('fileName'),fileMeta:$('fileMeta'),tree:$('tree'),overviewView:$('overviewView'),comparisonView:$('comparisonView'),sqlView:$('sqlView'),sqlEditor:$('sqlEditor'),sqlResult:$('sqlResult'),sqlHistorySelect:$('sqlHistorySelect'),runSqlBtn:$('runSqlBtn'),explainSqlBtn:$('explainSqlBtn'),clearSqlBtn:$('clearSqlBtn'),emptyRelation:$('emptyRelation'),relationView:$('relationView'),relationKicker:$('relationKicker'),relationName:$('relationName'),rowCount:$('rowCount'),columnCount:$('columnCount'),dataTab:$('dataTab'),columnsTab:$('columnsTab'),dataPanel:$('dataPanel'),columnsPanel:$('columnsPanel'),mobileNav:$('mobileNav'),helpDialog:$('helpDialog'),filterDialog:$('filterDialog'),detailDialog:$('detailDialog'),profileDialog:$('profileDialog'),profileTitle:$('profileTitle'),profileBody:$('profileBody'),filterColumn:$('filterColumn'),filterOperator:$('filterOperator'),filterValue:$('filterValue'),filterValueWrap:$('filterValueWrap'),applyFilterBtn:$('applyFilterBtn'),detailTitle:$('detailTitle'),detailMeta:$('detailMeta'),detailValue:$('detailValue'),copyDetailBtn:$('copyDetailBtn'),toast:$('toast')};
   const state={duckdb:null,db:null,conn:null,worker:null,workerUrl:null,file:null,objects:[],overview:null,viewMode:'overview',selected:null,columns:[],totalRows:null,filteredRows:null,page:0n,pageSize:100n,requestToken:0,search:'',filters:[],sort:null,lastRows:[],lastFields:[],relationStatus:'idle',relationRequest:null,relationError:null,relationErrorPanel:'data',searchTimer:null,detailCopyText:'',profileCache:new Map(),profileToken:0,activeProfile:null,sqlInitialized:false,sqlHistory:[],sqlRunning:false,sqlRequestToken:0,sqlHasResult:false,sqlLastRows:[],sqlLastFields:[],sqlLastDuration:0,sqlTruncated:false,sqlLastError:null,sqlLastMode:'query',reportSaving:false,reportToken:0,comparison:null,compareLoading:false,compareError:null,compareToken:0};
   let openFileGeneration=0,openFileQueue=Promise.resolve();
   function t(key,vars={}){let value=I18N[lang][key]??key;for(const [name,replacement] of Object.entries(vars))value=value.replace(`{${name}}`,String(replacement));return value}
-  function applyLanguage(){document.documentElement.lang=lang;document.querySelectorAll('[data-i18n]').forEach(node=>{const key=node.dataset.i18n;if(I18N[lang][key])node.textContent=I18N[lang][key]});document.querySelectorAll('[data-i18n-placeholder]').forEach(node=>{const key=node.dataset.i18nPlaceholder;if(I18N[lang][key])node.placeholder=I18N[lang][key]});$('langBtn').textContent=lang==='ja'?'EN':'JA';if(el.replaceFileHeader){el.replaceFileHeader.setAttribute('aria-label',t('openAnother'));el.replaceFileHeader.title=t('openAnother')}document.title='DuckDB Explorer';renderObjectTree();if(state.viewMode==='overview')renderOverview();if(state.viewMode==='compare')renderComparison();if(state.viewMode==='sql'){renderSqlHistory();renderSqlState()}if(state.selected){renderRelationHead();renderColumns();renderRelationState()}if(state.activeProfile&&el.profileDialog.open)renderProfile(state.activeProfile);updateFilterDialogOptions()}
+  function applyLanguage(){document.documentElement.lang=lang;document.querySelectorAll('[data-i18n]').forEach(node=>{const key=node.dataset.i18n;if(I18N[lang][key])node.textContent=I18N[lang][key]});document.querySelectorAll('[data-i18n-placeholder]').forEach(node=>{const key=node.dataset.i18nPlaceholder;if(I18N[lang][key])node.placeholder=I18N[lang][key]});$('langBtn').textContent=lang==='ja'?'EN':'JA';document.title='DuckDB Explorer';renderObjectTree();if(state.viewMode==='overview')renderOverview();if(state.viewMode==='compare')renderComparison();if(state.viewMode==='sql'){renderSqlHistory();renderSqlState()}if(state.selected){renderRelationHead();renderColumns();renderRelationState()}if(state.activeProfile&&el.profileDialog.open)renderProfile(state.activeProfile);updateFilterDialogOptions()}
   function formatBytes(bytes){if(!Number.isFinite(bytes))return '';const units=['B','KB','MB','GB','TB'];let value=bytes,index=0;while(value>=1024&&index<units.length-1){value/=1024;index++}return `${value<10&&index>0?value.toFixed(1):Math.round(value)} ${units[index]}`}
   function formatCount(v){try{return new Intl.NumberFormat(lang==='ja'?'ja-JP':'en-US').format(BigInt(v))}catch{return String(v)}}
   function toast(message){el.toast.textContent=message;el.toast.classList.add('show');clearTimeout(toast.timer);toast.timer=setTimeout(()=>el.toast.classList.remove('show'),2400)}
@@ -357,8 +712,8 @@
   function showWorkspace(){el.intro.classList.add('hidden');el.workspace.classList.remove('hidden');el.mobileNav.classList.remove('hidden');setMobileSection('objects')}
   function showIntro(){el.workspace.classList.add('hidden');el.mobileNav.classList.add('hidden');el.intro.classList.remove('hidden');if(el.headerFile)el.headerFile.hidden=true}
   function resetEmptyRelation(){el.emptyRelation.innerHTML=`<div><svg viewBox="0 0 24 24"><ellipse cx="12" cy="6" rx="7" ry="3"/><path d="M5 6v12c0 1.7 3.1 3 7 3s7-1.3 7-3V6M5 12c0 1.7 3.1 3 7 3s7-1.3 7-3"/></svg><div>${escapeHtml(t('selectObject'))}</div></div>`}
-  function renderFullState(message){resetEmptyRelation();el.overviewView.classList.add('hidden');el.comparisonView.classList.add('hidden');el.sqlView.classList.add('hidden');el.tree.innerHTML=`<div class="state"><div><div class="spinner"></div><div>${escapeHtml(message)}</div></div></div>`;el.emptyRelation.classList.remove('hidden');el.relationView.classList.add('hidden')}
-  function renderOpenError(error){el.overviewView.classList.add('hidden');el.comparisonView.classList.add('hidden');el.sqlView.classList.add('hidden');el.tree.innerHTML='';el.emptyRelation.classList.remove('hidden');el.relationView.classList.add('hidden');el.emptyRelation.innerHTML=`<div class="error-card"><strong>${escapeHtml(t('loadFailed'))}</strong><p>${escapeHtml(t('loadFailedBody'))}</p><details><summary>Details</summary><pre>${escapeHtml(String(error?.stack||error))}</pre></details><div class="retry-row"><button class="secondary" id="errorRetry" type="button">${escapeHtml(t('retry'))}</button></div></div>`;$('errorRetry')?.addEventListener('click',()=>el.fileInput.click())}
+  function renderFullState(message){$('catalogSearch').hidden=true;$('catalogNav').hidden=true;resetEmptyRelation();el.overviewView.classList.add('hidden');el.comparisonView.classList.add('hidden');el.sqlView.classList.add('hidden');el.tree.innerHTML=`<div class="state"><div><div class="spinner"></div><div>${escapeHtml(message)}</div></div></div>`;el.emptyRelation.classList.remove('hidden');el.relationView.classList.add('hidden')}
+  function renderOpenError(error){setMobileSection('overview');el.overviewView.classList.add('hidden');el.comparisonView.classList.add('hidden');el.sqlView.classList.add('hidden');el.tree.innerHTML='';el.emptyRelation.classList.remove('hidden');el.relationView.classList.add('hidden');el.emptyRelation.innerHTML=`<div class="error-card"><strong>${escapeHtml(t('loadFailed'))}</strong><p>${escapeHtml(t('loadFailedBody'))}</p><details><summary>Details</summary><pre>${escapeHtml(String(error?.stack||error))}</pre></details><div class="retry-row"><button class="secondary" id="errorRetry" type="button">${escapeHtml(t('retry'))}</button></div></div>`;$('errorRetry')?.addEventListener('click',()=>el.fileInput.click())}
   function escapeHtml(value){return String(value).replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]))}
   async function openFile(file,demo=false){
     if(!file&&!demo)return;
@@ -366,6 +721,8 @@
     // Serialize runtime teardown/opening so two rapid file choices never share
     // the mutable worker, database and connection handles.
     const generation=++openFileGeneration;
+    state.collapsedSchemas=new Set();
+    if(el.objectSearch)el.objectSearch.value='';
     state.requestToken++;state.profileToken++;state.sqlRequestToken++;state.compareToken++;state.reportToken++;
     clearTimeout(state.searchTimer);state.searchTimer=null;
     state.relationStatus='idle';state.relationRequest=null;state.lastRows=[];state.lastFields=[];
@@ -384,7 +741,7 @@
           file=new File([bytes],'browser-kitty-sample.duckdb',{type:'application/octet-stream'});
         }
         showWorkspace();state.file=file;el.fileName.textContent=file.name;el.fileName.title=file.name;el.fileMeta.textContent=formatBytes(file.size);
-        if(el.headerFile){el.headerFileName.textContent=file.name;el.headerFileName.title=file.name;el.headerFileSize.textContent=formatBytes(file.size);el.headerFile.hidden=false}
+        if(el.headerFile)el.headerFile.hidden=false;
         renderFullState(t('runtimeLoading'));
         const duckdb=await loadDuckDBApi();if(generation!==openFileGeneration)return;
         await initializeDuckDBRuntime(duckdb);if(generation!==openFileGeneration)return;
@@ -433,17 +790,42 @@
   }
   function iconFor(type){return type==='view'?'<svg viewBox="0 0 24 24"><path d="M4 6h16v12H4zM8 10h8M8 14h5"/></svg>':'<svg viewBox="0 0 24 24"><ellipse cx="12" cy="6" rx="7" ry="3"/><path d="M5 6v12c0 1.7 3.1 3 7 3s7-1.3 7-3V6M5 12c0 1.7 3.1 3 7 3s7-1.3 7-3"/></svg>'}
   function renderObjectTree(){
-    if(state.file&&!state.overview&&!state.objects.length)return;
-    const compareButton=state.comparison?`<button class="relation${state.viewMode==='compare'?' active':''}" id="compareTreeButton" type="button"><svg viewBox="0 0 24 24"><path d="M7 7h11l-3-3M18 7l-3 3M17 17H6l3 3M6 17l3-3"/></svg><span class="relation-label">${escapeHtml(t('compareTitle'))}</span></button>`:'';const overviewButton=`<div class="overview-tree"><button class="relation${state.viewMode==='overview'?' active':''}" id="overviewTreeButton" type="button"><svg viewBox="0 0 24 24"><path d="M4 19V9M10 19V5M16 19v-7M22 19H2"/></svg><span class="relation-label">${escapeHtml(t('overview'))}</span></button>${compareButton}<button class="relation${state.viewMode==='sql'?' active':''}" id="sqlTreeButton" type="button"><svg viewBox="0 0 24 24"><path d="m8 9-3 3 3 3M16 9l3 3-3 3M14 5l-4 14"/></svg><span class="relation-label">${escapeHtml(t('sql'))}</span></button></div>`;
-    const groups=new Map();for(const obj of state.objects){if(!groups.has(obj.schema))groups.set(obj.schema,[]);groups.get(obj.schema).push(obj)}
-    const groupHtml=[...groups.entries()].map(([schema,items])=>`<div class="schema-group"><div class="schema-title"><svg viewBox="0 0 24 24"><path d="M4 6h6l2 2h8v10H4z"/></svg><span>${escapeHtml(schema)}</span></div>${items.map(obj=>{const selected=state.viewMode==='relation'&&state.selected&&state.selected.schema===obj.schema&&state.selected.name===obj.name&&state.selected.type===obj.type;return `<button class="relation${selected?' active':''}" type="button" data-schema="${escapeHtml(obj.schema)}" data-name="${escapeHtml(obj.name)}" data-type="${obj.type}">${iconFor(obj.type)}<span class="relation-label">${escapeHtml(obj.name)}</span><span class="relation-type">${obj.type==='view'?t('view'):t('table')}</span></button>`}).join('')}</div>`).join('');
-    el.tree.innerHTML=overviewButton+groupHtml+(!state.objects.length?`<div class="tree-empty">${escapeHtml(t('noDatabaseObjects'))}</div>`:'');
-    $('overviewTreeButton')?.addEventListener('click',showOverview);$('compareTreeButton')?.addEventListener('click',showComparison);$('sqlTreeButton')?.addEventListener('click',showSql);
-    el.tree.querySelectorAll('.relation[data-schema]').forEach(button=>button.addEventListener('click',()=>{const obj=state.objects.find(x=>x.schema===button.dataset.schema&&x.name===button.dataset.name&&x.type===button.dataset.type);if(obj)selectObject(obj)}));
+    if(!state.file||!state.overview)return;
+    $('catalogSearch').hidden=false;
+    $('catalogNav').hidden=false;
+    $('compareTreeButton').hidden=!state.comparison;
+    for(const [id,mode] of [['overviewTreeButton','overview'],['sqlTreeButton','sql'],['compareTreeButton','compare']]){
+      const button=$(id), active=state.viewMode===mode;
+      button.classList.toggle('active',active);
+      if(active)button.setAttribute('aria-current','page');else button.removeAttribute('aria-current');
+    }
+    const term=el.objectSearch.value.trim().normalize('NFKC').toLowerCase();
+    const groups=new Map();
+    let count=0;
+    for(const [index,obj] of state.objects.entries()){
+      if(term&&!(obj.schema+'.'+obj.name).normalize('NFKC').toLowerCase().includes(term))continue;
+      if(!groups.has(obj.schema))groups.set(obj.schema,[]);
+      groups.get(obj.schema).push([index,obj]);count++;
+    }
+    $('catalogCount').textContent=term?formatCount(count)+' / '+formatCount(state.objects.length):formatCount(count);
+    const html=Array.from(groups,([schema,items])=>{
+      const open=term||!state.collapsedSchemas.has(schema);
+      const rows=items.map(([index,obj])=>{
+        const active=state.viewMode==='relation'&&state.selected===obj;
+        return `<button class="relation catalog-relation${active?' active':''}" type="button" data-object-index="${index}" data-schema="${escapeHtml(schema)}" data-name="${escapeHtml(obj.name)}" title="${escapeHtml(schema+'.'+obj.name)}" ${active?'aria-current="page"':''}>${iconFor(obj.type)}<span class="relation-label">${escapeHtml(obj.name)}</span><span class="relation-type">${escapeHtml(t(obj.type==='view'?'view':'table'))}</span></button>`;
+      }).join('');
+      return `<details class="schema-group"${open?' open':''}><summary class="schema-title" data-schema="${escapeHtml(schema)}"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m6 3 5 5-5 5"/></svg><span>${escapeHtml(schema)}</span><span class="schema-count">${items.length}</span></summary>${rows}</details>`;
+    }).join('');
+    el.tree.innerHTML=html||`<div class="tree-empty">${escapeHtml(t(term?'catalogNoMatch':'noDatabaseObjects'))}${term?`<button type="button" data-reset-catalog>${escapeHtml(t('catalogReset'))}</button>`:''}</div>`;
+    if(!term)el.tree.querySelectorAll('details').forEach(group=>group.addEventListener('toggle',()=>{
+      if(!group.isConnected||el.objectSearch.value.trim())return;
+      const schema=group.firstElementChild.dataset.schema;
+      if(group.open)state.collapsedSchemas.delete(schema);else state.collapsedSchemas.add(schema);
+    }));
   }
   function showOverview(){
     state.profileToken++;state.viewMode='overview';state.activeProfile=null;try{el.profileDialog.close()}catch{}
-    renderObjectTree();el.emptyRelation.classList.add('hidden');el.relationView.classList.add('hidden');el.comparisonView.classList.add('hidden');el.sqlView.classList.add('hidden');el.overviewView.classList.remove('hidden');renderOverview();if(window.innerWidth<=760)setMobileSection('overview');
+    renderObjectTree();el.emptyRelation.classList.add('hidden');el.relationView.classList.add('hidden');el.comparisonView.classList.add('hidden');el.sqlView.classList.add('hidden');el.overviewView.classList.remove('hidden');renderOverview();setMobileSection('overview');
   }
   function renderOverview(){
     if(!state.overview||!state.file)return;
@@ -455,8 +837,26 @@
       [t('totalColumns'),state.overview.columnCount===null?'—':formatCount(state.overview.columnCount)],
       [t('duckdbVersion'),state.overview.duckdbVersion||'—']
     ];
-    const relationHtml=state.objects.length?state.objects.map((obj,index)=>{const estimated=obj.type==='table'&&obj.estimated!=null?` · ${escapeHtml(t('estimatedRows'))}: ~${escapeHtml(formatCount(obj.estimated))}`:'';return `<button class="overview-relation" type="button" data-overview-object="${index}"><span class="overview-relation-icon">${iconFor(obj.type)}</span><span class="overview-relation-main"><span class="overview-relation-name">${escapeHtml(obj.schema)}.${escapeHtml(obj.name)}</span><span class="overview-relation-meta">${escapeHtml(obj.type==='view'?t('view'):t('table'))}${estimated}</span></span><svg class="overview-relation-chevron" viewBox="0 0 24 24"><path d="m9 5 7 7-7 7"/></svg></button>`}).join(''):`<div class="profile-empty">${escapeHtml(t('noDatabaseObjects'))}</div>`;
-    el.overviewView.innerHTML=`<div class="overview-head"><div class="overview-head-row"><div><div class="relation-kicker">${escapeHtml(t('databaseOverview'))}</div><div class="overview-title">${escapeHtml(state.file.name)}</div><div class="overview-sub">${escapeHtml(t('readOnly'))} · ${escapeHtml(t('local'))}</div></div><div class="overview-head-actions"><button class="secondary" id="compareDatabaseBtn" type="button"${state.compareLoading?' disabled':''}><svg viewBox="0 0 24 24"><path d="M7 7h11l-3-3M18 7l-3 3M17 17H6l3 3M6 17l3-3"/></svg><span>${escapeHtml(t('compareDatabase'))}</span></button><button class="secondary" id="saveSchemaReportBtn" type="button"${state.reportSaving?' disabled':''}><svg viewBox="0 0 24 24"><path d="M12 3v12M7 10l5 5 5-5M5 20h14"/></svg><span>${escapeHtml(t('saveSchemaReport'))}</span></button></div></div><div class="report-note">${escapeHtml(t('reportNote'))}</div></div><div class="overview-scroll"><div class="overview-stats">${stats.map(([label,value])=>`<div class="overview-stat"><div class="overview-stat-label">${escapeHtml(label)}</div><div class="overview-stat-value" title="${escapeHtml(value)}">${escapeHtml(value)}</div></div>`).join('')}</div>${state.comparison?`<div class="compare-card"><div class="compare-card-title">${escapeHtml(t('compareResultAvailable'))}</div><div class="compare-card-sub">${escapeHtml(t('compareResultSub',{name:state.comparison.after.source.name}))}</div><div class="compare-card-actions"><button class="secondary" id="viewComparisonBtn" type="button">${escapeHtml(t('compareViewResult'))}</button><button class="secondary" id="compareAgainOverviewBtn" type="button">${escapeHtml(t('compareAnother'))}</button></div></div>`:''}<div class="overview-section"><div class="overview-section-title">${escapeHtml(t('databaseObjects'))}</div><div class="overview-relations">${relationHtml}</div></div></div>`;
+    const relationHtml=state.objects.map((obj,index)=>{
+      const kind=t(obj.type==='view'?'view':'table');
+      const estimate=obj.type==='table'&&obj.estimated!=null?'~'+formatCount(obj.estimated):'—';
+      return `<li><button class="directory-row" type="button" data-overview-object="${index}">
+        <span class="directory-name"><span class="directory-icon" aria-hidden="true">${iconFor(obj.type)}</span><strong>${escapeHtml(obj.name)}</strong></span>
+        <span class="directory-schema">${escapeHtml(obj.schema)}</span><span class="directory-kind">${escapeHtml(kind)}</span>
+        <span class="directory-count"><span class="directory-long">${escapeHtml(estimate)}</span><span class="directory-short">${escapeHtml(estimate==='—'?estimate:t('estimatedCount',{count:estimate}))}</span></span><svg class="directory-arrow" aria-hidden="true" viewBox="0 0 24 24"><path d="M5 12h13m-5-5 5 5-5 5"/></svg>
+      </button></li>`;
+    }).join('');
+    const directory=relationHtml?`<div class="directory-columns" aria-hidden="true"><span>${escapeHtml(t('objectName'))}</span><span>${escapeHtml(t('schemaLabel'))}</span><span>${escapeHtml(t('objectKind'))}</span><span>${escapeHtml(t('estimatedRows'))}</span></div>
+      <ul class="directory-list" aria-labelledby="directoryTitle">${relationHtml}</ul>`:`<p class="directory-empty">${escapeHtml(t('noDatabaseObjects'))}</p>`;
+    const comparison=state.comparison?`<aside class="directory-comparison"><div><strong>${escapeHtml(t('compareResultAvailable'))}</strong><p>${escapeHtml(t('compareResultSub',{name:state.comparison.after.source.name}))}</p></div>
+      <div class="directory-actions"><button class="secondary" id="viewComparisonBtn" type="button">${escapeHtml(t('compareViewResult'))}</button><button class="secondary" id="compareAgainOverviewBtn" type="button">${escapeHtml(t('compareAnother'))}</button></div></aside>`:'';
+    el.overviewView.innerHTML=`<div class="directory-scroll">
+      <div class="directory-head"><div class="directory-file"><svg aria-hidden="true" viewBox="0 0 24 24"><ellipse cx="12" cy="6" rx="7" ry="3"/><path d="M5 6v11c0 1.7 3.1 3 7 3s7-1.3 7-3V6M5 11.5c0 1.7 3.1 3 7 3s7-1.3 7-3"/></svg><span>${escapeHtml(state.file.name)}</span></div>
+      <div class="directory-heading-row"><h2 id="directoryTitle">${escapeHtml(t('databaseObjects'))}</h2>
+        <div class="directory-actions"><button class="secondary" id="compareDatabaseBtn" type="button" aria-label="${escapeHtml(t('compareDatabase'))}"${state.compareLoading?' disabled':''}><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M4 8h15m-4-4 4 4-4 4M20 16H5m4-4-4 4 4 4"/></svg><span class="directory-long">${escapeHtml(t('compareDatabase'))}</span><span class="directory-short">${escapeHtml(t('compareShort'))}</span></button>
+        <button class="secondary" id="saveSchemaReportBtn" type="button" aria-label="${escapeHtml(t('saveSchemaReport'))}" title="${escapeHtml(t('reportNote'))}"${state.reportSaving?' disabled':''}><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3v12M7 10l5 5 5-5M5 20h14"/></svg><span class="directory-long">${escapeHtml(t('saveSchemaReport'))}</span><span class="directory-short">${escapeHtml(t('dictionaryShort'))}</span></button></div></div>
+      <dl class="directory-stats">${stats.map(([label,value])=>`<div class="overview-stat"><dt>${escapeHtml(label)}</dt><dd>${escapeHtml(value)}</dd></div>`).join('')}</dl></div>
+      ${directory}${comparison}<p class="directory-note">${escapeHtml(t('reportNote'))}</p></div>`;
     el.overviewView.querySelectorAll('[data-overview-object]').forEach(button=>button.addEventListener('click',()=>{const obj=state.objects[Number(button.dataset.overviewObject)];if(obj)selectObject(obj)}));$('compareDatabaseBtn')?.addEventListener('click',()=>el.compareFileInput.click());$('viewComparisonBtn')?.addEventListener('click',showComparison);$('compareAgainOverviewBtn')?.addEventListener('click',()=>el.compareFileInput.click());$('saveSchemaReportBtn')?.addEventListener('click',saveSchemaReport);
   }
   function reportProfileSnapshot(){
@@ -530,7 +930,7 @@
   function compareFieldLabel(field){return t(field==='objectType'?'compareObjectType':field==='estimatedRows'?'compareEstimatedRows':field==='dataType'?'compareDataType':field==='nullable'?'compareNullable':field==='default'?'compareDefault':field==='position'?'comparePosition':'compareViewDefinition')}
   function compareDisplay(value,field){if(value===null||value===undefined||value==='')return '—';if(field==='nullable')return value?t('yes'):t('no');if(field==='estimatedRows')return `~${formatCount(value)}`;if(field==='viewDefinition'){const compact=normalizeViewSql(value);return compact.length>180?compact.slice(0,177)+'…':compact}return String(value)}
   function renderDiffList(items,kind){if(!items.length)return `<div class="compare-empty">${escapeHtml(t('compareNoChanges'))}</div>`;return `<div class="diff-list">${items.map(item=>{const name=kind==='schema'?item.name:kind==='object'?`${item.schema}.${item.name}`:`${item.schema}.${item.relation}.${item.name}`;const details=item.status==='changed'?item.changes.map(change=>`${compareFieldLabel(change.field)}: ${compareDisplay(change.before,change.field)} → ${compareDisplay(change.after,change.field)}`).join(' · '):`${diffLabel(item.status)}${kind==='column'&&item.type?` · ${item.type}`:kind==='object'&&item.type?` · ${item.type}`:''}`;return `<div class="diff-row"><div class="diff-mark" aria-hidden="true">${diffMark(item.status)}</div><div class="diff-main"><div class="diff-name">${escapeHtml(name)}</div><div class="diff-detail">${escapeHtml(details)}</div></div></div>`}).join('')}</div>`}
-  function showComparison(){if(!state.conn)return;state.profileToken++;state.viewMode='compare';state.activeProfile=null;try{el.profileDialog.close()}catch{}renderObjectTree();el.emptyRelation.classList.add('hidden');el.relationView.classList.add('hidden');el.overviewView.classList.add('hidden');el.sqlView.classList.add('hidden');el.comparisonView.classList.remove('hidden');renderComparison();if(window.innerWidth<=760)setMobileSection('overview')}
+  function showComparison(){if(!state.conn)return;state.profileToken++;state.viewMode='compare';state.activeProfile=null;try{el.profileDialog.close()}catch{}renderObjectTree();el.emptyRelation.classList.add('hidden');el.relationView.classList.add('hidden');el.overviewView.classList.add('hidden');el.sqlView.classList.add('hidden');el.comparisonView.classList.remove('hidden');renderComparison();setMobileSection('overview')}
   function renderComparison(){
     if(state.compareLoading){el.comparisonView.innerHTML=`<div class="state"><div><div class="spinner"></div><div>${escapeHtml(t('compareLoading'))}</div></div></div>`;return}
     if(state.compareError&&!state.comparison){el.comparisonView.innerHTML=`<div class="compare-head"><div class="compare-head-row"><div><div class="relation-kicker">${escapeHtml(t('compareTitle'))}</div><div class="overview-title">${escapeHtml(t('compareFailed'))}</div><div class="overview-sub">${escapeHtml(t('compareFailedBody'))}</div></div><div class="compare-actions"><button class="secondary" id="compareErrorBackBtn" type="button">${escapeHtml(t('compareBack'))}</button><button class="secondary" id="compareRetryBtn" type="button">${escapeHtml(t('compareAgain'))}</button></div></div></div><div class="compare-scroll"><div class="error-card"><details open><summary>Details</summary><pre>${escapeHtml(String(state.compareError?.stack||state.compareError))}</pre></details></div></div>`;$('compareErrorBackBtn')?.addEventListener('click',showOverview);$('compareRetryBtn')?.addEventListener('click',()=>el.compareFileInput.click());return}
@@ -539,13 +939,13 @@
   }
   async function startComparison(file){if(!file||!state.conn||!state.file||state.compareLoading)return;const token=++state.compareToken;state.compareLoading=true;state.compareError=null;showComparison();try{const before=await loadSchemaReportData();if(token!==state.compareToken)return;const after=await loadComparisonSnapshot(file);if(token!==state.compareToken)return;const diff=compareSnapshots(before,after);state.comparison={before,after,diff,fileName:file.name};state.compareError=null;toast(t('compareReady'))}catch(error){if(token!==state.compareToken)return;console.error(error);state.compareError=error;toast(t('compareFailed'))}finally{if(token===state.compareToken){state.compareLoading=false;renderObjectTree();renderComparison()}}}
   function defaultSql(){const obj=state.selected||state.objects.find(item=>item.type==='table')||state.objects[0];if(!obj)return 'SELECT version() AS duckdb_version;';return `SELECT *\nFROM ${sqlIdent(obj.schema)}.${sqlIdent(obj.name)}\nLIMIT 100;`}
-  function showSql(){if(!state.conn||!state.file)return;state.profileToken++;state.viewMode='sql';state.activeProfile=null;try{el.profileDialog.close()}catch{}renderObjectTree();el.emptyRelation.classList.add('hidden');el.relationView.classList.add('hidden');el.overviewView.classList.add('hidden');el.comparisonView.classList.add('hidden');el.sqlView.classList.remove('hidden');if(!state.sqlInitialized){el.sqlEditor.value=defaultSql();state.sqlInitialized=true}renderSqlHistory();renderSqlState();if(window.innerWidth<=760)setMobileSection('sql');else setTimeout(()=>el.sqlEditor.focus(),0)}
+  function showSql(){if(!state.conn||!state.file)return;state.profileToken++;state.viewMode='sql';state.activeProfile=null;try{el.profileDialog.close()}catch{}renderObjectTree();el.emptyRelation.classList.add('hidden');el.relationView.classList.add('hidden');el.overviewView.classList.add('hidden');el.comparisonView.classList.add('hidden');el.sqlView.classList.remove('hidden');if(!state.sqlInitialized){el.sqlEditor.value=defaultSql();state.sqlInitialized=true}renderSqlHistory();renderSqlState();setMobileSection('sql');if(window.innerWidth>760)setTimeout(()=>el.sqlEditor.focus(),0)}
   function sqlTokens(sql){const tokens=[];let i=0;while(i<sql.length){const ch=sql[i],next=sql[i+1];if(/\s/.test(ch)){i++;continue}if(ch==='-'&&next==='-'){i+=2;while(i<sql.length&&sql[i]!=='\n')i++;continue}if(ch==='/'&&next==='*'){i+=2;let depth=1;while(i<sql.length&&depth){if(sql[i]==='/'&&sql[i+1]==='*'){depth++;i+=2}else if(sql[i]==='*'&&sql[i+1]==='/'){depth--;i+=2}else i++}continue}if(ch==="'"){i++;while(i<sql.length){if(sql[i]==="'"&&sql[i+1]==="'"){i+=2;continue}if(sql[i]==="'"){i++;break}i++}continue}if(ch==='"'){i++;while(i<sql.length){if(sql[i]==='"'&&sql[i+1]==='"'){i+=2;continue}if(sql[i]==='"'){i++;break}i++}continue}if(ch==='$'){const delimiter=sql.slice(i).match(/^\$(?:[A-Za-z_][A-Za-z0-9_]*)?\$/)?.[0];if(delimiter){const end=sql.indexOf(delimiter,i+delimiter.length);if(end>=0){i=end+delimiter.length;continue}}}if(ch===';'){tokens.push({text:';',start:i,end:i+1});i++;continue}if(/[A-Za-z_]/.test(ch)){let j=i+1;while(j<sql.length&&/[A-Za-z0-9_$]/.test(sql[j]))j++;tokens.push({text:sql.slice(i,j).toUpperCase(),start:i,end:j});i=j;continue}i++}return tokens}
   function validateReadOnlySql(input){const raw=String(input||'').trim();if(!raw)throw Object.assign(new Error('Empty SQL'),{userMessage:t('sqlOnlyRead')});const tokens=sqlTokens(raw);if(!tokens.length)throw Object.assign(new Error('Empty SQL'),{userMessage:t('sqlOnlyRead')});const semicolons=tokens.map((token,index)=>({token,index})).filter(item=>item.token.text===';');if(semicolons.length>1||(semicolons.length===1&&semicolons[0].index!==tokens.length-1))throw Object.assign(new Error('Multiple SQL statements are not allowed'),{userMessage:t('sqlSingleStatement')});const words=tokens.filter(token=>token.text!==';').map(token=>token.text);const first=words[0]||'';const allowed=new Set(['SELECT','WITH','VALUES','SHOW','DESCRIBE','DESC','EXPLAIN']);if(!allowed.has(first))throw Object.assign(new Error(`Statement type not allowed: ${first}`),{userMessage:t('sqlOnlyRead')});const denied=new Set(['INSERT','UPDATE','DELETE','CREATE','DROP','ALTER','COPY','ATTACH','DETACH','INSTALL','LOAD','CALL','SET','RESET','PRAGMA','CHECKPOINT','VACUUM','EXPORT','IMPORT','BEGIN','COMMIT','ROLLBACK','TRANSACTION','MERGE','TRUNCATE','GRANT','REVOKE','QUERY','QUERY_TABLE']);for(const token of words){if(denied.has(token))throw Object.assign(new Error(`Read-only SQL rejected token: ${token}`),{userMessage:t('sqlOnlyRead')})}let normalized=raw;if(semicolons.length===1){const semicolon=semicolons[0].token;normalized=raw.slice(0,semicolon.start)+raw.slice(semicolon.end)}return {sql:normalized,first,kind:['SELECT','WITH','VALUES'].includes(first)?'data':'meta'}}
   function addSqlHistory(sql){const value=String(sql).trim();if(!value)return;state.sqlHistory=state.sqlHistory.filter(item=>item!==value);state.sqlHistory.unshift(value);if(state.sqlHistory.length>20)state.sqlHistory.length=20;renderSqlHistory()}
   function sqlHistoryLabel(sql){const line=String(sql).replace(/\s+/g,' ').trim();return line.length>70?line.slice(0,67)+'…':line}
   function renderSqlHistory(){if(!el.sqlHistorySelect)return;const current=el.sqlHistorySelect.value,label=state.sqlHistory.length?`${t('sqlHistory')} (${state.sqlHistory.length})`:t('sqlHistoryEmpty');el.sqlHistorySelect.innerHTML=`<option value="">${escapeHtml(label)}</option>`+state.sqlHistory.map((query,index)=>`<option value="${index}">${escapeHtml(sqlHistoryLabel(query))}</option>`).join('');el.sqlHistorySelect.disabled=state.sqlHistory.length===0;if([...el.sqlHistorySelect.options].some(option=>option.value===current))el.sqlHistorySelect.value=current}
-  function renderSqlEmpty(){el.sqlResult.innerHTML=`<div class="sql-empty"><div><svg viewBox="0 0 24 24"><path d="m8 9-3 3 3 3M16 9l3 3-3 3M14 5l-4 14"/></svg><strong>${escapeHtml(t('sqlEmptyTitle'))}</strong><p>${escapeHtml(t('sqlEmptyBody'))}</p></div></div>`}
+  function renderSqlEmpty(){el.sqlResult.innerHTML=`<div class="sql-empty"><svg aria-hidden="true" viewBox="0 0 24 24"><rect x="3" y="4.5" width="18" height="15" rx="2"/><path d="M3 9.5h18M9.5 9.5v10"/></svg><p>${escapeHtml(t('queryReady'))}</p></div>`}
   function renderSqlError(error){const message=error?.userMessage||t('sqlFailed'),details=String(error?.stack||error||'');el.sqlResult.innerHTML=`<div class="sql-error"><div class="error-card"><strong>${escapeHtml(message)}</strong><p>${escapeHtml(t('sqlFailed'))}</p><details><summary>Details</summary><pre>${escapeHtml(details)}</pre></details></div></div>`}
   function sqlResultToolbar(){const count=state.sqlLastRows.length,status=`${t('sqlRows',{count:formatCount(count)})} · ${t('sqlDuration',{ms:Math.round(state.sqlLastDuration)})}`;return `<div class="sql-result-toolbar"><div class="sql-result-status">${escapeHtml(status)}${state.sqlTruncated?`<span class="sql-limit-badge">${escapeHtml(t('sqlLimited'))}</span>`:''}</div><div class="sql-result-actions"><button id="sqlExportCsv" class="tool-btn" type="button"><svg viewBox="0 0 24 24"><path d="M12 3v12M7 10l5 5 5-5M5 20h14"/></svg>${escapeHtml(t('sqlExportCsv'))}</button><button id="sqlExportJson" class="tool-btn" type="button"><svg viewBox="0 0 24 24"><path d="M12 3v12M7 10l5 5 5-5M5 20h14"/></svg>${escapeHtml(t('sqlExportJson'))}</button></div></div>`}
   function renderSqlCell(value,rowIndex,columnName){const safe=safeValue(value);let inner;if(safe.kind==='null')inner='<span class="null-badge">NULL</span>';else if(safe.kind==='nested'||safe.kind==='binary')inner=`<span class="nested-badge"><svg viewBox="0 0 24 24"><path d="M8 9 5 12l3 3M16 9l3 3-3 3M13.5 6l-3 12"/></svg><span>${escapeHtml(safe.text)}</span></span>`;else inner=escapeHtml(safe.text);return `<button class="cell-btn" type="button" data-sql-row="${rowIndex}" data-sql-column="${escapeHtml(columnName)}" title="${escapeHtml(safe.text)}">${inner}</button>`}
@@ -573,7 +973,7 @@
     const token=++state.requestToken,request=beginRelationLoad(token);
     renderObjectTree();el.emptyRelation.classList.add('hidden');el.relationView.classList.remove('hidden');renderRelationHead();
     el.columnsPanel.innerHTML=`<div class="state"><div><div class="spinner"></div><div>${escapeHtml(t('readingColumns'))}</div></div></div>`;
-    if(window.innerWidth<=760)setMobileSection('data');
+    setMobileSection('data');
     try{
       const columnsResult=await request.conn.query(`SELECT column_name, data_type, is_nullable, column_default, ordinal_position FROM information_schema.columns WHERE table_schema=${sqlLiteral(obj.schema)} AND table_name=${sqlLiteral(obj.name)} ORDER BY ordinal_position`);
       if(!isRelationRequestCurrent(request))return;
@@ -581,7 +981,7 @@
       renderRelationHead();renderColumns();updateFilterDialogOptions();await loadPage(token);
     }catch(error){if(!isRelationRequestCurrent(request))return;console.error(error);setRelationError(error,request,'both')}
   }
-  function renderRelationHead(){if(!state.selected)return;el.relationKicker.textContent=state.selected.type==='view'?t('view'):t('table');el.relationName.textContent=`${state.selected.schema}.${state.selected.name}`;el.relationName.title=`${state.selected.schema}.${state.selected.name}`;if(state.filteredRows===null)el.rowCount.textContent=t('uncounted');else if(state.totalRows===null)el.rowCount.textContent=t('matchingRows',{count:formatCount(state.filteredRows)});else if(state.filteredRows!==state.totalRows)el.rowCount.textContent=t('filteredRows',{filtered:formatCount(state.filteredRows),total:formatCount(state.totalRows)});else el.rowCount.textContent=`${formatCount(state.totalRows)} ${t('rows')}`;el.columnCount.textContent=state.columns.length?`${formatCount(state.columns.length)} ${t('columnsCount')}`:''}
+  function renderRelationHead(){if(!state.selected)return;el.relationKicker.textContent=state.selected.schema+' · '+t(state.selected.type==='view'?'view':'table');el.relationName.textContent=state.selected.name;el.relationName.title=`${state.selected.schema}.${state.selected.name}`;if(state.filteredRows===null)el.rowCount.textContent='';else if(state.totalRows===null)el.rowCount.textContent=t('matchingRows',{count:formatCount(state.filteredRows)});else if(state.filteredRows!==state.totalRows)el.rowCount.textContent=t('filteredRows',{filtered:formatCount(state.filteredRows),total:formatCount(state.totalRows)});else el.rowCount.textContent=`${formatCount(state.totalRows)} ${t('rows')}`;el.columnCount.textContent=state.columns.length?`${formatCount(state.columns.length)} ${t('columnsCount')}`:''}
   function buildWhereClause(){
     const clauses=[];
     if(state.search.trim()&&state.columns.length){
@@ -649,8 +1049,24 @@
       if(!isRelationRequestCurrent(request))return;renderData(result,request);
     }catch(error){setRelationError(error,request)}
   }
-  function renderCell(value,rowIndex,columnName){const safe=safeValue(value);let inner;if(safe.kind==='null')inner='<span class="null-badge">NULL</span>';else if(safe.kind==='nested'||safe.kind==='binary')inner=`<span class="nested-badge"><svg viewBox="0 0 24 24"><path d="M8 9 5 12l3 3M16 9l3 3-3 3M13.5 6l-3 12"/></svg><span>${escapeHtml(safe.text)}</span></span>`;else inner=escapeHtml(safe.text);return `<button class="cell-btn" type="button" data-row="${rowIndex}" data-column="${escapeHtml(columnName)}" title="${escapeHtml(safe.text)}">${inner}</button>`}
-  function mobileSortHtml(){
+  function searchHighlighter(term){
+    if(!term)return escapeHtml;
+    const literal=term.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+    const pattern=new RegExp(literal,'giu');
+    return value=>{
+      let end=0,html='';
+      for(const hit of value.matchAll(pattern)){
+        // A preview is at most 340px wide. Keep long matching strings as text
+        // beyond its leading characters so one cell cannot create thousands of nodes.
+        if(hit.index>=256)break;
+        html+=escapeHtml(value.slice(end,hit.index))+'<mark>'+escapeHtml(hit[0])+'</mark>';
+        end=hit.index+hit[0].length;
+      }
+      return html+escapeHtml(value.slice(end));
+    };
+  }
+  function renderCell(value,rowIndex,columnName,formatText=escapeHtml){const safe=safeValue(value);let inner;if(safe.kind==='null')inner='<span class="null-badge">NULL</span>';else if(safe.kind==='nested'||safe.kind==='binary')inner=`<span class="nested-badge"><svg viewBox="0 0 24 24"><path d="M8 9 5 12l3 3M16 9l3 3-3 3M13.5 6l-3 12"/></svg><span>${escapeHtml(safe.text)}</span></span>`;else inner=formatText(safe.text);return `<button class="cell-btn" type="button" data-row="${rowIndex}" data-column="${escapeHtml(columnName)}" title="${escapeHtml(safe.text)}">${inner}</button>`}
+  function mobileSortHtml(ready=true){
     const options=state.columns.map((col,index)=>{
       const name=escapeHtml(col.column_name);
       const directions=['asc','desc'].map(dir=>{
@@ -659,12 +1075,12 @@
       });
       return `<optgroup label="${name}">${directions.join('')}</optgroup>`;
     });
-    return `<select id="mobileSort" class="tool-btn mobile-sort" aria-label="${escapeHtml(t('sortBy'))}"><option value="">${escapeHtml(t(state.sort?'noSort':'sortBy'))}</option>${options.join('')}</select>`;
+    return `<select id="mobileSort" class="tool-btn mobile-sort" ${ready?'':'disabled'} aria-label="${escapeHtml(t('sortBy'))}"><option value="">${escapeHtml(t(state.sort?'noSort':'sortBy'))}</option>${options.join('')}</select>`;
   }
   function renderRelationPanel(content,ready=false,from=0n,to=0n,pageCount=null){
     if(!state.columns.length&&!ready){el.dataPanel.innerHTML=content;return}
     if(!$('rowSearch')){
-      el.dataPanel.innerHTML=`<div class="panel-toolbar"><div class="data-controls"><div class="search-box"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6"/><path d="m16 16 4 4"/></svg><input id="rowSearch" type="search" value="${escapeHtml(state.search)}" placeholder="${escapeHtml(t('searchRows'))}" aria-label="${escapeHtml(t('searchRows'))}"><button id="clearSearch" class="clear-search${state.search?'':' hidden'}" type="button" aria-label="${escapeHtml(t('clearSearch'))}"><svg viewBox="0 0 24 24"><path d="m6 6 12 12"/><path d="M18 6 6 18"/></svg></button></div><div class="relation-toolbar-actions" id="relationActions"></div></div><div class="pager" id="relationPager"></div></div><div class="relation-output" id="relationChips"></div><div class="relation-output" id="relationRows"></div>`;
+      el.dataPanel.innerHTML=`<div class="panel-toolbar"><div class="data-controls"><div class="search-box"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6"/><path d="m16 16 4 4"/></svg><input id="rowSearch" type="search" value="${escapeHtml(state.search)}" placeholder="${escapeHtml(t('searchRows'))}" aria-label="${escapeHtml(t('searchRows'))}"><button id="clearSearch" class="clear-search${state.search?'':' hidden'}" type="button" aria-label="${escapeHtml(t('clearSearch'))}"><svg viewBox="0 0 24 24"><path d="m6 6 12 12"/><path d="M18 6 6 18"/></svg></button></div><div class="relation-toolbar-actions" id="relationActions"></div></div></div><div class="relation-output" id="relationChips"></div><div class="relation-output" id="relationRows"></div><div class="pager" id="relationPager"></div>`;
       bindRowSearch();
     }
     const search=$('rowSearch');
@@ -673,9 +1089,11 @@
     search.setAttribute('aria-label',t('searchRows'));
     $('clearSearch').classList.toggle('hidden',!state.search);
     $('clearSearch').setAttribute('aria-label',t('clearSearch'));
-    const countButton=pageCount===null?`<button type="button" class="tool-btn" id="countRows">${escapeHtml(t('countRows'))}</button>`:'';
-    $('relationActions').innerHTML=ready?`<button id="addFilter" class="tool-btn${state.filters.length?' active':''}" type="button"><svg viewBox="0 0 24 24"><path d="M4 5h16l-6 7v5l-4 2v-7L4 5Z"/></svg>${escapeHtml(t('filter'))}${state.filters.length?` (${state.filters.length})`:''}</button>${mobileSortHtml()}${countButton}<div class="export-group"><button id="exportCsv" class="tool-btn" type="button" ${state.lastRows.length?'':'disabled'}><svg viewBox="0 0 24 24"><path d="M12 3v12M7 10l5 5 5-5M5 20h14"/></svg>${escapeHtml(t('exportCsv'))}</button><button id="exportJson" class="tool-btn" type="button" ${state.lastRows.length?'':'disabled'}><svg viewBox="0 0 24 24"><path d="M12 3v12M7 10l5 5 5-5M5 20h14"/></svg>${escapeHtml(t('exportJson'))}</button></div>`:'';
-    $('relationPager').innerHTML=ready?`<div class="panel-status">${formatCount(from)}–${formatCount(to)}</div><button type="button" id="firstPage" aria-label="${escapeHtml(t('firstPage'))}" title="${escapeHtml(t('firstPage'))}" ${state.page===0n?'disabled':''}><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5v14m12-13-6 6 6 6"/></svg></button><button type="button" id="prevPage" aria-label="${escapeHtml(t('prevPage'))}" title="${escapeHtml(t('prevPage'))}" ${state.page===0n?'disabled':''}><svg viewBox="0 0 24 24"><path d="m15 6-6 6 6 6"/></svg></button><div class="page-label">${t('page')} ${formatCount(state.page+1n)}${pageCount===null?'':' '+t('of')+' '+formatCount(pageCount||1n)}</div><button type="button" id="nextPage" aria-label="${escapeHtml(t('nextPage'))}" title="${escapeHtml(t('nextPage'))}" ${(state.filteredRows!==null&&(state.page+1n)>=pageCount)?'disabled':''}><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg></button><button type="button" id="lastPage" aria-label="${escapeHtml(t('lastPage'))}" title="${escapeHtml(t('lastPage'))}" ${(state.filteredRows!==null&&(state.page+1n)>=pageCount)?'disabled':''}><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 5v14M7 6l6 6-6 6"/></svg></button>`:'';
+    const countButton=pageCount===null?`<button type="button" class="count-link" id="countRows">${escapeHtml(t('countRows'))}</button>`:'';
+    $('relationActions').innerHTML=`<button id="addFilter" ${ready?'':'disabled'} class="tool-btn${state.filters.length?' active':''}" type="button"><svg viewBox="0 0 24 24"><path d="M4 6h16M7 12h10M10 18h4"/></svg>${escapeHtml(t('filter'))}${state.filters.length?` (${state.filters.length})`:''}</button>${mobileSortHtml(ready)}`;
+    const disabled=state.lastRows.length?'':'disabled';
+    const exportMenu=`<button class="tool-btn" type="button" id="exportMenuButton" popovertarget="relationExportMenu" aria-controls="relationExportMenu" ${disabled}><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m-5-5 5 5 5-5M4 16v4h16v-4"/></svg>${escapeHtml(t('exportPage'))}</button><div id="relationExportMenu" popover="auto" role="group" aria-label="${escapeHtml(t('exportPage'))}"><button type="button" id="exportCsv" popovertarget="relationExportMenu" popovertargetaction="hide" autofocus ${disabled}>${escapeHtml(t('exportCsv'))}</button><button type="button" id="exportJson" popovertarget="relationExportMenu" popovertargetaction="hide" ${disabled}>${escapeHtml(t('exportJson'))}</button></div>`;
+    $('relationPager').innerHTML=ready?`<div class="page-range"><span class="panel-status">${escapeHtml(t('rangeRows',{range:formatCount(from)+'–'+formatCount(to)}))}</span>${countButton}</div><div class="page-nav"><button type="button" id="firstPage" aria-label="${escapeHtml(t('firstPage'))}" title="${escapeHtml(t('firstPage'))}" ${state.page===0n?'disabled':''}><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5v14m12-13-6 6 6 6"/></svg></button><button type="button" id="prevPage" aria-label="${escapeHtml(t('prevPage'))}" title="${escapeHtml(t('prevPage'))}" ${state.page===0n?'disabled':''}><svg viewBox="0 0 24 24"><path d="m15 6-6 6 6 6"/></svg></button><div class="page-label">${t('page')} ${formatCount(state.page+1n)}${pageCount===null?'':' '+t('of')+' '+formatCount(pageCount||1n)}</div><button type="button" id="nextPage" aria-label="${escapeHtml(t('nextPage'))}" title="${escapeHtml(t('nextPage'))}" ${(state.filteredRows!==null&&(state.page+1n)>=pageCount)?'disabled':''}><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg></button><button type="button" id="lastPage" aria-label="${escapeHtml(t('lastPage'))}" title="${escapeHtml(t('lastPage'))}" ${(state.filteredRows!==null&&(state.page+1n)>=pageCount)?'disabled':''}><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 5v14M7 6l6 6-6 6"/></svg></button></div>${exportMenu}`:'';
     $('relationChips').innerHTML=ready&&(state.search.trim()||state.filters.length)?renderFilterSummary():'';
     $('relationRows').innerHTML=content;
     if(ready)bindDataControls();
@@ -696,7 +1114,48 @@
     renderRelationHead();
     renderDataFromCache();
   }
-  function renderDataFromCache(){if(!hasCurrentRelationResult()||!state.selected)return;const fields=state.lastFields,rows=state.lastRows;const pageCount=state.filteredRows===null?null:(state.filteredRows+state.pageSize-1n)/state.pageSize;const offset=state.page*state.pageSize;const from=rows.length?offset+1n:0n;const to=rows.length?offset+BigInt(rows.length):0n;let content;if(rows.length){const headers=fields.map(name=>{const active=state.sort?.column===name;const direction=active?state.sort.direction:null;const indicator=direction?`<span class="sort-indicator"><svg viewBox="0 0 24 24"><path d="${direction==='asc'?'m7 14 5-5 5 5':'m7 10 5 5 5-5'}"/></svg></span>`:'';return `<th class="sortable" role="button" tabindex="0" aria-sort="${direction==='asc'?'ascending':direction==='desc'?'descending':'none'}" data-sort="${escapeHtml(name)}">${escapeHtml(name)}${indicator}</th>`}).join('');const table=`<div class="table-wrap"><table class="data-table"><thead><tr>${headers}</tr></thead><tbody>${rows.map((row,rowIndex)=>`<tr>${fields.map(name=>`<td>${renderCell(row[name],rowIndex,name)}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;const mobile=`<div class="record-list">${rows.map((row,rowIndex)=>{const visible=fields.slice(0,5);const absolute=state.page*state.pageSize+BigInt(rowIndex)+1n;return `<article class="record-card"><div class="record-head"><span class="record-no">${escapeHtml(t('record'))} ${formatCount(absolute)}</span><button type="button" class="record-detail-btn" data-row-detail="${rowIndex}">${escapeHtml(t('recordDetails'))}</button></div><div class="record-fields">${visible.map(name=>{const safe=safeValue(row[name]);return `<div class="record-field"><div class="record-field-name">${escapeHtml(name)}</div><div class="record-field-value">${safe.kind==='null'?'<span class="null-badge">NULL</span>':escapeHtml(safe.text)}</div></div>`}).join('')}${fields.length>5?`<div class="record-field"><div class="record-field-name"></div><div class="record-field-value">${escapeHtml(t('moreColumns',{count:fields.length-5}))}</div></div>`:''}</div></article>`}).join('')}</div>`;content=table+mobile}else content=`<div class="state"><div>${escapeHtml(t('noRows'))}</div></div>`;renderRelationPanel(content,true,from,to,pageCount)}
+  function renderDataFromCache(){
+    if(!hasCurrentRelationResult()||!state.selected)return;
+    const fields=state.lastFields,rows=state.lastRows;
+    const pageCount=state.filteredRows===null?null:(state.filteredRows+state.pageSize-1n)/state.pageSize;
+    const offset=state.page*state.pageSize,from=rows.length?offset+1n:0n,to=rows.length?offset+BigInt(rows.length):0n;
+    if(!rows.length){
+      renderRelationPanel(`<div class="state"><div>${escapeHtml(t('noRows'))}</div></div>`,true,from,to,pageCount);return;
+    }
+    const formatText=searchHighlighter(state.search.trim());
+    const numeric=new Set(state.columns.filter(col=>numericFilterType(col.data_type)).map(col=>col.column_name));
+    const headers=fields.map(name=>{
+      const direction=state.sort?.column===name?state.sort.direction:null;
+      const sort=direction==='asc'?'ascending':direction==='desc'?'descending':'none';
+      const path=direction==='asc'?'m7 14 5-5 5 5':direction==='desc'?'m7 10 5 5 5-5':'m9 9 3-3 3 3m-6 6 3 3 3-3';
+      return `<th class="sortable${numeric.has(name)?' numeric-cell':''}" scope="col" aria-sort="${sort}" data-sort="${escapeHtml(name)}"><button type="button" class="column-sort"><span>${escapeHtml(name)}</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="${path}"/></svg></button></th>`;
+    }).join('');
+    const tableRows=rows.map((row,index)=>`<tr>${fields.map(name=>`<td${numeric.has(name)?' class="numeric-cell"':''}>${renderCell(row[name],index,name,formatText)}</td>`).join('')}</tr>`).join('');
+    const table=`<div class="table-wrap"><table class="data-table"><thead><tr>${headers}</tr></thead><tbody>${tableRows}</tbody></table></div>`;
+    function recordField(row,name){
+      const safe=safeValue(row[name]);
+      const value=safe.kind==='null'?'<span class="null-badge">NULL</span>':safe.kind==='scalar'?formatText(safe.text):escapeHtml(safe.text);
+      return `<div class="record-field"><span class="record-field-name">${escapeHtml(name)}</span><span class="record-field-value${numeric.has(name)?' numeric-value':''}" title="${escapeHtml(safe.text)}">${value}</span></div>`;
+    }
+    const secondary=fields.slice(1), preview=secondary.slice(0,4);
+    const findText=state.search.trim().toLowerCase();
+    function previewFields(row){
+      if(!findText||secondary.length<=4)return preview;
+      const matching=[];
+      for(const name of secondary){
+        const value=row[name];
+        if(value==null||(typeof value==='object'&&!(value instanceof Date)))continue;
+        if(safeValue(value).text.toLowerCase().includes(findText))matching.push(name);
+        if(matching.length===4)break;
+      }
+      return matching.concat(preview.filter(name=>!matching.includes(name))).slice(0,4);
+    }
+    const records=rows.map((row,index)=>{
+      const label=t('record')+' '+formatCount(offset+BigInt(index)+1n)+' · '+t('recordDetails');
+      return `<article class="record-card"><div class="record-head">${fields.length?recordField(row,fields[0]):''}<button type="button" class="record-detail-btn" data-row-detail="${index}" aria-label="${escapeHtml(label)}">${escapeHtml(t('viewRecord'))}<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg></button></div><div class="record-fields">${previewFields(row).map(name=>recordField(row,name)).join('')}</div></article>`;
+    }).join('');
+    renderRelationPanel(table+`<div class="record-list">${records}</div>`,true,from,to,pageCount);
+  }
   function bindRowSearch(){
     const search=$('rowSearch');
     const update=(immediate=false)=>{
@@ -707,7 +1166,7 @@
       state.relationError=null;
       state.lastRows=[];state.lastFields=[];
       $('clearSearch').classList.toggle('hidden',!state.search);
-      for(const id of ['exportCsv','exportJson','firstPage','prevPage','nextPage','lastPage','countRows','mobileSort']){
+      for(const id of ['addFilter','exportMenuButton','exportCsv','exportJson','firstPage','prevPage','nextPage','lastPage','countRows','mobileSort']){
         const button=$(id);if(button)button.disabled=true;
       }
       state.searchTimer=null;
@@ -726,6 +1185,14 @@
     $('clearSearch').addEventListener('click',()=>{search.value='';search.focus();update(true)});
   }
   function bindDataControls(){
+    $('relationExportMenu')?.addEventListener('beforetoggle',event=>{
+      if(event.newState!=='open')return;
+      const menu=event.currentTarget,anchor=$('exportMenuButton').getBoundingClientRect();
+      const viewport=document.documentElement.clientWidth,topSpace=anchor.top;
+      menu.style.right=Math.max(8,viewport-anchor.right)+'px';
+      menu.style.bottom=topSpace>=108?(window.innerHeight-topSpace+6)+'px':'auto';
+      menu.style.top=topSpace>=108?'auto':(anchor.bottom+6)+'px';
+    });
     $('countRows')?.addEventListener('click',()=>countRelationRows());
     $('mobileSort')?.addEventListener('change',event=>{
       if(!hasCurrentRelationResult())return;
@@ -858,7 +1325,16 @@
   }
   function renderColumns(){
     if(!state.columns.length){if(state.selected)el.columnsPanel.innerHTML=`<div class="state"><div>${escapeHtml(t('readingColumns'))}</div></div>`;return}
-    el.columnsPanel.innerHTML=`<div class="columns-list"><div class="column-row head"><div>${escapeHtml(t('name'))}</div><div>${escapeHtml(t('type'))}</div><div>${escapeHtml(t('nullable'))}</div><div>${escapeHtml(t('defaultValue'))}</div><div>${escapeHtml(t('profile'))}</div></div>${state.columns.map(col=>`<div class="column-row"><div class="column-name">${escapeHtml(col.column_name)}</div><div><span class="type-chip">${escapeHtml(col.data_type)}</span></div><div class="${String(col.is_nullable).toUpperCase()==='YES'?'yes':'no'}" data-mobile-label="${escapeHtml(t('nullable'))}">${String(col.is_nullable).toUpperCase()==='YES'?t('yes'):t('no')}</div><div data-mobile-label="${escapeHtml(t('defaultValue'))}">${col.column_default==null?'<span class="null">—</span>':escapeHtml(col.column_default)}</div><div class="column-actions"><button class="tool-btn profile-btn" type="button" data-profile-column="${escapeHtml(col.column_name)}"><svg viewBox="0 0 24 24"><path d="M4 19V9M10 19V5M16 19v-7M22 19H2"/></svg><span>${escapeHtml(t('analyzeColumn'))}</span></button></div></div>`).join('')}</div>`;
+    const rows=state.columns.map(col=>{
+      const nullable=String(col.is_nullable).toUpperCase()==='YES', name=escapeHtml(col.column_name);
+      return `<tr><th scope="row" class="field-name">${name}</th><td class="field-type"><code>${escapeHtml(col.data_type)}</code></td>
+        <td class="field-nullable" data-mobile-label="${escapeHtml(t('nullable'))}">${escapeHtml(t(nullable?'yes':'no'))}</td>
+        <td class="field-default" data-mobile-label="${escapeHtml(t('defaultValue'))}">${col.column_default==null?'<span class="null">—</span>':escapeHtml(col.column_default)}</td>
+        <td class="field-action"><button class="tool-btn profile-btn" type="button" data-profile-column="${name}" aria-label="${escapeHtml(t('analyzeColumn'))} · ${name}"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M4 4v15h16M8 15v-4m5 4V7m5 8v-6"/></svg><span>${escapeHtml(t('profile'))}</span></button></td></tr>`;
+    }).join('');
+    el.columnsPanel.innerHTML=`<div class="field-scroll"><table class="field-table" aria-label="${escapeHtml(t('columns'))}"><thead><tr>
+      <th scope="col">${escapeHtml(t('name'))}</th><th scope="col">${escapeHtml(t('type'))}</th><th scope="col">${escapeHtml(t('nullable'))}</th>
+      <th scope="col">${escapeHtml(t('defaultValue'))}</th><th scope="col">${escapeHtml(t('profile'))}</th></tr></thead><tbody>${rows}</tbody></table></div>`;
     el.columnsPanel.querySelectorAll('[data-profile-column]').forEach(button=>button.addEventListener('click',()=>{const col=state.columns.find(item=>item.column_name===button.dataset.profileColumn);if(col)openColumnProfile(col)}));
   }
   function profileKind(dataType){const type=String(dataType||'').toUpperCase();if(/(^|\b)(TINYINT|SMALLINT|INTEGER|BIGINT|HUGEINT|UTINYINT|USMALLINT|UINTEGER|UBIGINT|UHUGEINT|FLOAT|REAL|DOUBLE|DECIMAL|NUMERIC)(\b|\()/.test(type))return'numeric';if(/(^|\b)(DATE|TIME(?:TZ|_NS)?|TIMESTAMP(?:TZ|_S|_MS|_NS)?|DATETIME)(\b|\()/.test(type))return'temporal';if(/CHAR|VARCHAR|TEXT|STRING/.test(type))return'text';if(type==='BOOLEAN'||type==='BOOL')return'categorical';if(/BLOB|LIST|STRUCT|MAP|ARRAY|UNION/.test(type))return'complex';return'categorical'}
@@ -904,13 +1380,43 @@
   function downloadText(text,mime,extension){const base=`${safeFilenamePart(state.file?.name?.replace(/\.(duckdb|db)$/i,'')||'duckdb')}-${safeFilenamePart(state.selected?.schema||'main')}-${safeFilenamePart(state.selected?.name||'data')}-page-${state.page+1n}`;const url=URL.createObjectURL(new Blob([text],{type:mime}));const a=document.createElement('a');a.href=url;a.download=`${base}.${extension}`;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);toast(t('exported'))}
   function exportVisible(format){if(!hasCurrentRelationResult()||!state.lastRows.length){toast(t('exportEmpty'));return}if(format==='csv'){const header=state.lastFields.map(csvCell).join(',');const lines=state.lastRows.map(row=>state.lastFields.map(field=>csvCell(row[field])).join(','));downloadText('\uFEFF'+[header,...lines].join('\r\n'),'text/csv;charset=utf-8','csv')}else{const normalized=state.lastRows.map(row=>Object.fromEntries(state.lastFields.map(field=>[field,normalizeValue(row[field])])));downloadText(JSON.stringify(normalized,null,2),'application/json;charset=utf-8','json')}}
   function renderRelationError(error,panel='both'){const html=`<div class="state"><div class="error-card"><strong>${escapeHtml(t('loadFailed'))}</strong><p>${escapeHtml(t('loadFailedBody'))}</p><details><summary>Details</summary><pre>${escapeHtml(String(error?.stack||error))}</pre></details></div></div>`;renderRelationPanel(html);if(panel!=='data')el.columnsPanel.innerHTML=html}
-  function setDesktopTab(which){const data=which==='data';el.dataTab.classList.toggle('active',data);el.columnsTab.classList.toggle('active',!data);el.dataPanel.classList.toggle('inactive',!data);el.columnsPanel.classList.toggle('active',!data)}
-  function setMobileSection(which){el.workspace.classList.remove('mobile-objects','mobile-overview','mobile-data','mobile-columns','mobile-sql');el.workspace.classList.add(`mobile-${which}`);el.mobileNav.querySelectorAll('button').forEach(button=>button.classList.toggle('active',button.dataset.mobile===which))}
+  function setDesktopTab(which){const data=which==='data';el.dataTab.setAttribute('aria-pressed',String(data));el.columnsTab.setAttribute('aria-pressed',String(!data));el.dataTab.classList.toggle('active',data);el.columnsTab.classList.toggle('active',!data);el.dataPanel.classList.toggle('inactive',!data);el.columnsPanel.classList.toggle('active',!data)}
+  function setMobileSection(which){if(which==='data'||which==='columns')setDesktopTab(which);el.workspace.classList.remove('mobile-objects','mobile-overview','mobile-data','mobile-columns','mobile-sql');el.workspace.classList.add(`mobile-${which}`);el.mobileNav.querySelectorAll('button').forEach(button=>{
+    const section=button.dataset.mobile;
+    button.disabled=(section==='data'||section==='columns')&&!state.selected;
+    button.classList.toggle('active',section===which);
+    if(section===which)button.setAttribute('aria-current','page');else button.removeAttribute('aria-current');
+  })}
   window.AppToast = Object.freeze({ show: toast });
   $('openDemoBtn').addEventListener('click',()=>openFile(null,true));
-  el.openBtn.addEventListener('click',()=>el.fileInput.click());el.changeFileBtn.addEventListener('click',()=>el.fileInput.click());el.replaceFileHeader?.addEventListener('click',()=>el.fileInput.click());el.fileInput.addEventListener('change',()=>{const file=el.fileInput.files?.[0];if(file)openFile(file);el.fileInput.value=''});el.compareFileInput.addEventListener('change',()=>{const file=el.compareFileInput.files?.[0];if(file)startComparison(file);el.compareFileInput.value=''})
+  el.openBtn.addEventListener('click',()=>el.fileInput.click());el.changeFileBtn.addEventListener('click',()=>el.fileInput.click());el.fileInput.addEventListener('change',()=>{const file=el.fileInput.files?.[0];if(file)openFile(file);el.fileInput.value=''});el.compareFileInput.addEventListener('change',()=>{const file=el.compareFileInput.files?.[0];if(file)startComparison(file);el.compareFileInput.value=''})
   ;['dragenter','dragover'].forEach(type=>el.dropzone.addEventListener(type,event=>{event.preventDefault();el.dropzone.classList.add('drag')}));['dragleave','drop'].forEach(type=>el.dropzone.addEventListener(type,event=>{event.preventDefault();el.dropzone.classList.remove('drag')}));el.dropzone.addEventListener('drop',event=>{const file=event.dataTransfer?.files?.[0];if(file)openFile(file)});document.addEventListener('dragover',event=>event.preventDefault());document.addEventListener('drop',event=>event.preventDefault());
-  el.dataTab.addEventListener('click',()=>setDesktopTab('data'));el.columnsTab.addEventListener('click',()=>setDesktopTab('columns'));el.mobileNav.querySelectorAll('button').forEach(button=>button.addEventListener('click',()=>{const target=button.dataset.mobile;if(target==='overview'){showOverview();return}if(target==='sql'){showSql();return}if(!state.selected&&target!=='objects')return;if((target==='data'||target==='columns')&&(state.viewMode==='overview'||state.viewMode==='compare'||state.viewMode==='sql')&&state.selected){state.viewMode='relation';el.overviewView.classList.add('hidden');el.comparisonView.classList.add('hidden');el.sqlView.classList.add('hidden');el.relationView.classList.remove('hidden');renderObjectTree()}setMobileSection(target)}));
+  $('overviewTreeButton').addEventListener('click',showOverview);
+  $('sqlTreeButton').addEventListener('click',showSql);
+  $('compareTreeButton').addEventListener('click',showComparison);
+  el.objectSearch.addEventListener('input',renderObjectTree);
+  el.objectSearch.addEventListener('keydown',async event=>{
+    if(event.isComposing)return;
+    if(event.key==='Escape'){el.objectSearch.value='';renderObjectTree();return}
+    const first=el.tree.querySelector('details[open] button[data-object-index]');
+    if(first&&event.key==='ArrowDown'){event.preventDefault();first.focus()}
+    if(first&&event.key==='Enter'){
+      event.preventDefault();
+      const obj=state.objects[Number(first.dataset.objectIndex)];
+      await selectObject(obj);
+      if(state.viewMode==='relation'&&state.selected===obj&&(document.activeElement===el.objectSearch||document.activeElement===document.body))$('rowSearch')?.focus();
+    }
+  });
+  el.tree.addEventListener('click',event=>{
+    if(event.target.closest('[data-reset-catalog]')){el.objectSearch.value='';renderObjectTree();el.objectSearch.focus();return}
+    const button=event.target.closest('button[data-object-index]');
+    if(button){const obj=state.objects[Number(button.dataset.objectIndex)];if(obj)selectObject(obj)}
+  });
+  document.addEventListener('keydown',event=>{
+    if(event.key!=='/'||event.isComposing||event.ctrlKey||event.metaKey||event.altKey||!state.overview||document.querySelector('dialog[open]')||event.target.closest('input,textarea,select,[contenteditable]'))return;
+    event.preventDefault();if(window.innerWidth<=760)setMobileSection('objects');el.objectSearch.focus();el.objectSearch.select();
+  });
+  el.dataTab.addEventListener('click',()=>setMobileSection('data'));el.columnsTab.addEventListener('click',()=>setMobileSection('columns'));el.mobileNav.querySelectorAll('button').forEach(button=>button.addEventListener('click',()=>{const target=button.dataset.mobile;if(target==='overview'){showOverview();return}if(target==='sql'){showSql();return}if(!state.selected&&target!=='objects')return;if((target==='data'||target==='columns')&&(state.viewMode==='overview'||state.viewMode==='compare'||state.viewMode==='sql')&&state.selected){state.viewMode='relation';el.overviewView.classList.add('hidden');el.comparisonView.classList.add('hidden');el.sqlView.classList.add('hidden');el.relationView.classList.remove('hidden');renderObjectTree()}setMobileSection(target)}));
   el.runSqlBtn.addEventListener('click',()=>runSql('query'));el.explainSqlBtn.addEventListener('click',()=>runSql('explain'));el.clearSqlBtn.addEventListener('click',()=>{el.sqlEditor.value='';el.sqlEditor.focus()});el.sqlEditor.addEventListener('keydown',event=>{if((event.ctrlKey||event.metaKey)&&event.key==='Enter'){event.preventDefault();runSql('query')}});el.sqlHistorySelect.addEventListener('change',()=>{const raw=el.sqlHistorySelect.value;if(raw!==''){const index=Number(raw);if(Number.isInteger(index)&&index>=0&&state.sqlHistory[index]!=null){el.sqlEditor.value=state.sqlHistory[index];el.sqlEditor.focus()}}el.sqlHistorySelect.value=''});
   el.filterColumn.addEventListener('change',()=>{
     el.filterValue.value='';$('filterEndValue').value='';updateFilterOperators(true);

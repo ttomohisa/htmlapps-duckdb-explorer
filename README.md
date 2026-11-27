@@ -16,7 +16,7 @@ GitHub Pages delivers the initial HTML. After it loads, the selected DuckDB file
 
 [![DuckDB Explorer screenshot](assets/screenshot-en.png)](https://ttomohisa.github.io/htmlapps-duckdb-explorer/)
 
-Dialog content remains scrollable in short or zoomed windows, and the background page stays still while a dialog is open.
+In the sample database, open `main.orders` and search for `paid` to see matching values highlighted in the results. Phone cards bring matching fields into view.
 
 ## Features
 
@@ -61,8 +61,8 @@ After building, `dist/index.html` can be opened directly with `file://` and used
 
 1. Choose or drop a `.duckdb` / `.db` file. **Try sample database** opens the 250 sample orders included in the HTML.
 2. Review **Overview** to understand the database structure without exact-counting every table.
-3. Select a table or view from **Objects**.
-4. Keep typing in search to refine the results. Use numeric bounds or inclusive calendar dates in **Add filter**. Select a column header or the phone’s **Sort by** control to sort.
+3. Press `/` to search tables and views by name or schema. Enter `main.orders` and press Enter to open the first match and focus the value search.
+4. Type `paid` in the value search to find matching rows across all columns. Matches are highlighted in the table and on phone record cards. Use the filter for numeric bounds or inclusive dates, and sort using a column header or the phone’s sort control.
 5. Run column analysis only for columns you want to inspect.
 6. Use **SQL** for guarded read-only statements.
 7. From **Overview**, save a data dictionary HTML or compare another DuckDB file.
@@ -71,7 +71,7 @@ The first page displays up to 100 rows. Choose **Count rows** or **Last** to cal
 
 ### Viewer export
 
-Search, export, and paging controls wrap to fit the data panel on desktop and smartphones in both languages.
+Choose **Export** below the results and select CSV or JSON. Paging and the optional exact row count are also below the results.
 
 CSV / JSON export from the data viewer saves only the current successfully loaded page. Export is unavailable while a page, search, filter, or sort request is pending, after a failure, or when no rows match. Switching Japanese/English preserves loading and error states. Select the relation again to reload after a failure. Nested values are serialized safely, including own keys such as `__proto__` in JSON exports and full record details; CSV includes a UTF-8 BOM. First / Previous / Next / Last page controls are unavailable while search or loading is pending.
 

@@ -4,10 +4,10 @@ const fs = require('node:fs');
 const path = require('node:path');
 const { pathToFileURL } = require('node:url');
 const { chromium } = require('playwright');
-const evidence = path.resolve('test-results/mobile-label');
+const evidence = path.resolve(process.env.GITHUB_ACTIONS ? 'test-results/mobile-label' : '.cache/mobile-label');
 async function main() {
   fs.mkdirSync(evidence, { recursive: true });
-  const browser = await chromium.launch();
+  const browser = await chromium.launch({channel:process.env.PLAYWRIGHT_CHANNEL || undefined});
   try {
     for (const language of ['ja', 'en']) for (const [width, height] of [[1360,900],[320,568],[393,252]]) {
       const context = await browser.newContext({ viewport: {width,height}, locale: language, reducedMotion:'reduce' });

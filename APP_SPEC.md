@@ -109,9 +109,9 @@ v1.0.0 is the first stable release baseline. It does not add a new product area 
 3. The file is registered and opened read-only.
 4. Catalog metadata is read from `duckdb_tables()` / `duckdb_views()` and a lightweight database overview is shown.
 5. No exact count is run across every table during database open.
-6. User selects a table or view from the overview or object tree.
+6. The user can open a relation from the overview directory or search the catalog by schema and relation name. `/` focuses catalog search. Enter opens its first match and focuses value search. Clearing a catalog search restores the user's collapsed schema groups.
 7. The viewer loads column metadata and previews up to 100 rows. An extra row establishes whether Next is available.
-8. User can search, add filters, sort columns, change pages, inspect full values, or switch to column definitions.
+8. Value search filters rows across all columns and highlights matching text in visible scalar previews. The viewer also supports typed filters, sorting, full value details and column definitions. Paging, exact count and the current-page export menu sit below the results.
 9. From Columns, user can explicitly analyze one column at a time.
 10. User can export only the currently visible page to CSV or JSON.
 11. User can open SQL from the global navigation and run one guarded read-only statement.
@@ -249,9 +249,9 @@ Only one primary pane is shown at a time.
 
 The Data pane does not render the wide desktop table. It renders record cards instead:
 
-- first five fields are shown on each card
+- the first field heads each card and up to four more fields appear underneath. When searching, matching scalar fields take priority, including fields beyond the first five columns
 - long values remain truncated inside the card
-- `Record details` opens all fields as formatted JSON
+- the detail button opens all fields as formatted JSON
 - search/filter/export controls wrap without page-level horizontal scrolling
 
 ## Test fixture
