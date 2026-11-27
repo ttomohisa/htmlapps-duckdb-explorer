@@ -155,12 +155,17 @@ async function checkSession(browser, variant, mobile) {
   page.on('websocket', socket => requests.push(socket.url()));
   try {
     await page.goto(pathToFileURL(path.join(root, 'dist', variant)).href);
-    await page.locator('#openDemoBtn').click();
+    await page.locator('#rowSearch').waitFor({timeout:15000});
+    assert.equal(await page.locator('#sampleSource').isVisible(), true, 'Startup identifies the live sample');
+    assert.equal(await page.locator('#changeFileBtn').isVisible(), true);
     await checkExploration(page, mobile);
-    await page.locator('#fileInput').setInputFiles(baseFile);
+    const chooser = page.waitForEvent('filechooser');
+    await page.locator('#changeFileBtn').click();
+    await (await chooser).setFiles(baseFile);
     await page.locator('#overviewView .overview-stat').first().waitFor({state:'visible'});
     if (mobile) await page.locator('#mobileNav [data-mobile="objects"]').click();
     assert.equal(await page.locator('#fileName').textContent(),path.basename(baseFile));
+    assert.equal(await page.locator('#sampleSource').isVisible(), false, 'A user file with the sample filename stays a user file');
     await checkCatalog(page);
     if (mobile) await page.locator('#dataPanel .record-card').first().waitFor({state:'visible'});
     else await page.locator('#dataPanel .data-table tbody tr').first().waitFor({state:'visible'});
@@ -186,7 +191,25 @@ async function checkSession(browser, variant, mobile) {
     await page.locator('#comparisonView .diff-stat-value').first().waitFor({state:'visible'});
     const diffCounts = await page.locator('#comparisonView .diff-stat-value').allTextContents();
     assert.ok(diffCounts.some(value=>Number(value.replace(/[^0-9]/g,''))>0),'Fixture comparison reports at least one difference');
-    await page.locator('#fileInput').setInputFiles(compareFile);
+    // A local file dragged from the OS is available through DataTransfer.files.
+    const dropFile = await page.evaluateHandle(() => {
+      const input = document.createElement('input');
+      input.type = 'file';
+      input.hidden = true;
+      return document.body.appendChild(input);
+    });
+    await dropFile.asElement().setInputFiles(compareFile);
+    await dropFile.evaluate(input => {
+      const dataTransfer = new DataTransfer();
+      dataTransfer.items.add(input.files[0]);
+      input.remove();
+      const target = document.getElementById('contentCard');
+      target.dispatchEvent(new DragEvent('dragover', {bubbles:true,cancelable:true,dataTransfer}));
+      if (document.getElementById('dropFeedback').hidden) throw Error('Missing file drop feedback');
+      target.dispatchEvent(new DragEvent('drop', {bubbles:true,cancelable:true,dataTransfer}));
+    });
+    await dropFile.dispose();
+    assert.equal(await page.locator('#dropFeedback').isVisible(), false);
     await page.locator('#overviewView .overview-stat').first().waitFor({state:'visible'});
     if (mobile) {
       await page.locator('#mobileNav [data-mobile="objects"]').click();

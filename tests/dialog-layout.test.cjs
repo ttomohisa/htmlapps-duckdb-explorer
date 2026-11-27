@@ -46,4 +46,9 @@ for (const target of targets) {
   });
 }
 
-test('header subtitle describes DuckDB Explorer capabilities in both languages',()=>{const s=fs.readFileSync(path.join(root,'src/index.template.html'),'utf8');assert.match(s,/brandMeta:'テーブル閲覧 · SQL検索 · 構造比較'/);assert.match(s,/brandMeta:'Tables · SQL queries · Schema comparison'/);});
+test('the source label identifies the live sample in both languages',()=>{
+  const s=fs.readFileSync(path.join(root,'src/index.template.html'),'utf8');
+  assert.match(s,/sampleSource:'サンプルDB'/);
+  assert.match(s,/sampleSource:'Sample database'/);
+  assert.match(s,/<span id="sampleSource" data-i18n="sampleSource">/);
+});

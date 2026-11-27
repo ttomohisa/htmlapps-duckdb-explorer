@@ -21,11 +21,13 @@ async function main() {
         await page.goto(pathToFileURL(path.resolve(__dirname,'../dist/index.html')).href);
         await page.locator('#langBtn').waitFor();
         if(await page.locator('html').getAttribute('lang')!==language)await page.locator('#langBtn').click();
-        const badge=page.locator('[data-i18n="brandMeta"]');
-        assert.equal(await badge.innerText(),language==='ja'?'テーブル閲覧 · SQL検索 · 構造比較':'Tables · SQL queries · Schema comparison');
-        assert.equal(await badge.isVisible(), width > 760, label+': hide header subtitle on mobile');
-        assert.equal(await page.locator('.local-badge').isVisible(), width > 760, label+': hide local badge on mobile');
-        if(width > 760) assert.ok(await badge.evaluate(el=>{const r=el.getBoundingClientRect(),p=el.parentElement.getBoundingClientRect();return r.left>=p.left&&r.right<=p.right+1;}), label+': badge not clipped');
+        const source=page.locator('#sampleSource');
+        await page.locator('#relationRows :is(th,.record-card):visible').first().waitFor();
+        assert.equal(await source.innerText(),language==='ja'?'サンプルDB':'Sample database');
+        assert.ok(await source.isVisible(),label+': bundled data is identified at all widths');
+        const open=page.locator('#changeFileBtn');
+        assert.ok(await open.isVisible(),label+': file picker remains available');
+        assert.ok(await open.locator('span').evaluate(el=>el.getBoundingClientRect().width>24),label+': file action has a visible label');
         assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),label+': page width');
         const footer=page.locator('footer');
         assert.equal(await footer.count(),1,label+': shared informational footer is present');

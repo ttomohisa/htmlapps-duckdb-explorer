@@ -58,11 +58,11 @@ $requiredSourceTokens = @(
   'class="app-header"',
   'class="header-inner"',
   'class="version-badge"',
-  'class="brand-meta"',
+  'id="fileName"',
   'id="headerFile"',
   'class="language-button"',
-  'class="local-badge"',
-  'data-i18n="heroTitle"',
+  'id="sampleSource"',
+  'id="changeFileBtn"',
   "mobile-nav",
   "safe-area-inset-bottom"
 )

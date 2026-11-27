@@ -24,26 +24,26 @@ function opening(inflateAsset) {
   const start = source.indexOf('  async function openFile(');
   const end = source.indexOf('\n  async function ', start + 1);
   const state = {}, errors = [];
-  const demoError = { hidden: true }, demoButton = { focus() {} };
   const context = vm.createContext({
     state, el: { fileName: {}, fileMeta: {} }, clearTimeout, console: { error() {} },
     inflateAsset, assetBundle: { demoDatabase: {} }, File: require('node:buffer').File,
-    $: id => id === 'demoError' ? demoError : demoButton, t: key => key,
-    showWorkspace() {}, showIntro() {}, renderFullState() {}, formatBytes() {}, disposeDatabase() {},
+    t: key => key,
+    showWorkspace() {}, renderFullState() {}, formatBytes() {}, disposeDatabase() {},
     loadDuckDBApi: () => ({ DuckDBDataProtocol: { BROWSER_FILEREADER: 1 }, DuckDBAccessMode: { READ_ONLY: 1 } }),
     initializeDuckDBRuntime() {
       state.db = { registerFileHandle() {}, open() {}, connect() { return {}; } };
     },
-    hardenDuckDBSession() {}, loadObjects() {}, toast() {}, renderOpenError(error) { errors.push(error); }
+    hardenDuckDBSession() {}, loadObjects() {}, toast() {}, renderOpenError(error, demo) { errors.push({message:error.message, demo}); }
   });
   vm.runInContext('let openFileGeneration=0,openFileQueue=Promise.resolve();\n' + source.slice(start, end), context);
-  return { open: context.openFile, state, demoError, errors };
+  return { open: context.openFile, state, errors };
 }
 
-test('an invalid sample returns to the file chooser with a demo error', async () => {
+test('a sample failure offers recovery and a user file can still open', async () => {
   const page = opening(async () => { throw new Error('Invalid gzip'); });
   await page.open(null, true);
-  assert.equal(page.demoError.hidden, false);
+  assert.deepEqual(page.errors, [{message:'Invalid gzip',demo:true}]);
+  page.errors.length=0;
   await page.open({ name: 'selected.duckdb', size: 4 });
   assert.equal(page.state.file.name, 'selected.duckdb');
   assert.deepEqual(page.errors, []);
@@ -59,6 +59,5 @@ test('a late sample decoding failure cannot interrupt a subsequently selected fi
   rejectSample(new Error('Replaced during decoding'));
   await Promise.all([file, sample]);
   assert.equal(page.state.file.name, 'latest.duckdb');
-  assert.equal(page.demoError.hidden, true);
   assert.deepEqual(page.errors, []);
 });

@@ -3,7 +3,7 @@
 ## Unreleased
 
 - Search the schema catalog with `/`, open the first matching relation with Enter, and continue straight into value search. Matching text is highlighted in the desktop table and phone cards.
-- Show real orders on the sample start screen, make the overview a navigable relation directory, and group paging, row counts and exports below the results.
+- Open the live orders table on startup with a labeled file picker and workspace-wide file drop, make the overview a navigable relation directory, and group paging, row counts and exports below the results.
 
 - Open the bundled orders demo offline and browse the first 100 rows before requesting an exact count.
 - Keep search input focused during result updates, filter by numeric and calendar bounds, and sort records on phones.

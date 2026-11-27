@@ -136,57 +136,6 @@
       #sqlView .sql-output-title,#sqlView .sql-result-toolbar,#sqlView .sql-empty{padding-inline:14px}
     }
     .relation-toolbar-actions,.relation-output{display:contents}
-    .app-main #intro{--entry-ink:#123d35;--entry-accent:#d9eb9a;--entry-mono:"IBM Plex Mono",ui-monospace,Consolas,monospace;width:min(1176px,100%);margin:clamp(38px,7vh,80px) auto 0;color:var(--entry-ink)}
-    .entry-layout{display:grid;grid-template-columns:minmax(0,.95fr) minmax(0,1.05fr);gap:clamp(32px,5vw,78px);align-items:center}
-    .entry-source{min-width:0}
-    .entry-source h1{margin:0;font-size:clamp(32px,3.4vw,52px);line-height:1.13;letter-spacing:-.035em;font-weight:720;text-wrap:balance}
-    .entry-lead{max-width:47ch;margin:15px 0 27px;color:#495b52;line-height:1.7;font-size:16px}
-    #intro .dropzone{display:flex;flex-direction:column;align-items:flex-start;min-height:0;padding:22px 24px;gap:11px;border:1px dashed #869c8b;border-radius:12px;box-shadow:none;background:#fff}
-    #intro .dropzone.drag{border-color:var(--entry-ink);outline:2px solid var(--entry-ink);background:#edf4d9}
-    .entry-file-actions{display:flex;align-items:center;flex-wrap:wrap;gap:8px 14px}
-    #intro .entry-file-button,#intro .entry-demo-button{display:inline-flex;align-items:center;justify-content:center;gap:9px;border:0;min-height:44px;padding:9px 17px;border-radius:6px;font:inherit;font-size:14px;font-weight:680}
-    #intro .entry-file-button{background:var(--entry-ink);color:#fff}
-    #intro .entry-file-button:hover{background:#205347}
-    .entry-file-button svg,.entry-demo-button svg{width:17px;height:17px;stroke:currentColor;stroke-width:1.7;fill:none;stroke-linecap:round;stroke-linejoin:round}
-    .entry-drop-hint{margin:0;color:#40574e;font-size:14px}
-    .entry-formats{font-family:var(--entry-mono);font-size:12px;color:#51675e}
-    #intro .local-badge{margin:12px 0 0;color:#446054}
-    .entry-sample{display:grid;min-width:0;background:var(--entry-ink);color:#eff6e9;border-radius:12px;overflow:hidden}
-    .entry-sample-heading{padding:22px 24px 19px}
-    .entry-sample-file{display:flex;align-items:center;gap:8px;min-width:0;margin:7px 0 0;color:#c0e1c7;font:12px/1.5 var(--entry-mono);overflow-wrap:anywhere}
-    .entry-sample-file svg{width:14px;height:14px;flex:none;fill:none;stroke:currentColor;stroke-width:1.6}
-    .entry-sample h2{margin:0;color:#fff;font:600 clamp(23px,2.5vw,33px)/1.2 var(--entry-mono);letter-spacing:-.025em}
-    .entry-schema{color:#b6cebe}
-    .entry-sample table{width:100%;border-collapse:collapse;font:13px/1.45 var(--entry-mono);text-align:left;font-variant-numeric:tabular-nums;white-space:nowrap}
-    .entry-sample th{background:#1b493e;color:#d5e4d7;font-size:12px;font-weight:500}
-    .entry-sample td,.entry-sample th{padding:9px 8px;border-block-start:1px solid #386053;vertical-align:middle}
-    .entry-sample :is(th,td):first-child{padding-left:24px}
-    .entry-sample :is(th,td):last-child{padding-right:24px}
-    .entry-sample time span{display:inline-block}
-    .entry-sample-footer{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px 12px;padding:16px 24px;border-top:1px solid #386053}
-    .entry-sample-size{margin:0;color:#c0e1c7;font-size:12px;font-variant-numeric:tabular-nums}
-    #intro .entry-demo-button{background:var(--entry-accent);color:#173e2d}
-    #intro .entry-demo-button:hover{background:#e9f6b9}
-    #intro button:focus-visible{outline:3px solid #277396;outline-offset:3px}
-    #intro .entry-demo-button:focus-visible{outline-color:#fff}
-    #intro #demoError{margin:0;padding:0 24px 16px;background:var(--entry-ink);color:#ffe0c3;font-size:14px}
-    @media(max-width:960px) and (min-width:761px){.entry-layout{gap:24px;grid-template-columns:minmax(0,.88fr) minmax(0,1.12fr)}.entry-sample time span{display:block}.entry-file-actions{align-items:flex-start;flex-direction:column}}
-    @media(max-width:760px){
-      .app-main #intro{width:min(540px,100%);margin:20px auto 0}
-      .entry-layout{grid-template-columns:minmax(0,1fr);gap:20px}
-      .entry-source h1{font-size:clamp(29px,7vw,37px);line-height:1.2}
-      .entry-lead{margin:8px 0 15px;font-size:14px;line-height:1.55}
-      #intro .dropzone{padding:15px 17px;gap:6px}
-      .entry-sample-heading{padding:16px 17px 12px}
-      .entry-sample h2{font-size:23px}
-      .entry-sample-file{margin-top:4px}
-      .entry-sample :is(th,td):first-child{padding-left:16px}
-      .entry-sample :is(th,td):last-child{padding-right:16px}
-      .entry-sample td,.entry-sample th{padding:6px;font-size:12px}
-      .entry-sample-footer{grid-row:2;padding:0 16px 12px;border:0}
-      #intro .entry-demo-button{padding-inline:12px}
-      .entry-sample time span{display:block}
-    }
     .mobile-sort{display:none}
     @media(max-width:760px){
       .panel-toolbar .data-controls{display:grid;grid-template-columns:auto minmax(0,1fr) auto}
@@ -277,12 +226,10 @@
     @media(max-height:480px){#dataPanel{overflow:auto}#relationRows :is(.table-wrap,.record-list){min-height:8rem}}
 
     /* The catalog and the result sheet share a full-height workspace. */
-    :root{--bg:#f7f6f0;--ink:#182d27;--muted:#52665c;--line:#d5ded6;--brand-dark:#123d35;--brand-soft:#e6f0e6;--catalog:#163d34;--catalog-rule:#3b5c51;--catalog-text:#eff5eb;--catalog-muted:#bbcec2;--acid:#d9eb9a;--mono:ui-monospace,"Cascadia Mono",Consolas,monospace;--header:60px}
+    :root{--bg:#fff;--ink:#242729;--muted:#62696c;--line:#d6dadb;--brand-dark:#174c3e;--brand-soft:#e6efea;--catalog:#f5f6f6;--catalog-rule:#d9dddc;--catalog-text:#303739;--catalog-muted:#606966;--catalog-focus:#28674f;--mono:ui-monospace,"Cascadia Mono",Consolas,monospace;--header:60px}
     body{background:var(--bg);color:var(--ink)}
-    body:has(#intro:not(.hidden)){min-height:100dvh;display:flex;flex-direction:column}
-    .app-main:has(#intro:not(.hidden)){flex:1}
     button:focus-visible,summary:focus-visible,select:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid var(--brand);outline-offset:2px}
-    ::selection{background:#d5e9ac;color:#142d22}
+    ::selection{background:#cae4da;color:#142d22}
     .app-header{background:#fff;backdrop-filter:none;border-color:var(--line)}
     .header-inner{width:100%;min-height:var(--header);padding:7px clamp(14px,2vw,30px)}
     .app-header .brand-mark{width:35px;height:35px;box-shadow:none}
@@ -292,7 +239,17 @@
     .app-header .header-actions{gap:7px}
     .header-file{padding:0;box-shadow:none;background:transparent;border:0}
     .header-file button{min-height:36px;padding:0 12px;gap:6px;display:inline-flex;align-items:center;font-weight:650;border:1px solid var(--line);border-radius:6px;color:var(--brand-dark);background:#fff}
-    .header-file button:hover{background:#edf3eb}
+    .header-file button{background:#185540;border-color:#185540;color:#fff}
+    .header-file button:hover{background:#103d2e}
+    .brand-copy{display:flex;align-items:center;min-width:0;gap:14px}
+    .source-caption{display:flex;align-items:baseline;gap:8px;min-width:0;border-left:1px solid var(--line);padding-left:14px;color:#515957;font-size:12px;line-height:1.35}
+    #sampleSource{white-space:nowrap}
+    #fileName{font-family:var(--mono);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:34vw}
+    .drop-feedback:not([hidden]){position:fixed;inset:var(--header) 0 0;z-index:60;display:grid;place-items:center;pointer-events:none;background:rgba(245,249,247,.95);outline:2px dashed var(--brand);outline-offset:-10px;font-size:20px;font-weight:600}
+    .version-badge{padding:0;background:transparent;font-weight:500;color:#69706c}
+    #relationView .relation-name{font-size:24px;color:#252b29;font-weight:650}
+    #relationView .content-head{padding-top:16px}
+    .app-header .header-actions{flex:none}
     .header-file svg{width:17px;height:17px;stroke:currentColor;stroke-width:1.7;fill:none;stroke-linejoin:round}
     .language-button,.header-icon-button{min-width:36px;min-height:36px;border-radius:6px;color:#455f51}
     .header-icon-button:hover,.language-button:hover{background:#edf3eb}
@@ -300,51 +257,44 @@
     .workspace:not(.hidden){grid-template-columns:clamp(232px,19.5vw,294px) minmax(0,1fr);gap:0;height:calc(100dvh - var(--header));min-height:0}
     .workspace .sidebar,.workspace .content-card{border:0;border-radius:0;min-height:0;box-shadow:none}
     .workspace .content-card{background:#fff}
-    .workspace .sidebar{background:var(--catalog);color:var(--catalog-text)}
-    .file-card{padding:20px 17px 14px;border:0;background:transparent}
-    .file-top{align-items:flex-start;gap:10px}
-    .file-icon{height:30px;width:30px;background:transparent;color:var(--acid);border:1px solid var(--catalog-rule);border-radius:6px}
-    .file-icon svg{height:18px;width:18px}
-    .file-info{display:flex;align-items:center;flex-wrap:wrap;gap:4px 8px}
-    .file-name{flex:0 0 100%;min-width:0;width:100%;white-space:normal;overflow-wrap:anywhere;line-height:1.4;font-size:14px;color:#fff}
-    .file-meta,.file-badge{margin:0;color:var(--catalog-muted);font-size:12px;line-height:1.4}
-    .file-badge{background:transparent;border:0;border-radius:0;padding:0}
-    .file-badge::before{content:"·";padding-right:7px}
-    .catalog-nav{display:flex;gap:4px;flex-wrap:wrap;padding:0 15px 15px;border-bottom:1px solid var(--catalog-rule)}
+    .workspace .sidebar{background:var(--catalog);color:var(--catalog-text);border-right:1px solid var(--catalog-rule)}
+    .catalog-foot{display:flex;align-items:center;gap:12px;padding:9px 16px;border-top:1px solid var(--catalog-rule);color:var(--catalog-muted);font-size:12px}
+    .catalog-foot #fileMeta{margin-left:auto;font-variant-numeric:tabular-nums}
+    .catalog-nav{display:flex;gap:4px;flex-wrap:wrap;padding:8px;border-top:1px solid var(--catalog-rule)}
     .catalog-nav[hidden],.catalog-search[hidden],.catalog-nav button[hidden]{display:none}
     .catalog-nav .relation{width:auto;padding:5px 8px;min-height:32px;gap:6px;border-radius:5px;color:var(--catalog-muted);font-weight:600;font-size:13px}
-    .catalog-nav .relation:hover,.sidebar .catalog-relation:hover,.schema-title:hover{background:#264c40;color:#fff}
-    .catalog-nav .relation.active{background:#335a4e;color:#fff}
+    .catalog-nav .relation:hover,.sidebar .catalog-relation:hover,.schema-title:hover{background:#e7ebea;color:#152d23}
+    .catalog-nav .relation.active{background:#e0e8e3;color:#173e30}
     .catalog-nav svg{width:15px;height:15px}
     .catalog-search{padding:17px 16px 10px;flex:none}
     .catalog-label{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px}
     .catalog-label label{font-size:14px;font-weight:710}
     .catalog-label output,.schema-count{color:var(--catalog-muted);font:12px var(--mono);font-variant-numeric:tabular-nums}
-    .catalog-input{display:flex;align-items:center;gap:8px;min-height:36px;padding:0 9px;border:1px solid #6c8b79;background:#20473c;border-radius:5px}
-    .catalog-input:focus-within{outline:2px solid var(--acid);outline-offset:2px}
+    .catalog-input{display:flex;align-items:center;gap:8px;min-height:36px;padding:0 9px;border:1px solid #b7bfbc;background:#fff;border-radius:5px}
+    .catalog-input:focus-within{outline:2px solid var(--catalog-focus);outline-offset:2px}
     .catalog-input svg{width:16px;height:16px;stroke:var(--catalog-muted);stroke-width:1.8;fill:none;flex:none}
-    .catalog-input input{flex:1;width:0;min-width:0;min-height:34px;padding:0;color:white;background:transparent;border:0;outline:0;caret-color:var(--acid);font-size:13px;color-scheme:dark}
+    .catalog-input input{flex:1;width:0;min-width:0;min-height:34px;padding:0;color:var(--ink);background:transparent;border:0;outline:0;caret-color:var(--brand);font-size:13px}
     .catalog-input input:focus-visible{outline:0}
-    .catalog-input input::placeholder{color:#c1d0c5;opacity:1}
-    .catalog-input kbd{border:1px solid #648272;padding:0 4px;border-radius:3px;color:#c7d6ca;font:12px var(--mono)}
-    .sidebar .tree{flex:1;min-height:0;overflow:auto;overscroll-behavior:contain;padding:0 10px 16px;scrollbar-color:#628273 transparent}
+    .catalog-input input::placeholder{color:#646c69;opacity:1}
+    .catalog-input kbd{border:1px solid #d5dbd8;padding:0 4px;border-radius:3px;color:#57615c;font:12px var(--mono)}
+    .sidebar .tree{flex:1;min-height:0;overflow:auto;overscroll-behavior:contain;padding:0 10px 16px;scrollbar-color:#aab3ad transparent}
     .schema-group{margin:5px 0 9px}
-    .schema-title{list-style:none;cursor:pointer;color:#d6e2d8;padding:6px 9px;gap:8px;text-transform:none;font-family:var(--mono);font-size:13px;font-weight:650;border-radius:4px}
+    .schema-title{list-style:none;cursor:pointer;color:#3e4843;padding:6px 9px;gap:8px;text-transform:none;font-family:var(--mono);font-size:13px;font-weight:650;border-radius:4px}
     .schema-title::-webkit-details-marker{display:none}
     .schema-title>span:first-of-type{overflow-wrap:anywhere;min-width:0}
-    .schema-title svg{width:12px;height:12px;flex:none;stroke:#c2d3c5}
+    .schema-title svg{width:12px;height:12px;flex:none;stroke:#66776c}
     .schema-group[open]>.schema-title svg{transform:rotate(90deg)}
     .schema-count{margin-left:auto}
     .sidebar .catalog-relation{min-height:33px;padding:5px 9px 5px 25px;gap:8px;border-radius:4px;color:var(--catalog-text)}
     .catalog-relation .relation-label{font:13px/1.5 var(--mono)}
-    .catalog-relation svg{color:#b8d2bd;width:15px;height:15px}
+    .catalog-relation svg{color:#63766c;width:15px;height:15px}
     .catalog-relation .relation-type{font-size:11px;color:var(--catalog-muted)}
-    .sidebar .catalog-relation.active{background:var(--acid);color:#153825}
+    .sidebar .catalog-relation.active{background:#dcebe4;color:#123d2e;box-shadow:inset 3px 0 #347054}
     .catalog-relation.active svg,.catalog-relation.active .relation-type{color:#345638}
     .catalog-relation.active .relation-label{font-weight:bold}
-    .sidebar :is(button,summary):focus-visible{outline-color:var(--acid);outline-offset:-2px}
+    .sidebar :is(button,summary):focus-visible{outline-color:var(--catalog-focus);outline-offset:-2px}
     .sidebar .tree-empty{color:var(--catalog-muted);padding:12px 8px;font-size:13px}
-    .tree-empty button{display:block;margin-top:8px;border:0;padding:3px 0;background:none;text-decoration:underline;text-underline-offset:3px;color:var(--acid)}
+    .tree-empty button{display:block;margin-top:8px;border:0;padding:3px 0;background:none;text-decoration:underline;text-underline-offset:3px;color:var(--catalog-focus)}
     .sidebar .state{color:var(--catalog-muted)}
     .mobile-nav button[aria-current="page"]{background:#e2eddc;color:#173f30}
     .mobile-nav button:disabled{opacity:.5}
@@ -357,13 +307,23 @@
       .app-header .brand-mark{width:30px;height:30px}
       .app-header .header-actions{gap:2px}
       .header-file:not([hidden]){display:flex!important}
-      .header-file button{min-height:36px;width:36px;justify-content:center;padding:0}
-      .header-file button span{position:absolute;clip-path:inset(50%);width:1px;height:1px;overflow:hidden;white-space:nowrap}
+      .header-file button{min-height:36px;padding:0 8px;font-size:12px;gap:3px}
+      .brand-copy{display:block;min-width:0}
+      .source-caption{border:0;padding:0;min-height:14px;font-size:11px}
+      #fileName{max-width:100%}
+      #sampleSource:not([hidden]) + #fileName{display:none}
+      .version-badge{display:none}
+      .app-header .brand{flex:1;min-width:0}
+      .header-inner{padding-inline:8px}
+      .language-button,.header-icon-button{min-width:32px}
+      .app-header .brand-name{font-size:14px}
+      .header-file button span{white-space:nowrap}
+      .catalog-foot{padding-bottom:12px}
       .workspace:not(.hidden){height:calc(100dvh - var(--header) - var(--mobile-nav) - env(safe-area-inset-bottom,0px))}
       .workspace .sidebar,.workspace .content-card{height:100%;min-height:0}
       .workspace .sidebar{overflow:auto}
       .catalog-nav{display:none}
-      .catalog-search{border-top:1px solid var(--catalog-rule);padding-top:13px}
+      .catalog-search{padding-top:13px}
       .file-card{padding:13px 16px}
       .catalog-input{min-height:42px}
       .catalog-input input{font-size:16px;min-height:40px}
@@ -387,12 +347,12 @@
         <svg viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="16" fill="#16624f"/><g fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="30" cy="14" rx="15.5" ry="6"/><path d="M14.5 14v10.5c0 3.3 6.9 6 15.5 6s15.5-2.7 15.5-6V14"/><path d="M14.5 24.5V34c0 3.3 6.9 6 15.5 6S45.5 37.3 45.5 34v-9.5"/><circle cx="46.5" cy="34.5" r="7.5"/><path d="M51.8 39.8 56 44"/></g><text x="32" y="55" text-anchor="middle" fill="#fff" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="800" letter-spacing=".1">DuckDB</text></svg>
       </div>
       <div class="brand-copy">
-        <p class="brand-name"><span>DuckDB Explorer</span><span class="version-badge">v1.0.5</span></p>
-        <p class="brand-meta" data-i18n="brandMeta">テーブル閲覧 · SQL検索 · 構造比較</p>
+        <h1 class="brand-name"><span>DuckDB Explorer</span><span class="version-badge">v1.0.5</span></h1>
+        <div class="source-caption"><span id="sampleSource" data-i18n="sampleSource">サンプルDB</span><span id="fileName"></span></div>
       </div>
     </div>
     <div class="header-actions">
-      <div class="header-file" id="headerFile" hidden><button id="changeFileBtn" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 8V6.5A1.5 1.5 0 0 1 4.5 5H10l2 2h7.5A1.5 1.5 0 0 1 21 8.5V10M3.5 10h17l-2 9H5z"/></svg><span data-i18n="openFileLabel">ファイルを開く</span></button></div>
+      <div class="header-file" id="headerFile"><button id="changeFileBtn" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 8V6.5A1.5 1.5 0 0 1 4.5 5H10l2 2h7.5A1.5 1.5 0 0 1 21 8.5V10M3.5 10h17l-2 9H5z"/></svg><span data-i18n="openFileLabel">ファイルを開く</span></button></div>
       <button class="language-button" id="langBtn" type="button" aria-label="Switch language">EN</button>
       <button class="header-icon-button" id="helpBtn" type="button" aria-label="Help">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="12" cy="12" r="9"/><path d="M9.8 9a2.35 2.35 0 1 1 3.72 1.9c-.92.67-1.52 1.12-1.52 2.1"/><circle cx="12" cy="17" r="1" fill="currentColor" stroke="none"/></svg>
@@ -401,63 +361,22 @@
   </div>
 </header>
 <main class="app-main">
-  <section class="intro" id="intro">
-    <div class="entry-layout">
-      <div class="entry-source">
-        <h1 data-i18n="heroTitle">DuckDBファイルを開く</h1>
-        <p class="entry-lead" data-i18n="entryLead">テーブルを開いて、探したい値を検索できます。ファイルはこの端末で読み取ります。</p>
-        <div class="dropzone" id="dropzone" aria-labelledby="dropTitle">
-          <div class="entry-file-actions">
-            <button class="entry-file-button" id="openBtn" type="button"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M3 17V6a1 1 0 0 1 1-1h5l2 2h8a1 1 0 0 1 1 1v2M3 18l2-7h17l-2 7a1.5 1.5 0 0 1-1.5 1H4a1 1 0 0 1-1-1Z"/></svg><span data-i18n="chooseFile">ファイルを選択</span></button>
-            <p class="entry-drop-hint" id="dropTitle" data-i18n="entryDrop">または、ここにドロップ</p>
-          </div>
-          <span class="entry-formats">.duckdb / .db</span>
-        </div>
-        <div class="local-badge"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="5" y="10" width="14" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg><span data-i18n="entryLocal">ローカルで読み取り専用</span></div>
-      </div>
-      <section class="entry-sample" aria-labelledby="sampleRelation">
-        <div class="entry-sample-heading">
-          <h2 id="sampleRelation"><span class="entry-schema">main.</span>orders</h2>
-          <p class="entry-sample-file"><svg aria-hidden="true" viewBox="0 0 20 20"><path d="M5 2h6l4 4v12H5zM11 2v5h4"/></svg>browser-kitty-sample.duckdb</p>
-        </div>
-        <table aria-labelledby="sampleRelation">
-          <thead><tr><th scope="col">order_id</th><th scope="col">ordered_at</th><th scope="col">status</th></tr></thead>
-          <tbody>
-            <tr><td>1</td><td><time datetime="2025-01-01T11:00:00"><span>2025-01-01</span> <span>11:00:00</span></time></td><td>paid</td></tr>
-            <tr><td>2</td><td><time datetime="2025-01-01T14:00:00"><span>2025-01-01</span> <span>14:00:00</span></time></td><td>shipped</td></tr>
-            <tr><td>3</td><td><time datetime="2025-01-01T17:00:00"><span>2025-01-01</span> <span>17:00:00</span></time></td><td>delivered</td></tr>
-          </tbody>
-        </table>
-        <div class="entry-sample-footer">
-          <p class="entry-sample-size" data-i18n="entrySampleSize">250 行 · 9 列</p>
-          <button class="entry-demo-button" id="openDemoBtn" type="button"><span data-i18n="openDemo">サンプルDBで試す</span><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M4 12h15m-6-6 6 6-6 6"/></svg></button>
-        </div>
-        <p id="demoError" role="alert" data-i18n="demoFailed" hidden>デモを開けませんでした。もう一度試すか、ファイルを選択してください。</p>
-      </section>
-    </div>
-    <input class="file-input" id="fileInput" type="file" accept=".duckdb,.db,application/octet-stream" hidden>
-    <input id="compareFileInput" type="file" accept=".duckdb,.db,application/octet-stream" hidden>
-  </section>
-
-  <section class="workspace hidden mobile-objects" id="workspace">
+  <input id="fileInput" type="file" accept=".duckdb,.db,application/octet-stream" hidden>
+  <input id="compareFileInput" type="file" accept=".duckdb,.db,application/octet-stream" hidden>
+  <div class="drop-feedback" id="dropFeedback" data-i18n="dropToOpen" hidden>ドロップしてファイルを開く</div>
+  <section class="workspace mobile-overview" id="workspace">
     <aside class="sidebar" id="sidebar">
-      <div class="file-card">
-        <div class="file-top">
-          <div class="file-icon"><svg viewBox="0 0 24 24"><ellipse cx="12" cy="6" rx="7" ry="3"/><path d="M5 6v12c0 1.7 3.1 3 7 3s7-1.3 7-3V6M5 12c0 1.7 3.1 3 7 3s7-1.3 7-3"/></svg></div>
-          <div class="file-info"><div class="file-name" id="fileName"></div><div class="file-meta" id="fileMeta"></div><div class="file-badge" data-i18n="readOnly">読み取り専用</div></div>
-        </div>
-
-      </div>
-      <nav id="catalogNav" class="catalog-nav" aria-label="Database" hidden>
-        <button class="relation" id="overviewTreeButton" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M10 10v10"/></svg><span data-i18n="overview">概要</span></button>
-        <button class="relation" id="sqlTreeButton" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8 7-5 5 5 5m8-10 5 5-5 5m-3-13-2 16"/></svg><span>SQL</span></button>
-        <button class="relation" id="compareTreeButton" type="button" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h15l-4-4m5 14H5l4 4"/></svg><span data-i18n="compareTitle">構造比較</span></button>
-      </nav>
       <div class="catalog-search" id="catalogSearch" hidden>
         <div class="catalog-label"><label for="objectSearch" data-i18n="catalogTitle">テーブルとビュー</label><output id="catalogCount" for="objectSearch" aria-live="polite"></output></div>
         <div class="catalog-input"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10" cy="10" r="6"/><path d="m15 15 5 5"/></svg><input type="search" id="objectSearch" autocomplete="off" spellcheck="false" data-i18n-placeholder="catalogSearchHint" placeholder="テーブル名を検索"><kbd aria-hidden="true">/</kbd></div>
       </div>
       <div class="tree" id="tree"><div class="state"><div><div class="spinner"></div><div data-i18n="readingObjects">構造を確認しています…</div></div></div></div>
+      <nav id="catalogNav" class="catalog-nav" aria-label="Database" hidden>
+        <button class="relation" id="overviewTreeButton" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M10 10v10"/></svg><span data-i18n="overview">概要</span></button>
+        <button class="relation" id="sqlTreeButton" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8 7-5 5 5 5m8-10 5 5-5 5m-3-13-2 16"/></svg><span>SQL</span></button>
+        <button class="relation" id="compareTreeButton" type="button" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h15l-4-4m5 14H5l4 4"/></svg><span data-i18n="compareTitle">構造比較</span></button>
+      </nav>
+      <div class="catalog-foot"><span data-i18n="readOnly">読み取り専用</span><span id="fileMeta"></span></div>
     </aside>
 
     <section class="content-card" id="contentCard">
@@ -510,7 +429,7 @@
     <h3 data-i18n="helpCanTitle">できること</h3><p data-i18n="helpCanBody">DuckDBデータベースファイルを読み取り専用で開き、概要、テーブル、ビュー、データ、列定義を確認できます。列分析、読み取り専用SQL、データ辞書HTML、2つのDuckDBファイルの構造比較にも対応しています。</p>
     <!-- APP:HELP:BEGIN -->
     <p data-i18n="helpPageExport">CSV / JSONは、読み込みに成功した現在のページだけを保存します。読み込み中や失敗後は保存できません。DECIMALは精度と小数桁数を保って表示・CSV保存し、JSONでは文字列として保存します。 日付と日時は画面・CSV・JSONで同じ形式になります。</p>
-    <h3 data-i18n="helpStepsTitle">使い方</h3><ol><li data-i18n="helpStep1">自分の .duckdb / .db ファイルを選ぶか、「サンプルDBで試す」で注文一覧を開きます。</li><li data-i18n="helpStep2">「テーブルとビュー」で名前を検索します。スキーマ名でも絞り込みでき、Enterで先頭の候補を開いて値の検索に進めます。</li><li data-i18n="helpStep3">データは100行ずつ表示します。「件数を集計」または最後のページを選ぶと、必要に応じて正確な件数を計算します。数値・日付の範囲は「フィルタ」、スマートフォンの並べ替え指定は「並べ替え」を使います。「列」では必要な列だけ分析できます。</li><li data-i18n="helpStep4">「SQL」ではSELECTなどの読み取り専用SQLを1文ずつ実行できます。</li><li data-i18n="helpStep5">「概要」からデータ辞書HTMLを保存できます。行データは含めず、実行済みの列分析だけを含めます。</li><li data-i18n="helpStep6">「概要」から別のDuckDBファイルを選び、構造差分を比較できます。</li></ol>
+    <h3 data-i18n="helpStepsTitle">使い方</h3><ol><li data-i18n="helpStep1">最初にサンプルの注文テーブルが開きます。自分の .duckdb / .db は「ファイルを開く」から選ぶか、画面にドロップしてください。</li><li data-i18n="helpStep2">「テーブルとビュー」で名前を検索します。スキーマ名でも絞り込みでき、Enterで先頭の候補を開いて値の検索に進めます。</li><li data-i18n="helpStep3">データは100行ずつ表示します。「件数を集計」または最後のページを選ぶと、必要に応じて正確な件数を計算します。数値・日付の範囲は「フィルタ」、スマートフォンの並べ替え指定は「並べ替え」を使います。「列」では必要な列だけ分析できます。</li><li data-i18n="helpStep4">「SQL」ではSELECTなどの読み取り専用SQLを1文ずつ実行できます。</li><li data-i18n="helpStep5">「概要」からデータ辞書HTMLを保存できます。行データは含めず、実行済みの列分析だけを含めます。</li><li data-i18n="helpStep6">「概要」から別のDuckDBファイルを選び、構造差分を比較できます。</li></ol>
     <!-- APP:HELP:END -->
     <h3 data-i18n="helpPrivacyTitle">プライバシー</h3><p data-i18n="helpPrivacyBody">データベースファイルはブラウザー内で処理され、外部サーバーへ送信されません。DuckDB WebAssemblyと必要なコードも配布物へ内包します。</p>
     <h3 data-i18n="helpNotesTitle">注意事項</h3><ul><li data-i18n="helpNote1">読み取り専用です。元のDuckDBファイルは変更しません。</li><li data-i18n="helpNote2">大きなテーブルや複雑なビューでは、件数取得・検索・列分析・SQL実行に時間がかかる場合があります。DB比較では比較先を別のブラウザー内ランタイムで一時的に開きます。</li><li data-i18n="helpNote3">DuckDBのバージョンや追加機能に依存するデータベースは、ブラウザー版DuckDBで開けない場合があります。</li></ul>
@@ -556,13 +475,11 @@
   window.StandaloneAssets=Object.freeze({manifest:BUILD_MANIFEST,list(){return Object.entries(assetBundle.dependencies||{}).flatMap(([dependencyId,dependency])=>Object.keys(dependency.assets||{}).map(assetKey=>`${dependencyId}/${assetKey}`))},has(dependencyId,assetKey){return Boolean(assetBundle.dependencies?.[dependencyId]?.assets?.[assetKey])},async bytesAsync(dependencyId,assetKey){const cacheKey=`${dependencyId}/${assetKey}`;if(!assetByteCache.has(cacheKey))assetByteCache.set(cacheKey,inflateAsset(getAsset(dependencyId,assetKey)));return new Uint8Array(await assetByteCache.get(cacheKey))},async blobUrlAsync(dependencyId,assetKey){const asset=getAsset(dependencyId,assetKey);const url=URL.createObjectURL(new Blob([await this.bytesAsync(dependencyId,assetKey)],{type:asset.mime||'application/octet-stream'}));blobUrls.add(url);return url},async loadClassicScript(dependencyId,assetKey,globalName=''){const sourceUrl=await this.blobUrlAsync(dependencyId,assetKey);try{await new Promise((resolve,reject)=>{const script=document.createElement('script');script.src=sourceUrl;script.onload=()=>{script.remove();resolve()};script.onerror=()=>{script.remove();reject(new Error(`Failed to load embedded script: ${dependencyId}/${assetKey}`))};document.head.append(script)});return globalName?window[globalName]:true}finally{URL.revokeObjectURL(sourceUrl);blobUrls.delete(sourceUrl)}},revoke(url){if(url&&blobUrls.has(url)){URL.revokeObjectURL(url);blobUrls.delete(url)}},revokeAll(){for(const url of blobUrls)URL.revokeObjectURL(url);blobUrls.clear()}});
 
   const I18N={
-    ja:{brandMeta:'テーブル閲覧 · SQL検索 · 構造比較',heroTitle:'DuckDBファイルの中身を確認する',heroBody:'テーブルやビューのデータを確認し、SQLで検索できます。別のファイルと構造を比較することもできます。',local:'完全ローカル処理',pageFooter:'データの閲覧はブラウザー内で完結',dropTitle:'DuckDBファイルをドロップ',dropNote:'.duckdb / .db を選択してください。ファイルは外部へ送信されません。',largeDbNote:'大きなデータベースでは、検索・列分析・DB比較に時間がかかる場合があります。',chooseFile:'ファイルを選択',readOnly:'読み取り専用',openAnother:'別のファイルを開く',objects:'データベース内',objectsShort:'一覧',overview:'概要',sql:'SQL',sqlReadOnly:'読み取り専用SQL',sqlIntro:'SELECT / WITH / VALUES / SHOW / DESCRIBE / EXPLAIN を1文ずつ実行できます。元のデータベースは変更しません。',sqlPlaceholder:'SELECT *\nFROM main.table_name\nLIMIT 100;',runSql:'実行',explainSql:'実行計画',clearSql:'入力をクリア',sqlShortcut:'Ctrl / ⌘ + Enter で実行',sqlSafety:'読み取り専用の1文だけ実行します。結果は最大1,000行まで表示し、履歴は現在のファイルを開いている間だけ保持します。',sqlHistory:'実行履歴',sqlHistoryEmpty:'実行履歴はまだありません',sqlResult:'実行結果',sqlEmptyTitle:'SQLを入力して実行',sqlEmptyBody:'テーブルを横断した確認や集計に使えます。SQLは読み取り専用として検査してから実行します。',sqlRunning:'SQLを実行しています…',sqlFailed:'SQLを実行できませんでした。',sqlOnlyRead:'読み取り専用SQLだけ実行できます。',sqlSingleStatement:'SQLは1文ずつ実行してください。',sqlExplainOnly:'実行計画は SELECT / WITH / VALUES に対応しています。',sqlRows:'{count} 行',sqlDuration:'{ms} ms',sqlLimited:'先頭1,000行を表示',sqlNoRows:'結果は0行です。',sqlExportCsv:'結果をCSV',sqlExportJson:'結果をJSON',sqlResultExported:'SQL結果を保存しました',sqlResultEmpty:'保存できるSQL結果がありません',databaseOverview:'データベース概要',fileSize:'ファイルサイズ',schemas:'スキーマ',tables:'テーブル',views:'ビュー',totalColumns:'列数',duckdbVersion:'DuckDBバージョン',databaseObjects:'テーブルとビュー',estimatedRows:'推定行数',noDatabaseObjects:'表示できるテーブルまたはビューがありません。',saveSchemaReport:'データ辞書HTMLを保存',reportSaving:'データ辞書HTMLを作成しています…',reportSaved:'データ辞書HTMLを保存しました',reportFailed:'データ辞書HTMLを作成できませんでした。',reportNote:'DB構造と実行済みの列分析を単一HTMLにまとめます。テーブルの行データは含めません。列分析の「よくある値」は含まれます。',compareDatabase:'別のDBと比較',compareAnother:'比較先を選び直す',compareTitle:'データベース比較',compareIntro:'現在のDBと別のDuckDBファイルの構造差分を比較します。行データの全件比較は行いません。',compareCurrent:'現在のDB',compareTarget:'比較先',compareLoading:'比較先の構造を確認しています…',compareReady:'データベースを比較しました',compareFailed:'データベースを比較できませんでした。',compareFailedBody:'比較先が対応していないDuckDBファイル、破損したファイル、またはブラウザー版DuckDBで利用できない機能を含んでいる可能性があります。',compareBack:'概要へ戻る',compareAgain:'別のDBと比較',compareAdded:'追加',compareRemoved:'削除',compareChanged:'変更',compareNoChanges:'構造上の差分は見つかりませんでした。',compareSchemas:'スキーマの差分',compareObjects:'テーブル / ビューの差分',compareColumns:'列の差分',compareEstimatedRows:'推定行数',compareObjectType:'種類',compareDataType:'型',compareNullable:'NULL可否',compareDefault:'既定値',comparePosition:'列の位置',compareViewDefinition:'ビュー定義',compareStructureOnly:'schema / table / view / 列定義（列順を含む）と推定行数を比較します。テーブルの行データそのものは比較しません。',compareResultAvailable:'比較結果があります',compareResultSub:'{name} との構造差分を確認できます。',compareViewResult:'比較結果を見る',profile:'分析',analyzeColumn:'列を分析',profileTitle:'列の傾向',profileLoading:'列を分析しています…',profileHint:'この列全体を集計します。大きなテーブルや複雑なビューでは時間がかかる場合があります。',totalRowsProfile:'全行',nonNullRows:'値あり',nullRows:'NULL',nullRate:'NULL率',approxDistinct:'ユニーク数（推定）',minimum:'最小',maximum:'最大',average:'平均',median:'中央値（推定）',q1:'25%点（推定）',q3:'75%点（推定）',minLength:'最短文字数',maxLength:'最長文字数',avgLength:'平均文字数',topValues:'よくある値',noTopValues:'表示できる上位値はありません。',profileFailed:'列を分析できませんでした。',profileFailedBody:'このデータ型またはビューでは集計できない可能性があります。',approxNote:'ユニーク数は高速化のため推定値です。',emptyString:'（空文字）',readingObjects:'構造を確認しています…',selectObject:'左からテーブルまたはビューを選択してください。',data:'データ',columns:'列',readingData:'データを読み込んでいます…',readingColumns:'列を確認しています…',table:'テーブル',view:'ビュー',rows:'行',columnsCount:'列',page:'ページ',of:'/',firstPage:'最初のページ',prevPage:'前のページ',nextPage:'次のページ',lastPage:'最後のページ',unknownRows:'件数を確認中',noRows:'該当するデータがありません',noObjects:'表示できるテーブルまたはビューがありません。',runtimeLoading:'DuckDBを準備しています…',dbOpening:'データベースを開いています…',loadFailed:'データベースを開けませんでした。',loadFailedBody:'対応していないDuckDBファイル、破損したファイル、またはブラウザー版DuckDBで利用できない機能が含まれている可能性があります。',retry:'別のファイルを選択',nullable:'NULL可',defaultValue:'既定値',position:'位置',type:'型',name:'列名',yes:'はい',no:'いいえ',opened:'データベースを開きました',searchRows:'表示データを検索',filter:'フィルタ',filterTitle:'フィルタを追加',filterColumn:'列',filterOperator:'条件',filterValue:'値',applyFilter:'フィルタを追加',cancel:'キャンセル',close:'閉じる',clearSearch:'検索を消去',clearFilters:'フィルタをすべて解除',contains:'含む',equals:'一致',notEquals:'一致しない',searchLabel:'検索',removeFilter:'フィルタを解除',isNull:'NULL',isNotNull:'NULLではない',startsWith:'で始まる',endsWith:'で終わる',sortAsc:'昇順',sortDesc:'降順',exportCsv:'表示中をCSV',exportJson:'表示中をJSON',exported:'ファイルを保存しました',exportEmpty:'保存できる行がありません',copyValue:'値をコピー',copied:'コピーしました',copyFailed:'コピーできませんでした',cellDetails:'セルの詳細',recordDetails:'レコードの詳細',record:'レコード',moreColumns:'ほか {count} 列',filteredRows:'{filtered} / 全 {total} 行',searchAndFilters:'検索・フィルタ',helpTitle:'使い方と注意事項',helpCanTitle:'できること',helpCanBody:'DuckDBデータベースファイルを読み取り専用で開き、概要、テーブル、ビュー、データ、列定義を確認できます。列分析、読み取り専用SQL、データ辞書HTMLに加え、2つのDuckDBファイルの構造比較にも対応しています。',helpPageExport:'CSV / JSONは、読み込みに成功した現在のページだけを保存します。読み込み中や失敗後は保存できません。DECIMALは精度と小数桁数を保って表示・CSV保存し、JSONでは文字列として保存します。 日付と日時は画面・CSV・JSONで同じ形式になります。',helpStepsTitle:'使い方',helpStep1:'自分の .duckdb / .db ファイルを選ぶか、「サンプルDBで試す」で注文一覧を開きます。',helpStep2:'「テーブルとビュー」で名前を検索します。スキーマ名でも絞り込みでき、Enterで先頭の候補を開いて値の検索に進めます。',helpStep3:'データは100行ずつ表示します。「件数を集計」または最後のページを選ぶと、必要に応じて正確な件数を計算します。数値・日付の範囲は「フィルタ」、スマートフォンの列順指定は「並べ替え」を使います。「列」では必要な列だけ分析できます。',helpStep4:'「SQL」ではSELECTなどの読み取り専用SQLを1文ずつ実行できます。',helpStep5:'「概要」からデータ辞書HTMLを保存できます。行データは含めず、実行済みの列分析だけを含めます。',helpStep6:'「概要」から別のDuckDBファイルを選び、schema、table、view、列定義（列順を含む）、推定行数の差分を比較できます。',helpPrivacyTitle:'プライバシー',helpPrivacyBody:'データベースファイルはブラウザー内で処理され、外部サーバーへ送信されません。DuckDB WebAssemblyと必要なコードも配布物へ内包します。',helpNotesTitle:'注意事項',helpNote1:'読み取り専用です。元のDuckDBファイルは変更しません。',helpNote2:'大きなテーブルや複雑なビューでは、件数取得・検索・列分析・SQL実行に時間がかかる場合があります。',helpNote3:'DuckDBのバージョンや追加機能に依存するデータベースは、ブラウザー版DuckDBで開けない場合があります。'},
-    en:{brandMeta:'Tables · SQL queries · Schema comparison',heroTitle:'Explore a DuckDB database',heroBody:'Browse tables and views, query data with SQL, and compare database structures using a second file.',local:'Fully local processing',pageFooter:'Data viewing stays in the browser',dropTitle:'Drop a DuckDB file',dropNote:'Choose a .duckdb or .db file, or select Try sample database to browse sample orders. The file is never sent to an external server.',largeDbNote:'Large databases can take longer to search, profile, or compare.',chooseFile:'Choose file',readOnly:'Read only',openAnother:'Open another file',objects:'Database objects',objectsShort:'Objects',overview:'Overview',sql:'SQL',sqlReadOnly:'Read-only SQL',sqlIntro:'Run one SELECT / WITH / VALUES / SHOW / DESCRIBE / EXPLAIN statement at a time. The original database is not modified.',sqlPlaceholder:'SELECT *\nFROM main.table_name\nLIMIT 100;',runSql:'Run',explainSql:'Explain',clearSql:'Clear editor',sqlShortcut:'Ctrl / ⌘ + Enter to run',sqlSafety:'Only one read-only statement is executed. Results are limited to 1,000 rows, and history is kept only while the current file is open.',sqlHistory:'Query history',sqlHistoryEmpty:'No query history yet',sqlResult:'Query result',sqlEmptyTitle:'Enter SQL and run it',sqlEmptyBody:'Use SQL for cross-table checks and aggregations. Statements are checked as read-only before execution.',sqlRunning:'Running SQL…',sqlFailed:'Could not run this SQL.',sqlOnlyRead:'Only read-only SQL is allowed.',sqlSingleStatement:'Run one SQL statement at a time.',sqlExplainOnly:'Explain is available for SELECT / WITH / VALUES.',sqlRows:'{count} rows',sqlDuration:'{ms} ms',sqlLimited:'Showing first 1,000 rows',sqlNoRows:'The result has 0 rows.',sqlExportCsv:'Result to CSV',sqlExportJson:'Result to JSON',sqlResultExported:'SQL result saved',sqlResultEmpty:'There is no SQL result to save',databaseOverview:'Database overview',fileSize:'File size',schemas:'Schemas',tables:'Tables',views:'Views',totalColumns:'Columns',duckdbVersion:'DuckDB version',databaseObjects:'Tables and views',estimatedRows:'Estimated rows',noDatabaseObjects:'No tables or views were found.',saveSchemaReport:'Save data dictionary HTML',reportSaving:'Creating data dictionary HTML…',reportSaved:'Data dictionary HTML saved',reportFailed:'Could not create the data dictionary HTML.',reportNote:'Creates a standalone HTML report with database structure and completed column analyses. Table rows are not included. Common values from analyzed columns are included.',compareDatabase:'Compare another DB',compareAnother:'Choose another comparison file',compareTitle:'Database comparison',compareIntro:'Compare the structure of the current database with another DuckDB file. Table rows are not compared exhaustively.',compareCurrent:'Current DB',compareTarget:'Comparison DB',compareLoading:'Reading comparison database structure…',compareReady:'Database comparison completed',compareFailed:'Could not compare this database.',compareFailedBody:'The comparison file may be unsupported or damaged, or it may use DuckDB features unavailable in the browser build.',compareBack:'Back to overview',compareAgain:'Compare another DB',compareAdded:'Added',compareRemoved:'Removed',compareChanged:'Changed',compareNoChanges:'No structural differences were found.',compareSchemas:'Schema differences',compareObjects:'Table / view differences',compareColumns:'Column differences',compareEstimatedRows:'Estimated rows',compareObjectType:'Object type',compareDataType:'Type',compareNullable:'Nullable',compareDefault:'Default',comparePosition:'Column position',compareViewDefinition:'View definition',compareStructureOnly:'Compares schemas, tables, views, column definitions (including order), and estimated row counts. Table row data itself is not compared.',compareResultAvailable:'Comparison available',compareResultSub:'Structural differences against {name} are available.',compareViewResult:'View comparison',profile:'Analyze',analyzeColumn:'Analyze column',profileTitle:'Column insights',profileLoading:'Analyzing column…',profileHint:'This scans the selected column. Large tables or complex views can take time.',totalRowsProfile:'Total rows',nonNullRows:'Non-null',nullRows:'NULL',nullRate:'NULL rate',approxDistinct:'Distinct (estimate)',minimum:'Min',maximum:'Max',average:'Average',median:'Median (approx.)',q1:'25th percentile (approx.)',q3:'75th percentile (approx.)',minLength:'Shortest length',maxLength:'Longest length',avgLength:'Average length',topValues:'Common values',noTopValues:'No common values to display.',profileFailed:'Could not analyze this column.',profileFailedBody:'This data type or view may not support one of the required aggregates.',approxNote:'Distinct count is estimated for faster analysis.',emptyString:'(empty)',readingObjects:'Reading database structure…',selectObject:'Choose a table or view from the list.',data:'Data',columns:'Columns',readingData:'Loading rows…',readingColumns:'Reading columns…',table:'Table',view:'View',rows:'rows',columnsCount:'columns',page:'Page',of:'of',firstPage:'First page',prevPage:'Previous page',nextPage:'Next page',lastPage:'Last page',unknownRows:'Counting rows',noRows:'No matching rows',noObjects:'No tables or views were found.',runtimeLoading:'Preparing DuckDB…',dbOpening:'Opening database…',loadFailed:'Could not open this database.',loadFailedBody:'The file may be unsupported or damaged, or it may use DuckDB features that are unavailable in the browser build.',retry:'Choose another file',nullable:'Nullable',defaultValue:'Default',position:'Position',type:'Type',name:'Column',yes:'Yes',no:'No',opened:'Database opened',searchRows:'Search displayed data',filter:'Filter',filterTitle:'Add filter',filterColumn:'Column',filterOperator:'Condition',filterValue:'Value',applyFilter:'Add filter',cancel:'Cancel',close:'Close',clearSearch:'Clear search',clearFilters:'Clear all filters',contains:'contains',equals:'equals',notEquals:'does not equal',searchLabel:'Search',removeFilter:'Remove filter',isNull:'is NULL',isNotNull:'is not NULL',startsWith:'starts with',endsWith:'ends with',sortAsc:'Ascending',sortDesc:'Descending',exportCsv:'Visible rows to CSV',exportJson:'Visible rows to JSON',exported:'File saved',exportEmpty:'There are no rows to export',copyValue:'Copy value',copied:'Copied',copyFailed:'Could not copy',cellDetails:'Cell details',recordDetails:'Record details',record:'Record',moreColumns:'{count} more columns',filteredRows:'{filtered} / {total} total rows',searchAndFilters:'Search & filters',helpTitle:'Help & notes',helpCanTitle:'What it does',helpCanBody:'Open DuckDB database files in read-only mode and inspect the overview, tables, views, rows, and column definitions. Column analysis, read-only SQL, data dictionary HTML, and structural comparison between two DuckDB files are also supported.',helpPageExport:'CSV / JSON saves only the current successfully loaded page. Export is unavailable while loading or after a failure. DECIMAL values keep their exact precision and scale in display and CSV; JSON stores them as strings. Dates and timestamps use the same format in the viewer, CSV and JSON.',helpStepsTitle:'How to use',helpStep1:'Choose a .duckdb or .db file, or select Try sample database to browse sample orders.',helpStep2:'Find a table or view by name or schema in the catalog. Press Enter to open the first match and search its values.',helpStep3:'Browse 100 rows at a time. Use Count rows or Last to calculate the exact count when needed. Filter by number or date range, use Sort by on a phone, and analyze individual columns in Columns.',helpStep4:'Use SQL to run one read-only SELECT-style statement at a time.',helpStep5:'Save a data dictionary HTML from Overview. It excludes table rows and includes only column analyses already run in this session.',helpStep6:'From Overview, choose another DuckDB file to compare schemas, tables, views, column definitions (including order), and estimated row counts.',helpPrivacyTitle:'Privacy',helpPrivacyBody:'Database files are processed in your browser and are not sent to an external server. DuckDB WebAssembly and required code are embedded in the distributed app.',helpNotesTitle:'Notes',helpNote1:'This app is read-only and never modifies the original DuckDB file.',helpNote2:'Counting, searching, column analysis, or SQL on very large tables and complex views can take time.',helpNote3:'Databases that depend on a different DuckDB version or optional extensions may not open in the browser build.'}
+    ja:{brandMeta:'テーブル閲覧 · SQL検索 · 構造比較',heroTitle:'DuckDBファイルの中身を確認する',heroBody:'テーブルやビューのデータを確認し、SQLで検索できます。別のファイルと構造を比較することもできます。',local:'完全ローカル処理',pageFooter:'データの閲覧はブラウザー内で完結',dropTitle:'DuckDBファイルをドロップ',dropNote:'.duckdb / .db を選択してください。ファイルは外部へ送信されません。',largeDbNote:'大きなデータベースでは、検索・列分析・DB比較に時間がかかる場合があります。',chooseFile:'ファイルを選択',readOnly:'読み取り専用',openAnother:'別のファイルを開く',objects:'データベース内',objectsShort:'一覧',overview:'概要',sql:'SQL',sqlReadOnly:'読み取り専用SQL',sqlIntro:'SELECT / WITH / VALUES / SHOW / DESCRIBE / EXPLAIN を1文ずつ実行できます。元のデータベースは変更しません。',sqlPlaceholder:'SELECT *\nFROM main.table_name\nLIMIT 100;',runSql:'実行',explainSql:'実行計画',clearSql:'入力をクリア',sqlShortcut:'Ctrl / ⌘ + Enter で実行',sqlSafety:'読み取り専用の1文だけ実行します。結果は最大1,000行まで表示し、履歴は現在のファイルを開いている間だけ保持します。',sqlHistory:'実行履歴',sqlHistoryEmpty:'実行履歴はまだありません',sqlResult:'実行結果',sqlEmptyTitle:'SQLを入力して実行',sqlEmptyBody:'テーブルを横断した確認や集計に使えます。SQLは読み取り専用として検査してから実行します。',sqlRunning:'SQLを実行しています…',sqlFailed:'SQLを実行できませんでした。',sqlOnlyRead:'読み取り専用SQLだけ実行できます。',sqlSingleStatement:'SQLは1文ずつ実行してください。',sqlExplainOnly:'実行計画は SELECT / WITH / VALUES に対応しています。',sqlRows:'{count} 行',sqlDuration:'{ms} ms',sqlLimited:'先頭1,000行を表示',sqlNoRows:'結果は0行です。',sqlExportCsv:'結果をCSV',sqlExportJson:'結果をJSON',sqlResultExported:'SQL結果を保存しました',sqlResultEmpty:'保存できるSQL結果がありません',databaseOverview:'データベース概要',fileSize:'ファイルサイズ',schemas:'スキーマ',tables:'テーブル',views:'ビュー',totalColumns:'列数',duckdbVersion:'DuckDBバージョン',databaseObjects:'テーブルとビュー',estimatedRows:'推定行数',noDatabaseObjects:'表示できるテーブルまたはビューがありません。',saveSchemaReport:'データ辞書HTMLを保存',reportSaving:'データ辞書HTMLを作成しています…',reportSaved:'データ辞書HTMLを保存しました',reportFailed:'データ辞書HTMLを作成できませんでした。',reportNote:'DB構造と実行済みの列分析を単一HTMLにまとめます。テーブルの行データは含めません。列分析の「よくある値」は含まれます。',compareDatabase:'別のDBと比較',compareAnother:'比較先を選び直す',compareTitle:'データベース比較',compareIntro:'現在のDBと別のDuckDBファイルの構造差分を比較します。行データの全件比較は行いません。',compareCurrent:'現在のDB',compareTarget:'比較先',compareLoading:'比較先の構造を確認しています…',compareReady:'データベースを比較しました',compareFailed:'データベースを比較できませんでした。',compareFailedBody:'比較先が対応していないDuckDBファイル、破損したファイル、またはブラウザー版DuckDBで利用できない機能を含んでいる可能性があります。',compareBack:'概要へ戻る',compareAgain:'別のDBと比較',compareAdded:'追加',compareRemoved:'削除',compareChanged:'変更',compareNoChanges:'構造上の差分は見つかりませんでした。',compareSchemas:'スキーマの差分',compareObjects:'テーブル / ビューの差分',compareColumns:'列の差分',compareEstimatedRows:'推定行数',compareObjectType:'種類',compareDataType:'型',compareNullable:'NULL可否',compareDefault:'既定値',comparePosition:'列の位置',compareViewDefinition:'ビュー定義',compareStructureOnly:'schema / table / view / 列定義（列順を含む）と推定行数を比較します。テーブルの行データそのものは比較しません。',compareResultAvailable:'比較結果があります',compareResultSub:'{name} との構造差分を確認できます。',compareViewResult:'比較結果を見る',profile:'分析',analyzeColumn:'列を分析',profileTitle:'列の傾向',profileLoading:'列を分析しています…',profileHint:'この列全体を集計します。大きなテーブルや複雑なビューでは時間がかかる場合があります。',totalRowsProfile:'全行',nonNullRows:'値あり',nullRows:'NULL',nullRate:'NULL率',approxDistinct:'ユニーク数（推定）',minimum:'最小',maximum:'最大',average:'平均',median:'中央値（推定）',q1:'25%点（推定）',q3:'75%点（推定）',minLength:'最短文字数',maxLength:'最長文字数',avgLength:'平均文字数',topValues:'よくある値',noTopValues:'表示できる上位値はありません。',profileFailed:'列を分析できませんでした。',profileFailedBody:'このデータ型またはビューでは集計できない可能性があります。',approxNote:'ユニーク数は高速化のため推定値です。',emptyString:'（空文字）',readingObjects:'構造を確認しています…',selectObject:'左からテーブルまたはビューを選択してください。',data:'データ',columns:'列',readingData:'データを読み込んでいます…',readingColumns:'列を確認しています…',table:'テーブル',view:'ビュー',rows:'行',columnsCount:'列',page:'ページ',of:'/',firstPage:'最初のページ',prevPage:'前のページ',nextPage:'次のページ',lastPage:'最後のページ',unknownRows:'件数を確認中',noRows:'該当するデータがありません',noObjects:'表示できるテーブルまたはビューがありません。',runtimeLoading:'DuckDBを準備しています…',dbOpening:'データベースを開いています…',loadFailed:'データベースを開けませんでした。',loadFailedBody:'対応していないDuckDBファイル、破損したファイル、またはブラウザー版DuckDBで利用できない機能が含まれている可能性があります。',retry:'別のファイルを選択',nullable:'NULL可',defaultValue:'既定値',position:'位置',type:'型',name:'列名',yes:'はい',no:'いいえ',opened:'データベースを開きました',searchRows:'表示データを検索',filter:'フィルタ',filterTitle:'フィルタを追加',filterColumn:'列',filterOperator:'条件',filterValue:'値',applyFilter:'フィルタを追加',cancel:'キャンセル',close:'閉じる',clearSearch:'検索を消去',clearFilters:'フィルタをすべて解除',contains:'含む',equals:'一致',notEquals:'一致しない',searchLabel:'検索',removeFilter:'フィルタを解除',isNull:'NULL',isNotNull:'NULLではない',startsWith:'で始まる',endsWith:'で終わる',sortAsc:'昇順',sortDesc:'降順',exportCsv:'表示中をCSV',exportJson:'表示中をJSON',exported:'ファイルを保存しました',exportEmpty:'保存できる行がありません',copyValue:'値をコピー',copied:'コピーしました',copyFailed:'コピーできませんでした',cellDetails:'セルの詳細',recordDetails:'レコードの詳細',record:'レコード',moreColumns:'ほか {count} 列',filteredRows:'{filtered} / 全 {total} 行',searchAndFilters:'検索・フィルタ',helpTitle:'使い方と注意事項',helpCanTitle:'できること',helpCanBody:'DuckDBデータベースファイルを読み取り専用で開き、概要、テーブル、ビュー、データ、列定義を確認できます。列分析、読み取り専用SQL、データ辞書HTMLに加え、2つのDuckDBファイルの構造比較にも対応しています。',helpPageExport:'CSV / JSONは、読み込みに成功した現在のページだけを保存します。読み込み中や失敗後は保存できません。DECIMALは精度と小数桁数を保って表示・CSV保存し、JSONでは文字列として保存します。 日付と日時は画面・CSV・JSONで同じ形式になります。',helpStepsTitle:'使い方',helpStep1:'最初にサンプルの注文テーブルが開きます。自分の .duckdb / .db は「ファイルを開く」から選ぶか、画面にドロップしてください。',helpStep2:'「テーブルとビュー」で名前を検索します。スキーマ名でも絞り込みでき、Enterで先頭の候補を開いて値の検索に進めます。',helpStep3:'データは100行ずつ表示します。「件数を集計」または最後のページを選ぶと、必要に応じて正確な件数を計算します。数値・日付の範囲は「フィルタ」、スマートフォンの列順指定は「並べ替え」を使います。「列」では必要な列だけ分析できます。',helpStep4:'「SQL」ではSELECTなどの読み取り専用SQLを1文ずつ実行できます。',helpStep5:'「概要」からデータ辞書HTMLを保存できます。行データは含めず、実行済みの列分析だけを含めます。',helpStep6:'「概要」から別のDuckDBファイルを選び、schema、table、view、列定義（列順を含む）、推定行数の差分を比較できます。',helpPrivacyTitle:'プライバシー',helpPrivacyBody:'データベースファイルはブラウザー内で処理され、外部サーバーへ送信されません。DuckDB WebAssemblyと必要なコードも配布物へ内包します。',helpNotesTitle:'注意事項',helpNote1:'読み取り専用です。元のDuckDBファイルは変更しません。',helpNote2:'大きなテーブルや複雑なビューでは、件数取得・検索・列分析・SQL実行に時間がかかる場合があります。',helpNote3:'DuckDBのバージョンや追加機能に依存するデータベースは、ブラウザー版DuckDBで開けない場合があります。'},
+    en:{brandMeta:'Tables · SQL queries · Schema comparison',heroTitle:'Explore a DuckDB database',heroBody:'Browse tables and views, query data with SQL, and compare database structures using a second file.',local:'Fully local processing',pageFooter:'Data viewing stays in the browser',dropTitle:'Drop a DuckDB file',dropNote:'Choose a .duckdb or .db file, or select Try sample database to browse sample orders. The file is never sent to an external server.',largeDbNote:'Large databases can take longer to search, profile, or compare.',chooseFile:'Choose file',readOnly:'Read only',openAnother:'Open another file',objects:'Database objects',objectsShort:'Objects',overview:'Overview',sql:'SQL',sqlReadOnly:'Read-only SQL',sqlIntro:'Run one SELECT / WITH / VALUES / SHOW / DESCRIBE / EXPLAIN statement at a time. The original database is not modified.',sqlPlaceholder:'SELECT *\nFROM main.table_name\nLIMIT 100;',runSql:'Run',explainSql:'Explain',clearSql:'Clear editor',sqlShortcut:'Ctrl / ⌘ + Enter to run',sqlSafety:'Only one read-only statement is executed. Results are limited to 1,000 rows, and history is kept only while the current file is open.',sqlHistory:'Query history',sqlHistoryEmpty:'No query history yet',sqlResult:'Query result',sqlEmptyTitle:'Enter SQL and run it',sqlEmptyBody:'Use SQL for cross-table checks and aggregations. Statements are checked as read-only before execution.',sqlRunning:'Running SQL…',sqlFailed:'Could not run this SQL.',sqlOnlyRead:'Only read-only SQL is allowed.',sqlSingleStatement:'Run one SQL statement at a time.',sqlExplainOnly:'Explain is available for SELECT / WITH / VALUES.',sqlRows:'{count} rows',sqlDuration:'{ms} ms',sqlLimited:'Showing first 1,000 rows',sqlNoRows:'The result has 0 rows.',sqlExportCsv:'Result to CSV',sqlExportJson:'Result to JSON',sqlResultExported:'SQL result saved',sqlResultEmpty:'There is no SQL result to save',databaseOverview:'Database overview',fileSize:'File size',schemas:'Schemas',tables:'Tables',views:'Views',totalColumns:'Columns',duckdbVersion:'DuckDB version',databaseObjects:'Tables and views',estimatedRows:'Estimated rows',noDatabaseObjects:'No tables or views were found.',saveSchemaReport:'Save data dictionary HTML',reportSaving:'Creating data dictionary HTML…',reportSaved:'Data dictionary HTML saved',reportFailed:'Could not create the data dictionary HTML.',reportNote:'Creates a standalone HTML report with database structure and completed column analyses. Table rows are not included. Common values from analyzed columns are included.',compareDatabase:'Compare another DB',compareAnother:'Choose another comparison file',compareTitle:'Database comparison',compareIntro:'Compare the structure of the current database with another DuckDB file. Table rows are not compared exhaustively.',compareCurrent:'Current DB',compareTarget:'Comparison DB',compareLoading:'Reading comparison database structure…',compareReady:'Database comparison completed',compareFailed:'Could not compare this database.',compareFailedBody:'The comparison file may be unsupported or damaged, or it may use DuckDB features unavailable in the browser build.',compareBack:'Back to overview',compareAgain:'Compare another DB',compareAdded:'Added',compareRemoved:'Removed',compareChanged:'Changed',compareNoChanges:'No structural differences were found.',compareSchemas:'Schema differences',compareObjects:'Table / view differences',compareColumns:'Column differences',compareEstimatedRows:'Estimated rows',compareObjectType:'Object type',compareDataType:'Type',compareNullable:'Nullable',compareDefault:'Default',comparePosition:'Column position',compareViewDefinition:'View definition',compareStructureOnly:'Compares schemas, tables, views, column definitions (including order), and estimated row counts. Table row data itself is not compared.',compareResultAvailable:'Comparison available',compareResultSub:'Structural differences against {name} are available.',compareViewResult:'View comparison',profile:'Analyze',analyzeColumn:'Analyze column',profileTitle:'Column insights',profileLoading:'Analyzing column…',profileHint:'This scans the selected column. Large tables or complex views can take time.',totalRowsProfile:'Total rows',nonNullRows:'Non-null',nullRows:'NULL',nullRate:'NULL rate',approxDistinct:'Distinct (estimate)',minimum:'Min',maximum:'Max',average:'Average',median:'Median (approx.)',q1:'25th percentile (approx.)',q3:'75th percentile (approx.)',minLength:'Shortest length',maxLength:'Longest length',avgLength:'Average length',topValues:'Common values',noTopValues:'No common values to display.',profileFailed:'Could not analyze this column.',profileFailedBody:'This data type or view may not support one of the required aggregates.',approxNote:'Distinct count is estimated for faster analysis.',emptyString:'(empty)',readingObjects:'Reading database structure…',selectObject:'Choose a table or view from the list.',data:'Data',columns:'Columns',readingData:'Loading rows…',readingColumns:'Reading columns…',table:'Table',view:'View',rows:'rows',columnsCount:'columns',page:'Page',of:'of',firstPage:'First page',prevPage:'Previous page',nextPage:'Next page',lastPage:'Last page',unknownRows:'Counting rows',noRows:'No matching rows',noObjects:'No tables or views were found.',runtimeLoading:'Preparing DuckDB…',dbOpening:'Opening database…',loadFailed:'Could not open this database.',loadFailedBody:'The file may be unsupported or damaged, or it may use DuckDB features that are unavailable in the browser build.',retry:'Choose another file',nullable:'Nullable',defaultValue:'Default',position:'Position',type:'Type',name:'Column',yes:'Yes',no:'No',opened:'Database opened',searchRows:'Search displayed data',filter:'Filter',filterTitle:'Add filter',filterColumn:'Column',filterOperator:'Condition',filterValue:'Value',applyFilter:'Add filter',cancel:'Cancel',close:'Close',clearSearch:'Clear search',clearFilters:'Clear all filters',contains:'contains',equals:'equals',notEquals:'does not equal',searchLabel:'Search',removeFilter:'Remove filter',isNull:'is NULL',isNotNull:'is not NULL',startsWith:'starts with',endsWith:'ends with',sortAsc:'Ascending',sortDesc:'Descending',exportCsv:'Visible rows to CSV',exportJson:'Visible rows to JSON',exported:'File saved',exportEmpty:'There are no rows to export',copyValue:'Copy value',copied:'Copied',copyFailed:'Could not copy',cellDetails:'Cell details',recordDetails:'Record details',record:'Record',moreColumns:'{count} more columns',filteredRows:'{filtered} / {total} total rows',searchAndFilters:'Search & filters',helpTitle:'Help & notes',helpCanTitle:'What it does',helpCanBody:'Open DuckDB database files in read-only mode and inspect the overview, tables, views, rows, and column definitions. Column analysis, read-only SQL, data dictionary HTML, and structural comparison between two DuckDB files are also supported.',helpPageExport:'CSV / JSON saves only the current successfully loaded page. Export is unavailable while loading or after a failure. DECIMAL values keep their exact precision and scale in display and CSV; JSON stores them as strings. Dates and timestamps use the same format in the viewer, CSV and JSON.',helpStepsTitle:'How to use',helpStep1:'The sample orders table opens on startup. Select Open file or drop your .duckdb or .db file onto the workspace to browse it.',helpStep2:'Find a table or view by name or schema in the catalog. Press Enter to open the first match and search its values.',helpStep3:'Browse 100 rows at a time. Use Count rows or Last to calculate the exact count when needed. Filter by number or date range, use Sort by on a phone, and analyze individual columns in Columns.',helpStep4:'Use SQL to run one read-only SELECT-style statement at a time.',helpStep5:'Save a data dictionary HTML from Overview. It excludes table rows and includes only column analyses already run in this session.',helpStep6:'From Overview, choose another DuckDB file to compare schemas, tables, views, column definitions (including order), and estimated row counts.',helpPrivacyTitle:'Privacy',helpPrivacyBody:'Database files are processed in your browser and are not sent to an external server. DuckDB WebAssembly and required code are embedded in the distributed app.',helpNotesTitle:'Notes',helpNote1:'This app is read-only and never modifies the original DuckDB file.',helpNote2:'Counting, searching, column analysis, or SQL on very large tables and complex views can take time.',helpNote3:'Databases that depend on a different DuckDB version or optional extensions may not open in the browser build.'}
   };
-  Object.assign(I18N.ja,{openDemo:'サンプルDBで試す',demoFailed:'デモを開けませんでした。もう一度試すか、ファイルを選択してください。'});
-  Object.assign(I18N.en,{openDemo:'Try sample database',demoFailed:'Couldn’t open the demo. Try again or choose a file.'});
-  Object.assign(I18N.ja,{heroTitle:'DuckDBファイルを開く',entryLead:'テーブルを開いて、探したい値を検索できます。ファイルはこの端末で読み取ります。',entryDrop:'または、ここにドロップ',entrySampleSize:'250 行 · 9 列',entryLocal:'ローカルで読み取り専用'});
-  Object.assign(I18N.en,{heroTitle:'Open a DuckDB file',entryLead:'Browse tables and search for values. Your file stays on this device.',entryDrop:'or drop it here',entrySampleSize:'250 rows · 9 columns',entryLocal:'Local, read-only access'});
+  Object.assign(I18N.ja,{sampleSource:'サンプルDB',retrySample:'サンプルを再読み込み',dropToOpen:'ドロップしてファイルを開く',demoFailed:'サンプルを読み込めませんでした。「ファイルを開く」から自分のデータベースを選べます。'});
+  Object.assign(I18N.en,{sampleSource:'Sample database',retrySample:'Reload sample',dropToOpen:'Drop to open database',demoFailed:'The sample could not be loaded. Use Open file to choose your own database.'});
   Object.assign(I18N.ja,{objectName:'名前',schemaLabel:'スキーマ',objectKind:'種別',compareShort:'DBを比較',dictionaryShort:'データ辞書を保存',estimatedCount:'{count} 行',queryReady:'クエリを実行すると、ここに結果が表示されます。'});
   Object.assign(I18N.en,{objectName:'Name',schemaLabel:'Schema',objectKind:'Type',compareShort:'Compare',dictionaryShort:'Save dictionary',estimatedCount:'{count} rows',queryReady:'Run a query to see the results here.'});
   Object.assign(I18N.ja,{countRows:'件数を集計', uncounted:'件数未集計', matchingRows:'該当 {count} 行', sortBy:'並べ替え', noSort:'並べ替えなし'});
@@ -572,7 +489,7 @@
   Object.assign(I18N.ja,{catalogTitle:'テーブルとビュー',catalogSearchHint:'テーブル名を検索',catalogNoMatch:'一致するテーブルやビューはありません。',catalogReset:'検索をクリア',openFileLabel:'ファイルを開く'});
   Object.assign(I18N.en,{catalogTitle:'Tables & views',catalogSearchHint:'Find a table or view',catalogNoMatch:'No matching tables or views.',catalogReset:'Clear search',openFileLabel:'Open file'});
   let lang=(localStorage.getItem('duckdb-explorer-language')||'').toLowerCase();if(!['ja','en'].includes(lang))lang=navigator.language?.toLowerCase().startsWith('ja')?'ja':'en';
-  const $=id=>document.getElementById(id);const el={intro:$('intro'),workspace:$('workspace'),dropzone:$('dropzone'),fileInput:$('fileInput'),compareFileInput:$('compareFileInput'),openBtn:$('openBtn'),changeFileBtn:$('changeFileBtn'),headerFile:$('headerFile'),objectSearch:$('objectSearch'),fileName:$('fileName'),fileMeta:$('fileMeta'),tree:$('tree'),overviewView:$('overviewView'),comparisonView:$('comparisonView'),sqlView:$('sqlView'),sqlEditor:$('sqlEditor'),sqlResult:$('sqlResult'),sqlHistorySelect:$('sqlHistorySelect'),runSqlBtn:$('runSqlBtn'),explainSqlBtn:$('explainSqlBtn'),clearSqlBtn:$('clearSqlBtn'),emptyRelation:$('emptyRelation'),relationView:$('relationView'),relationKicker:$('relationKicker'),relationName:$('relationName'),rowCount:$('rowCount'),columnCount:$('columnCount'),dataTab:$('dataTab'),columnsTab:$('columnsTab'),dataPanel:$('dataPanel'),columnsPanel:$('columnsPanel'),mobileNav:$('mobileNav'),helpDialog:$('helpDialog'),filterDialog:$('filterDialog'),detailDialog:$('detailDialog'),profileDialog:$('profileDialog'),profileTitle:$('profileTitle'),profileBody:$('profileBody'),filterColumn:$('filterColumn'),filterOperator:$('filterOperator'),filterValue:$('filterValue'),filterValueWrap:$('filterValueWrap'),applyFilterBtn:$('applyFilterBtn'),detailTitle:$('detailTitle'),detailMeta:$('detailMeta'),detailValue:$('detailValue'),copyDetailBtn:$('copyDetailBtn'),toast:$('toast')};
+  const $=id=>document.getElementById(id);const el={workspace:$('workspace'),fileInput:$('fileInput'),compareFileInput:$('compareFileInput'),changeFileBtn:$('changeFileBtn'),sampleSource:$('sampleSource'),objectSearch:$('objectSearch'),fileName:$('fileName'),fileMeta:$('fileMeta'),tree:$('tree'),overviewView:$('overviewView'),comparisonView:$('comparisonView'),sqlView:$('sqlView'),sqlEditor:$('sqlEditor'),sqlResult:$('sqlResult'),sqlHistorySelect:$('sqlHistorySelect'),runSqlBtn:$('runSqlBtn'),explainSqlBtn:$('explainSqlBtn'),clearSqlBtn:$('clearSqlBtn'),emptyRelation:$('emptyRelation'),relationView:$('relationView'),relationKicker:$('relationKicker'),relationName:$('relationName'),rowCount:$('rowCount'),columnCount:$('columnCount'),dataTab:$('dataTab'),columnsTab:$('columnsTab'),dataPanel:$('dataPanel'),columnsPanel:$('columnsPanel'),mobileNav:$('mobileNav'),helpDialog:$('helpDialog'),filterDialog:$('filterDialog'),detailDialog:$('detailDialog'),profileDialog:$('profileDialog'),profileTitle:$('profileTitle'),profileBody:$('profileBody'),filterColumn:$('filterColumn'),filterOperator:$('filterOperator'),filterValue:$('filterValue'),filterValueWrap:$('filterValueWrap'),applyFilterBtn:$('applyFilterBtn'),detailTitle:$('detailTitle'),detailMeta:$('detailMeta'),detailValue:$('detailValue'),copyDetailBtn:$('copyDetailBtn'),toast:$('toast')};
   const state={duckdb:null,db:null,conn:null,worker:null,workerUrl:null,file:null,objects:[],overview:null,viewMode:'overview',selected:null,columns:[],totalRows:null,filteredRows:null,page:0n,pageSize:100n,requestToken:0,search:'',filters:[],sort:null,lastRows:[],lastFields:[],relationStatus:'idle',relationRequest:null,relationError:null,relationErrorPanel:'data',searchTimer:null,detailCopyText:'',profileCache:new Map(),profileToken:0,activeProfile:null,sqlInitialized:false,sqlHistory:[],sqlRunning:false,sqlRequestToken:0,sqlHasResult:false,sqlLastRows:[],sqlLastFields:[],sqlLastDuration:0,sqlTruncated:false,sqlLastError:null,sqlLastMode:'query',reportSaving:false,reportToken:0,comparison:null,compareLoading:false,compareError:null,compareToken:0};
   let openFileGeneration=0,openFileQueue=Promise.resolve();
   function t(key,vars={}){let value=I18N[lang][key]??key;for(const [name,replacement] of Object.entries(vars))value=value.replace(`{${name}}`,String(replacement));return value}
@@ -709,15 +626,33 @@
     await state.db.instantiate(EMBEDDED_WASM_URL);
   }
   async function disposeDatabase(){state.requestToken++;clearTimeout(state.searchTimer);state.relationStatus='idle';state.relationRequest=null;state.relationError=null;state.lastRows=[];state.lastFields=[];try{if(state.conn)await state.conn.close()}catch{}try{if(state.db)await state.db.terminate()}catch{}try{state.worker?.terminate()}catch{}if(state.workerUrl)StandaloneAssets.revoke(state.workerUrl);Object.assign(state,{db:null,conn:null,worker:null,workerUrl:null,file:null,objects:[],overview:null,viewMode:'overview',selected:null,columns:[],totalRows:null,filteredRows:null,page:0n,search:'',filters:[],sort:null,lastRows:[],lastFields:[],relationStatus:'idle',relationRequest:null,relationError:null,relationErrorPanel:'data',searchTimer:null,profileCache:new Map(),profileToken:state.profileToken+1,activeProfile:null,sqlInitialized:false,sqlHistory:[],sqlRunning:false,sqlRequestToken:state.sqlRequestToken+1,sqlHasResult:false,sqlLastRows:[],sqlLastFields:[],sqlLastDuration:0,sqlTruncated:false,sqlLastError:null,sqlLastMode:'query',reportSaving:false,reportToken:state.reportToken+1,comparison:null,compareLoading:false,compareError:null,compareToken:state.compareToken+1});if(el.headerFile)el.headerFile.hidden=true;if(el.runSqlBtn){el.runSqlBtn.disabled=false;el.explainSqlBtn.disabled=false;el.clearSqlBtn.disabled=false}}
-  function showWorkspace(){el.intro.classList.add('hidden');el.workspace.classList.remove('hidden');el.mobileNav.classList.remove('hidden');setMobileSection('objects')}
-  function showIntro(){el.workspace.classList.add('hidden');el.mobileNav.classList.add('hidden');el.intro.classList.remove('hidden');if(el.headerFile)el.headerFile.hidden=true}
-  function resetEmptyRelation(){el.emptyRelation.innerHTML=`<div><svg viewBox="0 0 24 24"><ellipse cx="12" cy="6" rx="7" ry="3"/><path d="M5 6v12c0 1.7 3.1 3 7 3s7-1.3 7-3V6M5 12c0 1.7 3.1 3 7 3s7-1.3 7-3"/></svg><div>${escapeHtml(t('selectObject'))}</div></div>`}
-  function renderFullState(message){$('catalogSearch').hidden=true;$('catalogNav').hidden=true;resetEmptyRelation();el.overviewView.classList.add('hidden');el.comparisonView.classList.add('hidden');el.sqlView.classList.add('hidden');el.tree.innerHTML=`<div class="state"><div><div class="spinner"></div><div>${escapeHtml(message)}</div></div></div>`;el.emptyRelation.classList.remove('hidden');el.relationView.classList.add('hidden')}
-  function renderOpenError(error){setMobileSection('overview');el.overviewView.classList.add('hidden');el.comparisonView.classList.add('hidden');el.sqlView.classList.add('hidden');el.tree.innerHTML='';el.emptyRelation.classList.remove('hidden');el.relationView.classList.add('hidden');el.emptyRelation.innerHTML=`<div class="error-card"><strong>${escapeHtml(t('loadFailed'))}</strong><p>${escapeHtml(t('loadFailedBody'))}</p><details><summary>Details</summary><pre>${escapeHtml(String(error?.stack||error))}</pre></details><div class="retry-row"><button class="secondary" id="errorRetry" type="button">${escapeHtml(t('retry'))}</button></div></div>`;$('errorRetry')?.addEventListener('click',()=>el.fileInput.click())}
+  function showWorkspace(file,demo){
+    el.sampleSource.hidden=!demo;
+    el.fileName.textContent=file?.name||'';
+    el.fileName.title=file?.name||'';
+    el.fileMeta.textContent='';
+    el.mobileNav.classList.remove('hidden');
+    setMobileSection('overview');
+  }
+  function renderFullState(message){
+    $('catalogSearch').hidden=true;
+    $('catalogNav').hidden=true;
+    el.tree.replaceChildren();
+    for(const panel of [el.overviewView,el.comparisonView,el.sqlView,el.relationView])panel.classList.add('hidden');
+    el.emptyRelation.classList.remove('hidden');
+    el.emptyRelation.innerHTML=`<p role="status">${escapeHtml(message)}</p>`;
+  }
+  function renderOpenError(error,demo=false){
+    setMobileSection('overview');
+    el.emptyRelation.classList.remove('hidden');
+    const message=demo?'demoFailed':'loadFailedBody';
+    const action=demo?'retrySample':'openFileLabel';
+    el.emptyRelation.innerHTML=`<div class="error-card" role="alert"><strong data-i18n="loadFailed">${escapeHtml(t('loadFailed'))}</strong><p data-i18n="${message}">${escapeHtml(t(message))}</p><details><summary>Details</summary><pre>${escapeHtml(String(error?.stack||error))}</pre></details><div class="retry-row"><button class="secondary" id="errorRetry" type="button" data-i18n="${action}">${escapeHtml(t(action))}</button></div></div>`;
+    $('errorRetry').addEventListener('click',()=>{if(demo)openFile(null,true);else el.fileInput.click()});
+  }
   function escapeHtml(value){return String(value).replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]))}
   async function openFile(file,demo=false){
     if(!file&&!demo)return;
-    if(demo)$('demoError').hidden=true;
     // Serialize runtime teardown/opening so two rapid file choices never share
     // the mutable worker, database and connection handles.
     const generation=++openFileGeneration;
@@ -729,7 +664,7 @@
     state.sqlHasResult=false;state.sqlLastRows=[];state.sqlLastFields=[];
     state.profileCache=new Map();state.activeProfile=null;state.selected=null;state.objects=[];state.overview=null;state.file=null;
     for(const dialog of [el.profileDialog,el.detailDialog,el.filterDialog])try{dialog.close()}catch{}
-    showWorkspace();renderFullState(t('runtimeLoading'));
+    showWorkspace(file,demo);renderFullState(t('runtimeLoading'));
     const attempt=openFileQueue.catch(()=>{}).then(async()=>{
       if(generation!==openFileGeneration)return;
       await disposeDatabase();
@@ -740,9 +675,7 @@
           if(generation!==openFileGeneration)return;
           file=new File([bytes],'browser-kitty-sample.duckdb',{type:'application/octet-stream'});
         }
-        showWorkspace();state.file=file;el.fileName.textContent=file.name;el.fileName.title=file.name;el.fileMeta.textContent=formatBytes(file.size);
-        if(el.headerFile)el.headerFile.hidden=false;
-        renderFullState(t('runtimeLoading'));
+        state.file=file;el.fileName.textContent=file.name;el.fileName.title=file.name;el.fileMeta.textContent=formatBytes(file.size);
         const duckdb=await loadDuckDBApi();if(generation!==openFileGeneration)return;
         await initializeDuckDBRuntime(duckdb);if(generation!==openFileGeneration)return;
         renderFullState(t('dbOpening'));
@@ -752,14 +685,12 @@
         state.conn=await state.db.connect();if(generation!==openFileGeneration)return;
         await hardenDuckDBSession();if(generation!==openFileGeneration)return;
         await loadObjects(generation,demo);if(generation!==openFileGeneration)return;
-        toast(t('opened'));
+        if(!demo)toast(t('opened'));
       }catch(error){
         if(generation!==openFileGeneration)return;
         console.error(error);
-        if(!demo){renderOpenError(error);return}
         await disposeDatabase();
-        if(generation!==openFileGeneration)return;
-        showIntro();$('demoError').hidden=false;$('openDemoBtn').focus();
+        if(generation===openFileGeneration)renderOpenError(error,demo);
       }
     });
     openFileQueue=attempt;
@@ -1383,9 +1314,24 @@
     if(section===which)button.setAttribute('aria-current','page');else button.removeAttribute('aria-current');
   })}
   window.AppToast = Object.freeze({ show: toast });
-  $('openDemoBtn').addEventListener('click',()=>openFile(null,true));
-  el.openBtn.addEventListener('click',()=>el.fileInput.click());el.changeFileBtn.addEventListener('click',()=>el.fileInput.click());el.fileInput.addEventListener('change',()=>{const file=el.fileInput.files?.[0];if(file)openFile(file);el.fileInput.value=''});el.compareFileInput.addEventListener('change',()=>{const file=el.compareFileInput.files?.[0];if(file)startComparison(file);el.compareFileInput.value=''})
-  ;['dragenter','dragover'].forEach(type=>el.dropzone.addEventListener(type,event=>{event.preventDefault();el.dropzone.classList.add('drag')}));['dragleave','drop'].forEach(type=>el.dropzone.addEventListener(type,event=>{event.preventDefault();el.dropzone.classList.remove('drag')}));el.dropzone.addEventListener('drop',event=>{const file=event.dataTransfer?.files?.[0];if(file)openFile(file)});document.addEventListener('dragover',event=>event.preventDefault());document.addEventListener('drop',event=>event.preventDefault());
+  el.changeFileBtn.addEventListener('click',()=>el.fileInput.click());el.fileInput.addEventListener('change',()=>{const file=el.fileInput.files?.[0];if(file)openFile(file);el.fileInput.value=''});el.compareFileInput.addEventListener('change',()=>{const file=el.compareFileInput.files?.[0];if(file)startComparison(file);el.compareFileInput.value=''})
+  const dropFeedback=$('dropFeedback');
+  function dragFiles(event){
+    if(!event.dataTransfer?.types.includes('Files'))return;
+    event.preventDefault();
+    if(document.querySelector('dialog[open]'))return;
+    event.dataTransfer.dropEffect='copy';
+    dropFeedback.hidden=false;
+  }
+  document.addEventListener('dragenter',dragFiles);
+  document.addEventListener('dragover',dragFiles);
+  document.addEventListener('dragleave',event=>{if(!event.relatedTarget)dropFeedback.hidden=true});
+  document.addEventListener('drop',event=>{
+    event.preventDefault();
+    dropFeedback.hidden=true;
+    const file=event.dataTransfer?.files[0];
+    if(file&&!document.querySelector('dialog[open]'))openFile(file);
+  });
   $('overviewTreeButton').addEventListener('click',showOverview);
   $('sqlTreeButton').addEventListener('click',showSql);
   $('compareTreeButton').addEventListener('click',showComparison);
@@ -1433,7 +1379,7 @@
   $('filterForm').addEventListener('input',clearFilterError);
   el.filterDialog.addEventListener('close',()=>{el.filterValue.value='';$('filterEndValue').value='';clearFilterError()});
   $('langBtn').addEventListener('click',()=>{lang=lang==='ja'?'en':'ja';localStorage.setItem('duckdb-explorer-language',lang);applyLanguage()});$('helpBtn').addEventListener('click',()=>el.helpDialog.showModal());el.copyDetailBtn.addEventListener('click',copyDetail);document.querySelectorAll('[data-close-dialog]').forEach(button=>button.addEventListener('click',()=>button.closest('dialog').close()));[el.helpDialog,el.filterDialog,el.detailDialog,el.profileDialog].forEach(dialog=>dialog.addEventListener('click',event=>{if(event.target===dialog)dialog.close()}));document.addEventListener('keydown',event=>{if(event.key==='Escape')document.querySelectorAll('dialog[open]').forEach(dialog=>dialog.close())});window.addEventListener('beforeunload',()=>{try{state.worker?.terminate()}catch{}StandaloneAssets.revokeAll()});
-  applyLanguage();showIntro();
+  applyLanguage();openFile(null,true);
 })();
 </script>
 </body>
