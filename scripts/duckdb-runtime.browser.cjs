@@ -51,6 +51,18 @@ async function checkCatalog(page) {
   assert.equal(await matches.first().evaluate(button => button === document.activeElement), true);
   await search.press('Escape');
   assert.equal(await schema.getAttribute('open'), null, 'Clearing search restores the collapsed schema');
+  const summary = schema.locator('summary');
+  await summary.press('Enter');
+  assert.equal(await schema.getAttribute('open'), '');
+  // Native details notifications may arrive after a search has replaced the tree.
+  await summary.evaluate(element => {
+    element.click();
+    const input = document.getElementById('objectSearch');
+    input.value = 'orders';
+    input.dispatchEvent(new Event('input', {bubbles:true}));
+  });
+  await search.press('Escape');
+  assert.equal(await schema.getAttribute('open'), null, 'Rapid filtering preserves the last manual toggle');
   await search.fill('main.orders');
   await search.press('Enter');
   await page.waitForFunction(() => document.activeElement.id === 'rowSearch');

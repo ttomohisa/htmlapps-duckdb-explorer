@@ -817,11 +817,6 @@
       return `<details class="schema-group"${open?' open':''}><summary class="schema-title" data-schema="${escapeHtml(schema)}"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m6 3 5 5-5 5"/></svg><span>${escapeHtml(schema)}</span><span class="schema-count">${items.length}</span></summary>${rows}</details>`;
     }).join('');
     el.tree.innerHTML=html||`<div class="tree-empty">${escapeHtml(t(term?'catalogNoMatch':'noDatabaseObjects'))}${term?`<button type="button" data-reset-catalog>${escapeHtml(t('catalogReset'))}</button>`:''}</div>`;
-    if(!term)el.tree.querySelectorAll('details').forEach(group=>group.addEventListener('toggle',()=>{
-      if(!group.isConnected||el.objectSearch.value.trim())return;
-      const schema=group.firstElementChild.dataset.schema;
-      if(group.open)state.collapsedSchemas.delete(schema);else state.collapsedSchemas.add(schema);
-    }));
   }
   function showOverview(){
     state.profileToken++;state.viewMode='overview';state.activeProfile=null;try{el.profileDialog.close()}catch{}
@@ -1408,6 +1403,18 @@
     }
   });
   el.tree.addEventListener('click',event=>{
+    const summary=event.target.closest('summary[data-schema]');
+    if(summary){
+      // Store the choice before a new search can replace the current tree.
+      event.preventDefault();
+      const group=summary.parentElement;
+      group.open=!group.open;
+      if(!el.objectSearch.value.trim()){
+        if(group.open)state.collapsedSchemas.delete(summary.dataset.schema);
+        else state.collapsedSchemas.add(summary.dataset.schema);
+      }
+      return;
+    }
     if(event.target.closest('[data-reset-catalog]')){el.objectSearch.value='';renderObjectTree();el.objectSearch.focus();return}
     const button=event.target.closest('button[data-object-index]');
     if(button){const obj=state.objects[Number(button.dataset.objectIndex)];if(obj)selectObject(obj)}
